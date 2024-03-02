@@ -19,3 +19,6 @@ pyrightconfig.json
 # node
 /node_modules
 bun.lockb
+
+# compilation / output
+comp3030j/static/css/main.css

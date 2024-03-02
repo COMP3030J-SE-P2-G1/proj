@@ -31,7 +31,7 @@ initialize:
     {{python}} ./script/initialize.py
 
 tailwind:
-    {{npx}} run tailwindcss -i ./comp3030j/static/css-src/main.css -o ./comp3030j/static/css/main.css --minify --watch
+    {{npx}} run tailwindcss -i ./comp3030j/static/css/main.tailwind.css -o ./comp3030j/static/css/main.css --minify --watch
 
 reset:
     rm ./instance/comp3030j.db
