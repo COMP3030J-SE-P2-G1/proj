@@ -1,0 +1,4 @@
+python="python"
+npx="bun"
+flask_run="rye run flask-dev"
+

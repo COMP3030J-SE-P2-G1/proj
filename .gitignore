@@ -11,6 +11,7 @@ wheels/
 
 # personal configuration
 pyrightconfig.json
+.justfile-env
 
 # flask
 /instance/*

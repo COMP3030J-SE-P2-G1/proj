@@ -26,8 +26,11 @@
   just initialize
   ```
   to create `instance/config.py` file and `instance/comp3033j.db` sqlite3 database.  
-  Otherwise you need to take a look at [../justfile](../justfile) to see what actually the 
+  Take a look at [../justfile](../justfile) and [../.justfile-env.example](.justfile-env.example), you can use 
+  custom executable files to run the same command.
+  If you don't have `just`, you need to take a look at [../justfile](../justfile) to see what actually the 
   command does. It's simple to guess.
+  
   > alpha feature:  
   > run `env POPULATE_DB=true ADMIN=A ADMIN_EMAIL=B just initialize` command
   > to populate database.

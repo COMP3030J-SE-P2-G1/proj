@@ -1,28 +1,19 @@
-python := "python3"
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
-npx := ```
-# check whether command 'bun' exist
-if command -v bun >/dev/null 2>&1; then
-    echo "bun"
-else
-    echo "npx"
-fi
-```
+set dotenv-load
+set dotenv-path := ".justfile-env"
 
-flask-run := ```
-if command -v rye >/dev/null 2>&1; then
-    echo "rye run flask-dev"
-else
-    echo "flask --app comp3030j run --debug"
-fi
-```
+# If you want to customize the command, take a look at .justfile-env.example
+# file, rename it to .justfile-env and make changes to it.
+python := env("python", "python3")
+npx := env("npx", "npx")
+flask_run := env("flask_run", "flask --app comp3030j run --debug")
 
 run: flask
     
-# or you can use `rye run dev` if you have installed [rye](https://github.com/astral-sh/rye)
 flask:
-    # before this, you need to activate virtual environment
-    {{flask-run}}
+    # before this, you probably need to activate virtual environment
+    {{flask_run}}
 
 browser-sync:
     browser-sync start --proxy "localhost:5000" --files "**/*.{html,j2,css,js}"
@@ -31,7 +22,7 @@ initialize:
     {{python}} ./script/initialize.py
 
 tailwind:
-    {{npx}} run tailwindcss -i ./comp3030j/static/css/main.tailwind.css -o ./comp3030j/static/css/main.css --minify --watch
+    {{npx}} tailwindcss -i ./comp3030j/static/css/main.tailwind.css -o ./comp3030j/static/css/main.css --minify --watch
 
 reset:
     rm ./instance/comp3030j.db
