@@ -1,0 +1,31 @@
+[project]
+name = "comp3030j"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Meow King", email = "mr.meowking@anche.no" }
+]
+dependencies = [
+    "flask>=3.0.0",
+    "Flask-SQLAlchemy>=3.1.1",
+    "flask-wtf>=1.2.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.rye.scripts]
+flask-dev = "flask --app comp3030j run --debug"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/comp3030j"]

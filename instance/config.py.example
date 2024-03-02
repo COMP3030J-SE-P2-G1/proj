@@ -1,0 +1,2 @@
+SECRET_KEY="secret" # python -c 'import secrets; print(secrets.token_hex())'
+SQLALCHEMY_DATABASE_URI="sqlite:///comp3030j.db"
