@@ -7,7 +7,7 @@
 
 ## Setup
 + Clone this project and change directory into the project root
-   > note: the step 2 and step 3 is not needed if you use [rye](https://github.com/astral-sh/rye).
+   > note: the step 2 - 4 is not needed if you use [rye](https://github.com/astral-sh/rye).
    > Instead, you only need to do `rye sync`.
   
 + Create virtual environment
