@@ -8,10 +8,6 @@ from os import path, getenv
 project_dir = path.dirname(path.dirname(path.abspath(__file__)))
 sys.path.append(project_dir)
 
-from comp3030j import app
-from comp3030j.db import db
-from comp3030j.db.User import User
-
 DIRECTORY = "instance"
 
 def env(name: str) -> str:
@@ -23,6 +19,12 @@ def env(name: str) -> str:
         return e
 
 def init_db():
+    # since pakcage initialization requires `config.py` file, we need to
+    # put these `import` clause here.
+    from comp3030j import app
+    from comp3030j.db import db
+    from comp3030j.db.User import User
+    
     if getenv("POPULATE_DB"):
         with app.app_context():
              user = User(

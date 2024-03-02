@@ -3,7 +3,8 @@ name = "comp3030j"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
-    { name = "Meow King", email = "mr.meowking@anche.no" }
+    { name = "Meow King", email = "mr.meowking@anche.no" }, # ziqi yang 21207440
+    # add yours below
 ]
 dependencies = [
     "flask>=3.0.0",
