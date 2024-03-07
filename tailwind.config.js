@@ -2,8 +2,8 @@
 module.exports = {
     mode: 'jit',
     content: [
-        "comp3030j/templates/**/*.{html,j2}",
-        "comp3030j/static/js/**/*.js",
+        "./templates/**/*.{html,j2}",
+        "./static/js/**/*.js",
     ],
     theme: {
         extend: {},

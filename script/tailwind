@@ -1,0 +1,1 @@
+tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify --watch
