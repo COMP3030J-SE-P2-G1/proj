@@ -1,0 +1,17 @@
+{
+    "extends": "@parcel/config-default",
+    "transformers": {
+        "*.j2": [
+            "@parcel/transformer-posthtml",
+            "@parcel/transformer-html"
+        ]
+    },
+    "optimizers": {
+        "*.j2": ["@parcel/optimizer-htmlnano"],
+    },
+    "packagers": {
+        "*.j2": "@parcel/packager-html",
+    },
+    "resolvers": [ "./script/parcel-resolver-jinja.mjs", "..."],
+    "reporters": [ "...", "./script/parcel-reporter-jinja.mjs"]
+}

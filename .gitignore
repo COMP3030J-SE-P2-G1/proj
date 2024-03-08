@@ -21,5 +21,12 @@ pyrightconfig.json
 /node_modules
 bun.lockb
 
+# parcel
+.parcel-cache
+dist
+
 # compilation / output
-comp3030j/static/css/main.css
+comp3030j/static/css/*
+comp3030j/static/js/*
+comp3030j/static/image/*
+comp3030j/templates/*
