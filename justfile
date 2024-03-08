@@ -25,7 +25,7 @@ initialize:
 
 # Automatically refresh browser when page changes
 browser-sync:
-    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/**/*.html, comp3030j/**/*.j2, comp3030j/**/*.css, comp3030j/**/*.js'"
+    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'"
 
 # Parcel watch (file not optimized)
 parcel:

@@ -42,7 +42,7 @@
    pip install . # note the trailing dot
    ```
 
-+ Initialize project 
++ Initialize project   
   You need to have [bun](https://github.com/oven-sh/bun) or [node](https://nodejs.org) installed.  
   Also, it's recommended to have executable [just](https://github.com/casey/just) installed. If you don't, then you may need to look into [../justfile](../justfile) file to figure out the actually commands of the commands shown below.  
   After you installed the `just`, you need to create an empty file called `.justfile-env` (note the prefix dot) at the project root.  
