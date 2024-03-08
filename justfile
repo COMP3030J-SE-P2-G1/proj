@@ -73,6 +73,9 @@ stat:
 logs:
     {{npx}} pm2 logs
 
+lint:
+    {{npx}} eslint .
+
 # reset the project (clean caches / outputs / databases/ etc.)
 reset: parcel-clean
     rm ./instance/comp3030j.db 
