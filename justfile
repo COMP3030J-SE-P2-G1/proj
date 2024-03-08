@@ -6,6 +6,7 @@ set dotenv-path := ".justfile-env"
 # If you want to customize the command, take a look at .justfile-env.example
 # file, rename it to .justfile-env and make changes to it.
 python := env("python", "python3")
+npm := env("npm", "npm")
 npx := env("npx", "npx")
 flask_run := env("flask_run", "flask --app comp3030j run --debug")
 
@@ -19,7 +20,7 @@ flask:
 
 # install node modules, create flask application configuration file and create database
 initialize:
-    {{npx}} install
+    {{npm}} install
     {{python}} ./script/initialize.py
 
 # Automatically refresh browser when page changes

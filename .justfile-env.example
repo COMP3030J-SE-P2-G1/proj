@@ -1,4 +1,5 @@
 python="python"
+npm="bun"
 npx="bun"
 flask_run="rye run flask-dev"
 

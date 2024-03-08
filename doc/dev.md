@@ -70,13 +70,13 @@
   ```
   or `just run`  
   If you see command failed, please look into its log using command `just logs`. If you can see the logs contains error message `Error: _plugin(...).Resolver is not a constructor`. Then you need to change the content of the file [/script/parcel-reporter-jinja.mjs](../script/parcel-reporter-jinja.mjs). Temporarily delete the following content (and then restore it after a successful run)  
-      1. `import { load } from 'cheerio';`
+      1. `import { load } from 'cheerio';`  
       2. 
          ```js
          process_jinja(file_path, () => {
             mkdir_copy_file(file_path, dest);  
          });
-         ```
+         ```  
       Then run `just start` again. It should run without error this time. Now, restore the changes that you have made. Run the command `just start` the third time.
   
 - See pm2 managed processess' state
