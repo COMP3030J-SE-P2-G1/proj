@@ -50,7 +50,7 @@
   ```bash
   just initialize
   ```
-  Take a look at  and [../.justfile-env.example](../.justfile-env.example), you can use 
+  Take a look at  and [../.justfile-env.example](../.justfile-env), you can use 
   custom executable files to run the same command(set the command in `.justfile-env`).  
   
   > alpha feature:  
@@ -79,7 +79,7 @@
          ```  
       Then run `just start` again. It should run without error this time. Now, restore the changes that you have made. Run the command `just start` the third time.
   
-- See pm2 managed processess' state
+- See pm2 managed processes' state
   ```bash
   just stat
   ```
@@ -98,10 +98,10 @@
   ```bash
   just parcel
   ```
-  > Note, default is in `watch` mode, and output files are not optimized. Use `just parcel-build` to produce a optimized version of files.  
+  > Note, default is in `watch` mode, and output files are not optimized. Use `just parcel-build` to produce an optimized version of files.  
   
 - Build the project  
-  Currently, it only process static and template files, and doesn't produce a WSGI assets.
+  Currently, it only processes static and template files, and doesn't produce a WSGI assets.
   ```bash
   just build
   ```
