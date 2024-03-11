@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}COMP3030J{% endblock %}</title>
+        {% block links %}{% endblock %}
+    </head>
+    {% block body %}
+        <body>
+            {% block header %}
+                {% include 'components/header.j2' %}
+            {% endblock %}
+            {% block main %}
+            {% endblock %}
+        </body>
+    {% endblock %}
+</html>
