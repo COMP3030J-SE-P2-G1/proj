@@ -50,7 +50,7 @@
   ```bash
   just initialize
   ```
-  Take a look at  and [../.justfile-env.example](../.justfile-env), you can use 
+  Take a look at [../.justfile-env.example](../.justfile-env.example), you can use 
   custom executable files to run the same command(set the command in `.justfile-env`).  
   
   > alpha feature:  
