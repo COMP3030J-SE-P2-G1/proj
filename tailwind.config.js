@@ -6,7 +6,16 @@ module.exports = {
         "./templates/**/*.{html,j2}",
         "./static/js/**/*.js",
     ],
-    theme: ["light", "dark"],
+    theme: {
+        extend: {
+            fontFamily: {
+                inter: ["Inter var", "sans-serif"],
+            },
+        },
+    },
+    daisyui: {
+        themes: ["light", "dim"],
+    },
     plugins: [require("daisyui")]
 }
 
