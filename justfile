@@ -11,6 +11,16 @@ npx := env("npx", "npx")
 flask_run := env("flask_run", "flask --app comp3030j run --debug")
 
 # run the project
+[windows]
+run:
+    # Please run the following command separately (open multiple terminals to run them)
+    # at the project root
+    # just tailwind
+    # just parcel
+    # just browser-sync # it should automatically open localhost:3000 (if not occupied)
+    # just flask
+
+# run the project
 run: kill tailwind parcel browser-sync flask
     
 # Run flask application in debug mode
@@ -27,14 +37,21 @@ initialize:
 browser-sync:
     {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'"
 
-# Parcel watch (file not optimized)
-parcel:
-    {{npx}} pm2 start --name "parcel watch"  "parcel watch 'templates/**/*.j2'"
-    
+[windows]
+browser-sync:
+    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'
+
 # clean parcel caches and outputs
 parcel-clean:
     rm -rf ./dist/ ./.parcel-cache/ comp3030j/static/css comp3030j/static/js comp3030j/static/image comp3030j/templates
 
+# Parcel watch (file not optimized)
+parcel: parcel-clean
+    {{npx}} pm2 start --name "parcel watch"  "parcel watch 'templates/**/*.j2'"
+
+[windows]
+parcel: parcel-clean
+    npx parcel watch 'templates/**/*.j2'
 
 # clean parcel caches and outputs
 [windows]
@@ -49,6 +66,10 @@ parcel-clean:
 # parcel build (files are optimized)
 parcel-build: parcel-clean
     {{npx}} parcel build 'templates/**/*.j2'
+
+[windows]
+tailwind:
+    {{npx}} tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify --watch
 
 # tailwind watch
 tailwind:
