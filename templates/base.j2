@@ -15,15 +15,18 @@
         {% endblock %}
     </head>
     {% block body %}
-        <body class="font-inter">
-            {% block header %}
-                {% include 'components/header.j2' %}
-            {% endblock %}
-            
-            {% block main %}
-            {% endblock %}
-            
-            {% block footer %}
+        <!-- NOTE: `additional_body_class` can override the former classes -->
+        <body class="font-inter antialiased base-100 text-base-content {% block additional_body_class %}{% endblock %}">
+            {% block body_inner %}
+                {% block header %}
+                    {% include 'components/header.j2' %}
+                {% endblock %}
+                
+                {% block main %}
+                {% endblock %}
+                
+                {% block footer %}
+                {% endblock %}
             {% endblock %}
         </body>
     {% endblock %}

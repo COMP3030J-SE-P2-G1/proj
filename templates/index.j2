@@ -1,6 +1,6 @@
 {% extends 'base.j2' %}
 
-{% block header %}
+{% block links %}
     <!-- inter font -->
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -8,9 +8,18 @@
     <link href="/static/css/main.css" rel="stylesheet">
 {% endblock %}
 
+{% block additional_body_class %} tracking-tight {% endblock %}
+
+{% block header %}
+    {% include 'components/index/header.j2' %}
+{% endblock %}
+
 {% block main %}
-    <h1 class="font-inter text-3xl font-bold underline">
+    <h1 class="text-3xl font-bold underline">
         El Psy Kongaroo
     </h1>
     <button class="btn">daisyui showcase</button>
+    
+    <div class="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+    </div>
 {% endblock %}
