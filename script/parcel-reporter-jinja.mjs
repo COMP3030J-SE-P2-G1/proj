@@ -1,11 +1,14 @@
 import { Reporter } from '@parcel/plugin';
 import { load } from 'cheerio';
 import { mkdir, copyFile, readFile, writeFile} from 'node:fs';
-import { join, dirname, extname, relative } from 'path';
+import { join, dirname, extname, relative, resolve } from 'path';
 
-const FLASK_APP_PATH = "./comp3030j"
-const STATIC_DIRECTORY = join(FLASK_APP_PATH, "static");
-const TEMPLATES_DIRECTORY = join(FLASK_APP_PATH, "templates");
+const STATIC_DIRECTORY = resolve("static");
+const TEMPLATES_DIRECTORY = resolve("templates");
+
+const FLASK_APP_PATH = resolve("./comp3030j");
+const FLASK_STATIC_DIRECTORY = join(FLASK_APP_PATH, "static");
+const FLASK_TEMPLATES_DIRECTORY = join(FLASK_APP_PATH, "templates");
 
 // bundle name (e.g. `main.css`) -> final relative path (like `css/main.css`)
 const bundle_map = new Map();
@@ -17,22 +20,22 @@ const print = (msg) => {
 // Get relative path to `static` directory for final assets
 // rel_file_path: file path relative to path like `static/css`, `static/js`
 // return [final_relative_path, root_dir]
-//   example: ["css/index.js", ".comp3030j/static"]
+//   example: ["css/index.js", "(absolute path prefix)/comp3030j/static"]
 function get_final_relative_path(rel_file_path) {
     const ext_name = extname(rel_file_path);
     
     let root_dir, second_dir_name;
     switch (ext_name) {
     case ".css":
-        root_dir = STATIC_DIRECTORY;
+        root_dir = FLASK_STATIC_DIRECTORY;
         second_dir_name = "css";
         break;
     case ".js":
-        root_dir = STATIC_DIRECTORY;
+        root_dir = FLASK_STATIC_DIRECTORY;
         second_dir_name = "js";
         break;
     case ".j2":
-        root_dir = TEMPLATES_DIRECTORY;
+        root_dir = FLASK_TEMPLATES_DIRECTORY;
         second_dir_name = "";
         break;
     case ".png":
@@ -45,7 +48,7 @@ function get_final_relative_path(rel_file_path) {
     case ".heic":
     case ".heif":
     case ".svg":
-        root_dir = STATIC_DIRECTORY;
+        root_dir = FLASK_STATIC_DIRECTORY;
         second_dir_name = "image";
         break;
     default:
@@ -122,9 +125,17 @@ export default new Reporter({
         if (event.type === 'buildSuccess') {
             bundle_map.clear();
             
-            let bundles = event.bundleGraph.getBundles();
-            let project_dir = process.cwd();
-            let dist_dir = join(project_dir, "dist");
+            let changed_asset_file_pathes = new Set([...event.changedAssets.values()]
+                .map(v => v.filePath)
+                .filter(file_path => file_path.startsWith(STATIC_DIRECTORY)
+                    || file_path.startsWith(TEMPLATES_DIRECTORY)));
+            for (const file_path of changed_asset_file_pathes) {
+                print(`detect file ${file_path} changed.\n`);
+            }
+            
+            const bundles = event.bundleGraph.getBundles();
+            const project_dir = process.cwd();
+            const dist_dir = join(project_dir, "dist");
 
             for (const bundle of bundles) {
                 const file_path = bundle.filePath;
