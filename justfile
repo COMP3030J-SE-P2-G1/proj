@@ -12,12 +12,12 @@ flask_run := env("flask_run", "flask --app comp3030j run --debug")
 # run the project
 [windows]
 run:
-    # Please run the following command separately (open multiple terminals to run them)
-    # at the project root
+    # Please run the following command separately (open multiple terminals to run them) at the project root
     # just tailwind
     # just parcel
     # just browser-sync # it should automatically open localhost:3000 (if not occupied)
     # just flask
+    echo # place holder (for solving multiple command collision error)
 
 # run the project
 [unix]
@@ -59,12 +59,12 @@ parcel: parcel-clean
 # clean parcel caches and outputs
 [windows]
 parcel-clean:
-    rm -r -fo ./dist -errorAction ignore
-    rm -r -fo ./.parcel-cache/ -errorAction ignore
-    rm -r -fo ./comp3030j/static/css -errorAction ignore
-    rm -r -fo ./comp3030j/static/js -errorAction ignore
-    rm -r -fo ./comp3030j/static/image -errorAction ignore
-    rm -r -fo ./comp3030j/templates -errorAction ignore
+    -Remove-Item -r -fo ./dist -errorAction ignore
+    -Remove-Item -r -fo ./.parcel-cache/ -errorAction ignore
+    -Remove-Item -r -fo ./comp3030j/static/css -errorAction ignore
+    -Remove-Item -r -fo ./comp3030j/static/js -errorAction ignore
+    -Remove-Item -r -fo ./comp3030j/static/image -errorAction ignore
+    -Remove-Item -r -fo ./comp3030j/templates -errorAction ignore
 
 # parcel build (files are optimized)
 [unix]
