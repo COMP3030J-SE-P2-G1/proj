@@ -34,17 +34,13 @@ initialize:
     {{python}} ./script/initialize.py
 
 # Automatically refresh browser when page changes
+[unix]
 browser-sync:
     {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'"
 
 [windows]
 browser-sync:
     {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'
-
-# clean parcel caches and outputs
-[unix]
-parcel-clean:
-    rm -rf ./dist/ ./.parcel-cache/ comp3030j/static/css comp3030j/static/js comp3030j/static/image comp3030j/templates
 
 # Parcel watch (file not optimized)
 [unix]
@@ -57,6 +53,11 @@ parcel: parcel-clean
     npx parcel watch 'templates/**/*.j2' --no-hmr
 
 # clean parcel caches and outputs
+[unix]
+parcel-clean:
+    rm -rf ./dist/ ./.parcel-cache/ comp3030j/static/css comp3030j/static/js comp3030j/static/image comp3030j/templates
+
+# clean parcel caches and outputs
 [windows]
 parcel-clean:
     -Remove-Item -r -fo ./dist -errorAction ignore
@@ -67,7 +68,6 @@ parcel-clean:
     -Remove-Item -r -fo ./comp3030j/templates -errorAction ignore
 
 # parcel build (files are optimized)
-[unix]
 parcel-build: parcel-clean
     {{npx}} parcel build 'templates/**/*.j2'
 
