@@ -17,7 +17,7 @@ run:
     # just parcel
     # just browser-sync # it should automatically open localhost:3000 (if not occupied)
     # just flask
-    echo # place holder (for solving multiple command collision error)
+    echo 1 # place holder (for solving multiple command collision error)
 
 # run the project
 [unix]
