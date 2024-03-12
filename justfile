@@ -57,12 +57,12 @@ parcel: parcel-clean
 # clean parcel caches and outputs
 [windows]
 parcel-clean:
-    rm -r -fo ./dist/
-    rm -r -fo ./.parcel-cache/
-    rm -r -fo ./comp3030j/static/css
-    rm -r -fo ./comp3030j/static/js
-    rm -r -fo ./comp3030j/static/image
-    rm -r -fo ./comp3030j/templates
+    rm -r -fo ./dist -errorAction ignore
+    rm -r -fo ./.parcel-cache/ -errorAction ignore
+    rm -r -fo ./comp3030j/static/css -errorAction ignore
+    rm -r -fo ./comp3030j/static/js -errorAction ignore
+    rm -r -fo ./comp3030j/static/image -errorAction ignore
+    rm -r -fo ./comp3030j/templates -errorAction ignore
 
 # parcel build (files are optimized)
 parcel-build: parcel-clean
