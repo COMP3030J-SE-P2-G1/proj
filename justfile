@@ -1,5 +1,4 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
-
 set dotenv-load
 set dotenv-path := ".justfile-env"
 
@@ -21,6 +20,7 @@ run:
     # just flask
 
 # run the project
+[unix]
 run: kill tailwind parcel browser-sync flask
     
 # Run flask application in debug mode
@@ -42,10 +42,12 @@ browser-sync:
     {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'
 
 # clean parcel caches and outputs
+[unix]
 parcel-clean:
     rm -rf ./dist/ ./.parcel-cache/ comp3030j/static/css comp3030j/static/js comp3030j/static/image comp3030j/templates
 
 # Parcel watch (file not optimized)
+[unix]
 parcel: parcel-clean
     # --no-hmr make `parcel watch` not inserting a script element at the relatively end of html file
     {{npx}} pm2 start --name "parcel watch"  "parcel watch 'templates/**/*.j2' --no-hmr"
@@ -65,6 +67,7 @@ parcel-clean:
     rm -r -fo ./comp3030j/templates -errorAction ignore
 
 # parcel build (files are optimized)
+[unix]
 parcel-build: parcel-clean
     {{npx}} parcel build 'templates/**/*.j2'
 
@@ -73,6 +76,7 @@ tailwind:
     {{npx}} tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify --watch
 
 # tailwind watch
+[unix]
 tailwind:
     {{npx}} pm2 start --name "tailwind watch" "tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify --watch"
 
