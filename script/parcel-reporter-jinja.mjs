@@ -66,8 +66,14 @@ function process_jinja(file_path, post_write_function) {
             console.error('Error reading the file:', err);
             return;
         }
+
+        let is_document = false;
+        // a simple document detector
+        if (data.startsWith("<!DOCTYPE") || data.startsWith("<html")) {
+            is_document = true;
+        }
         
-        const $ = load(data, null, false);
+        const $ = load(data, null, is_document);
 
         // here are only some common cases, add more if you needs more
         const elementsToProcess = [
