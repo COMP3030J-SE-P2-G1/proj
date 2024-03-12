@@ -103,5 +103,11 @@ lint:
     {{npx}} eslint .
 
 # reset the project (clean caches / outputs / databases/ etc.)
+[unix]
 reset: parcel-clean
-    rm ./instance/comp3030j.db 
+    rm ./instance/comp3030j.db
+
+[windows]
+reset: parcel-clean
+    rm -r -fo ./instance/comp3030j.db -errorAction ignore
+    
