@@ -6,12 +6,12 @@
             "@parcel/transformer-html"
         ]
     },
-    "optimizers": {
-        "*.j2": ["@parcel/optimizer-htmlnano"],
-    },
+    "resolvers": [ "./script/parcel-resolver-jinja.mjs", "..."],
     "packagers": {
         "*.j2": "@parcel/packager-html",
     },
-    "resolvers": [ "./script/parcel-resolver-jinja.mjs", "..."],
+    "optimizers": {
+        "*.j2": ["@parcel/optimizer-htmlnano"],
+    },
     "reporters": [ "...", "./script/parcel-reporter-jinja.mjs"]
 }

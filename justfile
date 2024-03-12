@@ -47,11 +47,12 @@ parcel-clean:
 
 # Parcel watch (file not optimized)
 parcel: parcel-clean
-    {{npx}} pm2 start --name "parcel watch"  "parcel watch 'templates/**/*.j2'"
+    # --no-hmr make `parcel watch` not inserting a script element at the relatively end of html file
+    {{npx}} pm2 start --name "parcel watch"  "parcel watch 'templates/**/*.j2' --no-hmr"
 
 [windows]
 parcel: parcel-clean
-    npx parcel watch 'templates/**/*.j2'
+    npx parcel watch 'templates/**/*.j2' --no-hmr
 
 # clean parcel caches and outputs
 [windows]
