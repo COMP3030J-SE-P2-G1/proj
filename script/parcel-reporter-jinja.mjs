@@ -1,5 +1,6 @@
 import { Reporter } from '@parcel/plugin';
-import { load } from 'cheerio';
+import posthtml from 'posthtml';
+import { render } from 'posthtml-render';
 import { mkdir, copyFile, readFile, writeFile} from 'node:fs';
 import { join, dirname, extname, relative, resolve, sep, posix } from 'path';
 
@@ -63,47 +64,54 @@ function get_final_relative_path(rel_file_path) {
 function process_jinja(file_path, post_write_function) {
     readFile(file_path, 'utf8', (err, data) => {
         if (err) {
-            console.error('Error reading the file:', err);
+            print('Error reading the file:', err);
             return;
         }
 
-        let is_document = false;
-        // a simple document detector
-        if (data.startsWith("<!DOCTYPE") || data.startsWith("<html")) {
-            is_document = true;
-        }
-        
-        const $ = load(data, null, is_document);
+        posthtml()
+            .use((tree) => {
+                tree.match({ tag: 'link', attrs: { rel: 'stylesheet', href: true } }, (node) => {
+                    node.attrs.href = replace_url(node.attrs.href, bundle_map);
+                    return node;
+                });
 
-        // here are only some common cases, add more if you needs more
-        const elementsToProcess = [
-            { selector: 'link[rel="stylesheet"]', attribute: 'href' },
-            { selector: 'script[src]', attribute: 'src' },
-            { selector: 'a[href]', attribute: 'href' },
-            { selector: 'img[src]', attribute: 'src' },
-        ];
+                tree.match({ tag: 'script', attrs: { src: true } }, (node) => {
+                    node.attrs.src = replace_url(node.attrs.src, bundle_map);
+                    return node;
+                });
 
-        elementsToProcess.forEach(({ selector, attribute }) => {
-            $(selector).each((_, element) => {
-                let url = $(element).attr(attribute);
-                url = url.startsWith("/") ? url.substring(1) : url;
-                if (bundle_map.has(url)) {
-                    // Replace the URL with the Jinja2 url_for format
-                    const res_url = bundle_map.get(url);
-                    const jinja2Url = `{{ url_for('static', filename='${res_url}') }}`;
-                    $(element).attr(attribute, jinja2Url);
-                }
+                tree.match({ tag: 'a', attrs: { href: true } }, (node) => {
+                    node.attrs.href = replace_url(node.attrs.href, bundle_map);
+                    return node;
+                });
+
+                tree.match({ tag: 'img', attrs: { src: true } }, (node) => {
+                    node.attrs.src = replace_url(node.attrs.src, bundle_map);
+                    return node;
+                });
+
+                return tree;
+            })
+            .process(data)
+            .then((result) => {
+                writeFile(file_path, render(result.tree), 'utf8', (err) => {
+                    if (err) {
+                        print('Error writing the modified content back to the file:', err);
+                        return;
+                    }
+                    post_write_function();
+                });
             });
-        });
-
-        writeFile(file_path, $.html(), 'utf8', (err) => {
-            if (err) {
-                console.error('Error writing the modified content back to the file:', err);
-                return;
-            }
-            post_write_function();
-        });
     });
+}
+
+function replace_url(url, bundle_map) {
+    let input_url = url.startsWith("/") ? url.substring(1) : url;
+    if (bundle_map.has(input_url)) {
+        let res_url = bundle_map.get(input_url);
+        return `{{ url_for('static', filename='${res_url}') }}`;
+    }
+    return url;
 }
 
 function mkdir_copy_file(file_path, dest) {

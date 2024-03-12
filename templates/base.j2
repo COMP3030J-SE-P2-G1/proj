@@ -12,11 +12,13 @@
             <!-- `font-inter` class below on `body` element (though it has fallback fonts). -->
             <link rel="preconnect" href="https://rsms.me/">
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+            
         {% endblock %}
     </head>
     {% block body %}
-        <!-- NOTE: `additional_body_class` can override the former classes -->
-        <body class="font-inter antialiased base-100 text-base-content">
+        <!-- NOTE: `additional_body_classes` can override the former classes -->
+        <body class="font-inter antialiased bg-base-100 text-base-content {% block additional_body_classes %} {% endblock %}">
             {% block body_inner %}
                 {% block header %}
                     {% include 'components/header.j2' %}
