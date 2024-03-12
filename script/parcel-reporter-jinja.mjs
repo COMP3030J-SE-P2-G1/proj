@@ -1,7 +1,7 @@
 import { Reporter } from '@parcel/plugin';
 import { load } from 'cheerio';
 import { mkdir, copyFile, readFile, writeFile} from 'node:fs';
-import { join, dirname, extname, relative, resolve } from 'path';
+import { join, dirname, extname, relative, resolve, sep, posix } from 'path';
 
 const PROJECT_DIRECTORY = resolve("");
 const STATIC_DIRECTORY = join(PROJECT_DIRECTORY, "static");
@@ -85,11 +85,11 @@ function process_jinja(file_path, post_write_function) {
 
         elementsToProcess.forEach(({ selector, attribute }) => {
             $(selector).each((_, element) => {
-                const url = $(element).attr(attribute);
-                let input_url = url.substring(1);
-                if (bundle_map.has(input_url)) {
+                let url = $(element).attr(attribute);
+                url = url.startsWith("/") ? url.substring(1) : url;
+                if (bundle_map.has(url)) {
                     // Replace the URL with the Jinja2 url_for format
-                    let res_url = bundle_map.get(input_url);
+                    const res_url = bundle_map.get(url);
                     const jinja2Url = `{{ url_for('static', filename='${res_url}') }}`;
                     $(element).attr(attribute, jinja2Url);
                 }
@@ -148,7 +148,8 @@ export default new Reporter({
             for (const bundle of bundles) {
                 const file_path = bundle.filePath;
                 const rel_file_path = relative(DIST_DIRECTORY, file_path);
-                const [final_rel_file_path, _] = get_final_relative_path(rel_file_path);
+                let [final_rel_file_path, _] = get_final_relative_path(rel_file_path);
+                final_rel_file_path = final_rel_file_path.split(sep).join(posix.sep);
                 if (!bundle_map.has(final_rel_file_path)) {
                     bundle_map.set(rel_file_path, final_rel_file_path);
                 }

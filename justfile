@@ -40,7 +40,7 @@ browser-sync:
 
 [windows]
 browser-sync:
-    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'
+    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j\\templates\\*.j2, comp3030j\\static\\*.css, comp3030j\\static\\**\\*.js'
 
 # Parcel watch (file not optimized)
 [unix]
