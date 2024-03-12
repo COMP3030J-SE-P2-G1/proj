@@ -3,10 +3,13 @@ import { load } from 'cheerio';
 import { mkdir, copyFile, readFile, writeFile} from 'node:fs';
 import { join, dirname, extname, relative, resolve } from 'path';
 
-const STATIC_DIRECTORY = resolve("static");
-const TEMPLATES_DIRECTORY = resolve("templates");
+const PROJECT_DIRECTORY = resolve("");
+const STATIC_DIRECTORY = join(PROJECT_DIRECTORY, "static");
+const TEMPLATES_DIRECTORY = join(PROJECT_DIRECTORY, "templates");
 
-const FLASK_APP_PATH = resolve("./comp3030j");
+const DIST_DIRECTORY  = join(PROJECT_DIRECTORY, "dist");
+
+const FLASK_APP_PATH = join(PROJECT_DIRECTORY, "comp3030j");
 const FLASK_STATIC_DIRECTORY = join(FLASK_APP_PATH, "static");
 const FLASK_TEMPLATES_DIRECTORY = join(FLASK_APP_PATH, "templates");
 
@@ -64,7 +67,7 @@ function process_jinja(file_path, post_write_function) {
             return;
         }
         
-        const $ = load(data);
+        const $ = load(data, null, false);
 
         // here are only some common cases, add more if you needs more
         const elementsToProcess = [
@@ -130,16 +133,15 @@ export default new Reporter({
                 .filter(file_path => file_path.startsWith(STATIC_DIRECTORY)
                     || file_path.startsWith(TEMPLATES_DIRECTORY)));
             for (const file_path of changed_asset_file_pathes) {
-                print(`detect file ${file_path} changed.\n`);
+                const rel_file_path = relative(PROJECT_DIRECTORY, file_path);
+                print(`detect file ${rel_file_path} changed.\n`);
             }
             
             const bundles = event.bundleGraph.getBundles();
-            const project_dir = process.cwd();
-            const dist_dir = join(project_dir, "dist");
 
             for (const bundle of bundles) {
                 const file_path = bundle.filePath;
-                const rel_file_path = relative(dist_dir, file_path);
+                const rel_file_path = relative(DIST_DIRECTORY, file_path);
                 const [final_rel_file_path, _] = get_final_relative_path(rel_file_path);
                 if (!bundle_map.has(final_rel_file_path)) {
                     bundle_map.set(rel_file_path, final_rel_file_path);
@@ -148,7 +150,7 @@ export default new Reporter({
             
             for (const bundle of bundles) {
                 const file_path = bundle.filePath;
-                process_file(dist_dir, file_path);
+                process_file(DIST_DIRECTORY, file_path);
             }
         }
     }
