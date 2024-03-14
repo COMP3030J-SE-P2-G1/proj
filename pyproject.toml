@@ -23,7 +23,7 @@ managed = true
 dev-dependencies = []
 
 [tool.rye.scripts]
-flask-dev = "flask --app comp3030j run --debug -p 4399"
+flask-dev = "flask --app comp3030j run --debug"
 
 [tool.hatch.metadata]
 allow-direct-references = true
