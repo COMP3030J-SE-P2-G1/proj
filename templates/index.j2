@@ -4,10 +4,12 @@
     <!-- inter font -->
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-
+    
     <link href="/static/css/main.css" rel="stylesheet">
+    <script type="module" src="/static/js/main.ts"></script>
 {% endblock %}
 
+{% block additional_body_classes %} tracking-tight {% endblock %}
 
 {% block header %}
     {% include 'components/index/header.j2' %}
@@ -18,8 +20,7 @@
         El Psy Kongaroo
     </h1>
     <button class="btn">daisyui showcase</button>
-
-
+    
     <div class="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
     </div>
 {% endblock %}
