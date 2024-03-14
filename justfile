@@ -7,7 +7,7 @@ set dotenv-path := ".justfile-env"
 python := env("python", "python3")
 npm := env("npm", "npm")
 npx := env("npx", "npx")
-flask_run := env("flask_run", "flask --app comp3030j run --debug")
+flask_run := env("flask_run", "flask --app comp3030j run --debug -p 4399")
 
 # run the project
 [windows]
@@ -36,11 +36,11 @@ initialize:
 # Automatically refresh browser when page changes
 [unix]
 browser-sync:
-    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/templates/*.j2, comp3030j/static/*.css, comp3030j/static/**/*.js'"
+    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:4399' --files 'comp3030j/**/*.j2, comp3030j/**/*.css, comp3030j/**/*.js'"
 
 [windows]
 browser-sync:
-    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j\\templates\\*.j2, comp3030j\\static\\*.css, comp3030j\\static\\**\\*.js'
+    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j\\**\\*.j2, comp3030j\\**\*.css, comp3030j\\**\\*.js'
 
 # Parcel watch (file not optimized)
 [unix]
