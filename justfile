@@ -7,7 +7,7 @@ set dotenv-path := ".justfile-env"
 python := env("python", "python3")
 npm := env("npm", "npm")
 npx := env("npx", "npx")
-flask_run := env("flask_run", "flask --app comp3030j run --debug")
+rye_run := env("rye_run", "")
 
 # run the project
 [windows]
@@ -16,17 +16,29 @@ run:
     # just tailwind
     # just parcel
     # just browser-sync # it should automatically open localhost:3000 (if not occupied)
-    # just flask
+    # just flask # you need to activate virtual environment first if you don't use `rye`
     echo 1 # place holder (for solving multiple command collision error)
 
 # run the project
 [unix]
 run: kill tailwind parcel browser-sync flask
+
+# just trans -> edit translation file -> just trans
+# translate the application
+trans:
+    # if you run into problem, you probably need to do (enter virtual environment first)
+    # pip install --upgrade setuptools
+    # see https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found
+    {{rye_run}} pybabel extract -F babel.cfg -k _tr -k _ntr -k _ltr -o comp3030j/messages.pot .
+    # if a specific language hasn't been initialized, run the following command(example):
+    #   pybabel init -i messages.pot -d comp3030j/translations -l zh
+    {{rye_run}} pybabel update -i comp3030j/messages.pot -d comp3030j/translations
+    {{rye_run}} pybabel compile -d comp3030j/translations
     
+# `FLASK_RUN_EXTRA_FILES` environment variable allows us to hot load translation
 # Run flask application in debug mode
-flask:
-    # If you don't use rye, you probably need to activate virtual environment
-    {{flask_run}}
+flask $FLASK_RUN_EXTRA_FILES="comp3030j/translations/zh/LC_MESSAGES/messages.mo":
+    {{rye_run}} flask --app comp3030j run --debug
 
 # install node modules, create flask application configuration file and create database
 initialize:
@@ -36,11 +48,11 @@ initialize:
 # Automatically refresh browser when page changes
 [unix]
 browser-sync:
-    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/**/*.j2, comp3030j/**/*.css, comp3030j/**/*.js'"
+    {{npx}} pm2 start --name "browser-sync" "browser-sync start --proxy 'localhost:5000' --files 'comp3030j/**/*.j2, comp3030j/**/*.css, comp3030j/**/*.js, comp3030j/**/*.mo, comp3030j/**/*.py'"
 
 [windows]
 browser-sync:
-    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j\\**\\*.j2, comp3030j\\**\*.css, comp3030j\\**\\*.js'
+    {{npx}} browser-sync start --proxy 'localhost:5000' --files 'comp3030j\\**\\*.j2, comp3030j\\**\*.css, comp3030j\\**\\*.js, comp3030j\\**\\*.mo, comp3030j\\**\*.py'
 
 # Parcel watch (file not optimized)
 [unix]
@@ -85,7 +97,7 @@ tailwind-build:
     {{npx}} tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify
 
 # build the project
-build: tailwind-build parcel-build
+build: tailwind-build parcel-build trans
 
 # kill all background processes managed by pm2
 kill:
@@ -99,6 +111,7 @@ stat:
 logs:
     {{npx}} pm2 logs
 
+# eslint
 lint:
     {{npx}} eslint .
 

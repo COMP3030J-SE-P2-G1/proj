@@ -2,10 +2,14 @@
 pyrightconfig.json
 .justfile-env
 
+
 # flask
 /instance/*
 !/instance/config.py.example
 
+# flask_babel
+*.mo
+*.pot
 
 # node
 /node_modules

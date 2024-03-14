@@ -38,13 +38,13 @@ def gen_config_py(filename: str):
     # Generate a secure secret key
     secret_key = secrets.token_hex()
 
-    config_lines = [
-        f'SECRET_KEY="{secret_key}"  # Securely generated secret key\n',
-        'SQLALCHEMY_DATABASE_URI="sqlite:///comp3030j.db"\n'
-    ]
+    configuration = f"""SECRET_KEY="{secret_key}"
+SQLALCHEMY_DATABASE_URI="sqlite:///comp3030j.db"
+LANGUAGES=['en', 'zh']
+"""
 
     with open(filename, "w") as config_file:
-        config_file.writelines(config_lines)
+        config_file.write(configuration)
         print(f"Configuration file '{filename}' has been generated.")
     
 

@@ -10,6 +10,7 @@ dependencies = [
     "flask>=3.0.0",
     "Flask-SQLAlchemy>=3.1.1",
     "flask-wtf>=1.2.1",
+    "Flask-Babel>=4.0.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
@@ -21,9 +22,6 @@ build-backend = "hatchling.build"
 [tool.rye]
 managed = true
 dev-dependencies = []
-
-[tool.rye.scripts]
-flask-dev = "flask --app comp3030j run --debug"
 
 [tool.hatch.metadata]
 allow-direct-references = true

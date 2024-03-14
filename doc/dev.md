@@ -29,8 +29,10 @@
 
 ## Setup
 + Clone this project and change directory into the project root
-   > note: the step 2 - 4 is not needed if you use [rye](https://github.com/astral-sh/rye).
-   > Instead, you only need to do `rye sync`.
+   > note: the step 3 - 4 is not needed if you use [rye](https://github.com/astral-sh/rye).
+   > step 2 is needed since `rye` doesn't create symbol link for `pip` but to fix flask-babel error we
+   > need to update `setuptools` version using pip, see [https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found](https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found)
+   > You only need to do `rye sync`.
   
 + Create virtual environment
    ```bash
@@ -144,3 +146,28 @@ So:
 3. when you use a jinja link like `{{ url_for('static', filename='css/index.05e00fde.css') }}`, the link will not be touched, and it indicates that you are using a file from directory `/comp3030j/static/`.  
 
 If you have problems, pls let me know. 
+
+## Translation 
+
+We use [flask-babel](https://python-babel.github.io/flask-babel/index.html) to support i18n translation.  
+
+### Marked text to be translated
+
+For `python` file: `from comp3030j.util import _tr, _ntr, _ltr` (or use their original names, e.g. `from flask_babel import gettext, ngettext, lazy_gettext`).  
+Jinja file also support these functions.  
+
+> Self note: our remapped name `_tr` should also be in consistent with `just trans` command. (i.e. `-k _tr -k _ntr -k _ltr`)
+
+### Related `just` command  
+Assuming you have started the development through the command `just` or `just run`, then you need to do the following to translate symbols:  
+1. `just trans`: this will generate `comp3030j/messages.pot` template file, then update the true translation files inside `comp3030j/translations` directory (`.po` file) and compile the translations under that directory(to `.mo` file) so that flask-babel can read them. We mainly want to utilize `update` functionality at the moment.
+2. edit the translation files inside `comp3030j/translations`
+3. do `just trans` once again. This time we mainly want to utilize the its `compile` functionality.
+
+The browser will automatically updated since we have configured `browser-sync` to watch `.mo` file changes.  
+
+### Additional Notes
+
+Install browser extension [Locale Switcher](https://github.com/locale-switcher/locale-switcher) to enable smooth language switch.
+
+
