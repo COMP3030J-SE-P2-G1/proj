@@ -11,7 +11,9 @@
         "*.j2": "@parcel/packager-html",
     },
     "optimizers": {
-        "*.j2": ["@parcel/optimizer-htmlnano"],
+        // don't add htmlnano optimizer for jinja file, it's not necessary
+        // and it will cause error if there is a {% block x %} inside string (like `class`)
+        // "*.j2": ["@parcel/optimizer-htmlnano"],
     },
     "reporters": [ "...", "./script/parcel-reporter-jinja.mjs"]
 }
