@@ -15,7 +15,7 @@
 - `scipt`: script files (e.g. scripts for initializing project)
 - `doc`: documents should be put here
 - `instance`: flask application instance file (i.e. configurations, database etc.)
-- `comp3012`: Out Flask application 
+- `comp3030j`: Our Flask application 
   - `views`: code related to display pages
   - `api`: code that responsible for transferring data, not page.
   - `db`: database related code, e.g. defined models
@@ -180,12 +180,12 @@ Assuming you have started the development through the command `just` or `just ru
 > ```  
 > Then this entry may be ignored by the next `just trans` command. Please remove the second line `#, fuzzy` once you have finished updating.
 
-3. do `just trans` once again. This time we mainly want to utilize the its `compile` functionality.
+3. do `just trans` once again. This time we mainly want to utilize the `compile` functionality.
 
 > You can manually check the file like `comp3030j/translations/zh/LC_MESSAGES/message.mo` to ensure the update is correct.  
 > Command `cat comp3030j/translations/zh/LC_MESSAGES/message.mo` will probably display the correct text for you.  
 
-The browser will automatically updated since we have configured `browser-sync` to watch `.mo` file changes.  
+The browser will automatically update since we have configured `browser-sync` to watch `.mo` file changes.  
 
 
 ### Additional Notes
