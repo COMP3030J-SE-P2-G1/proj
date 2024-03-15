@@ -52,6 +52,10 @@
   ```bash
   just initialize
   ```
+  
+  > If you have encountered problem of `ValueError: Unknown extraction method 'jinja2'`
+  > Please refer to section [Translation > Related just command](#related-just-command)
+  
   Take a look at [../.justfile-env.example](../.justfile-env.example), you can use 
   custom executable files to run the same command(set the command in `.justfile-env`).  
   
