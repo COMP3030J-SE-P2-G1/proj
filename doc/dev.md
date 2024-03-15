@@ -170,10 +170,23 @@ Assuming you have started the development through the command `just` or `just ru
 > You probably need to do (enter the virtual environment first) `pip install --upgrade setuptools`. (see https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found)
 
 2. edit the translation files inside `comp3030j/translations`
+
+> If the translation entry is like (which mean the original text has been updated)
+> ```  
+> #: templates/index.j2:20  
+> #, fuzzy
+> msgid "El Psy Kongaroo"  
+> msgstr "Ciallo～(∠・ω< )⌒★"  
+> ```  
+> Then this entry may be ignored by the next `just trans` command. Please remove the second line `#, fuzzy` once you have finished updating.
+
 3. do `just trans` once again. This time we mainly want to utilize the its `compile` functionality.
 
+> You can manually check the file like `comp3030j/translations/zh/LC_MESSAGES/message.mo` to ensure the update is correct.  
+> Command `cat comp3030j/translations/zh/LC_MESSAGES/message.mo` will probably display the correct text for you.  
 
 The browser will automatically updated since we have configured `browser-sync` to watch `.mo` file changes.  
+
 
 ### Additional Notes
 
