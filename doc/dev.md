@@ -160,9 +160,14 @@ Jinja file also support these functions.
 
 ### Related `just` command  
 Assuming you have started the development through the command `just` or `just run`, then you need to do the following to translate symbols:  
-1. `just trans`: this will generate `comp3030j/messages.pot` template file, then update the true translation files inside `comp3030j/translations` directory (`.po` file) and compile the translations under that directory(to `.mo` file) so that flask-babel can read them. We mainly want to utilize `update` functionality at the moment.
+1. `just trans`: this will generate `comp3030j/messages.pot` template file, then update the true translation files inside `comp3030j/translations` directory (`.po` file) and compile the translations under that directory(to `.mo` file) so that flask-babel can read them. We mainly want to utilize `update` functionality at the moment.  
+
+> If you run into problem `ValueError: Unknown extraction method 'jinja2'` when running command `just trans`  
+> You probably need to do (enter the virtual environment first) `pip install --upgrade setuptools`. (see https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found)
+
 2. edit the translation files inside `comp3030j/translations`
 3. do `just trans` once again. This time we mainly want to utilize the its `compile` functionality.
+
 
 The browser will automatically updated since we have configured `browser-sync` to watch `.mo` file changes.  
 

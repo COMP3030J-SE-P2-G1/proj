@@ -41,7 +41,7 @@ flask $FLASK_RUN_EXTRA_FILES="comp3030j/translations/zh/LC_MESSAGES/messages.mo"
     {{rye_run}} flask --app comp3030j run --debug
 
 # install node modules, create flask application configuration file and create database
-initialize:
+initialize: && trans
     {{npm}} install
     {{python}} ./script/initialize.py
 
