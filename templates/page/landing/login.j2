@@ -1,0 +1,19 @@
+{% extends "base.j2" %}
+
+{% block content %}
+<div class="login-container">
+  <form action="/login" method="post">
+    <h2>Login</h2>
+    {% include "component/header.j2" %}
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <input type="submit" value="Login">
+    <a href="/register">Don't have an account? Register</a>
+  </form>
+</div>
+{% include "component/theme-controller.j2" %}
+{% endblock %}
