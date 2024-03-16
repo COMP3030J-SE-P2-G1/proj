@@ -19,16 +19,21 @@ function restoreState() {
     }
 }
 
+/**
+ * Store theme state to local storage
+ */
 function rememberThemeState(e: Event) {
     const isDark = (e.target as HTMLInputElement).checked;
     localStorage.setItem(Constants.LOCAL_STAGE_IS_DARK, JSON.stringify(isDark));
 }
 
+/**
+ * Bind events to elements
+ */
 function bindEvents(): void {
     const themeSelector = document.getElementById("theme-selector");
     themeSelector?.addEventListener("change", rememberThemeState);
 }
-
 
 (function () {
     ready(() => {
