@@ -7,21 +7,38 @@
     
     <link href="/static/css/main.css" rel="stylesheet">
     <script type="module" src="/static/js/main.ts"></script>
-    <script type="module" src="/static/js/landing_page.ts"></script>
+    <script type="module" src="/static/js/landing.ts"></script>
 {% endblock %}
 
 {% block additional_body_classes %} tracking-tight {% endblock %}
 
-{% block header %}
-    {% include 'components/index/header.j2' %}
-{% endblock %}
-
-{% block main %}
-    <h1 class="text-3xl font-bold underline">
-        translation demo: `El Psy Kongroo` -> `{{ gettext("El Psy Kongaroo") }}`
-    </h1>
-    <button class="btn">daisyui showcase</button>
-    
-    <div class="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+{% block body_inner %}
+    <div class="drawer">
+        <input id="drawer-controller" type="checkbox" class="drawer-toggle" />
+        
+        <div class="drawer-content">
+            {% include 'components/landing/header.j2' %}
+            
+            <h1 class="text-3xl font-bold underline">
+                translation demo: `El Psy Kongroo` -> `{{ gettext("El Psy Kongaroo") }}`
+            </h1>
+            <button class="btn">daisyui showcase</button>
+            
+            <div class="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+            </div>
+        </div>
+        
+        <div class="drawer-side z-40">
+            <!-- TODO -->
+            <label for="drawer-controller" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu p-4 w-80 min-h-full bg-base-200">
+                <li>
+                    {% include '/components/theme-controller.j2' %}
+                </li>
+                <li><a>{{ _tr("Sign In") }}</a></li>
+                <li><a>{{ _tr("Sign Up") }}</a></li>
+            </ul>
+        </div>
     </div>
 {% endblock %}
+
