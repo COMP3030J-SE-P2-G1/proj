@@ -11,11 +11,12 @@ module.exports = {
             fontFamily: {
                 inter: ["Inter var", "sans-serif"],
             },
-        },
+        }
     },
     daisyui: {
         themes: ["light", "dim"],
     },
-    plugins: [require("daisyui")]
+    plugins: [require("daisyui")],
+    safelist: ['scale-125']
 }
 

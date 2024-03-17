@@ -8,7 +8,6 @@
  */
 export function stickyHeaderAddShadowHanlder(elem: HTMLElement) {
     const scrollHandler = () => {
-        console.log("hi");
         const top = window.scrollY > 10 ? false : true;
         if (top) {
             // TODO I don't know why only shadow-sm works (shadow-lg, ... doesn't work)
