@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-16 16:00+0800\n"
+"POT-Creation-Date: 2024-03-17 16:44+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,15 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: templates/index.j2:20
-msgid "El Psy Kongaroo"
-msgstr "Ciallo～(∠・ω< )⌒★"
-
-#: templates/components/index/header.j2:11
+#: templates/page/landing/header.j2:18 templates/page/landing/index.j2:38
 msgid "Sign In"
 msgstr "登录"
 
-#: templates/components/index/header.j2:12
+#: templates/page/landing/header.j2:19 templates/page/landing/index.j2:39
 msgid "Sign Up"
 msgstr "注册"
+
+#~ msgid "El Psy Kongaroo"
+#~ msgstr "Ciallo～(∠・ω< )⌒★"
 
