@@ -4,4 +4,4 @@ bp = Blueprint("index", __name__)
 
 @bp.route('/')
 def hello():
-    return render_template("index.j2")
+    return render_template("page/landing/index.j2")

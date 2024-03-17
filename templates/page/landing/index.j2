@@ -1,3 +1,4 @@
+{% from '/component/theme-controller.j2' import theme_controller %}
 {% extends 'base.j2' %}
 
 {% block links %}
@@ -17,15 +18,8 @@
         <input id="drawer-controller" type="checkbox" class="drawer-toggle" />
         
         <div class="drawer-content">
-            {% include 'components/landing/header.j2' %}
-            
-            <h1 class="text-3xl font-bold underline">
-                translation demo: `El Psy Kongroo` -> `{{ gettext("El Psy Kongaroo") }}`
-            </h1>
-            <button class="btn">daisyui showcase</button>
-            
-            <div class="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-            </div>
+            {% include '/page/landing/header.j2' %}
+            {% include '/page/landing/body.j2' %}
         </div>
         
         <div class="drawer-side z-40">
@@ -33,7 +27,7 @@
             <label for="drawer-controller" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu p-4 w-80 min-h-full bg-base-200">
                 <li>
-                    {% include '/components/theme-controller.j2' %}
+                    {{ theme_controller("") }}
                 </li>
                 <li><a>{{ _tr("Sign In") }}</a></li>
                 <li><a>{{ _tr("Sign Up") }}</a></li>
