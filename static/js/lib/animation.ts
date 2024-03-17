@@ -10,10 +10,10 @@ export function stickyHeaderAddShadowHandler(elem: HTMLElement) {
     const scrollHandler = () => {
         const top = window.scrollY > 10 ? false : true;
         if (top) {
-            // TODO I don't know why only shadow-sm works (shadow-lg, ... doesn't work)
-            elem.classList.remove('shadow-sm');
+            // note: `shadow` class needs to be in tailwind's safelist
+            elem.classList.remove('shadow');
         } else {
-            elem.classList.add('shadow-sm');
+            elem.classList.add('shadow');
         }
     }
     window.addEventListener('scroll', scrollHandler);

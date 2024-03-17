@@ -17,6 +17,6 @@ module.exports = {
         themes: ["light", "dim"],
     },
     plugins: [require("daisyui")],
-    safelist: ['scale-125']
+    safelist: ['scale-125', 'shadow']
 }
 
