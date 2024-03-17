@@ -11,6 +11,7 @@ export function stickyHeaderAddShadowHanlder(elem: HTMLElement) {
         console.log("hi");
         const top = window.scrollY > 10 ? false : true;
         if (top) {
+            // TODO I don't know why only shadow-sm works (shadow-lg, ... doesn't work)
             elem.classList.remove('shadow-sm');
         } else {
             elem.classList.add('shadow-sm');
