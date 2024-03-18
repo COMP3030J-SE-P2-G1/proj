@@ -6,7 +6,7 @@
  * Add shadow to sticky header when it is not at its original place (top)
  * By default add 'shadow-sm' class
  */
-export function stickyHeaderAddShadowHanlder(elem: HTMLElement) {
+export function stickyHeaderAddShadowHandler(elem: HTMLElement) {
     const scrollHandler = () => {
         const top = window.scrollY > 10 ? false : true;
         if (top) {

@@ -6,7 +6,7 @@
 // disable all the typescript checking for it when necessary 
 
 import { ready } from "./lib/utils";
-import { stickyHeaderAddShadowHanlder } from "./lib/animation.ts";
+import { stickyHeaderAddShadowHandler } from "./lib/animation.ts";
 // @ts-expect-error https://github.com/locomotivemtl/locomotive-scroll/issues/550
 import LocomotiveScroll from 'locomotive-scroll';
 
@@ -20,7 +20,7 @@ import LocomotiveScroll from 'locomotive-scroll';
 function bindEvents(): void {
     const sticky_header_elem = document.getElementById("sticky-header");
     if (sticky_header_elem) {
-        stickyHeaderAddShadowHanlder(sticky_header_elem);
+        stickyHeaderAddShadowHandler(sticky_header_elem);
     }
 }
 
