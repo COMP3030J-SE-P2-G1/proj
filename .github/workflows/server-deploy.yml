@@ -32,6 +32,7 @@ jobs:
             - name: initialize project
               run: |
                   touch .justfile-env
+                  source .venv/bin/activate
                   just initialize  # note that this command also can pre-populate the generated database
                   
             - name: build project
