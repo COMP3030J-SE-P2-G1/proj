@@ -14,8 +14,9 @@ jobs:
                     just-version: 1.24.0
             -   uses: actions/checkout@v4
             -   name: initialize
-                run: npm install daisyui --4.7.3
-            -   run: cp .justfile-env.example .justfile-env
+                run: |
+                    npm install daisyui --4.7.3
+                    touch .justfile-env
             -   run: just build
             -   name: Setup SSH Key
                 run: |
