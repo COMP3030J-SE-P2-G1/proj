@@ -32,7 +32,7 @@ jobs:
             - name: initialize project
               run: |
                   touch .justfile-env
-                  just initilize  # note that this command also can pre-populate the generated database
+                  just initialize  # note that this command also can pre-populate the generated database
                   
             - name: build project
               run: just build
