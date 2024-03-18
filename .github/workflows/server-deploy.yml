@@ -24,7 +24,6 @@ jobs:
                    python -m venv .venv
                    source .venv/bin/activate
                    pip install .
-                   pip install gunicorn # we use it to launch our flask application
 
             - uses: actions/setup-node@v4
               with:
@@ -40,7 +39,7 @@ jobs:
             - name: build project
               run: just build
 
-            - name: clean server ~/website directory
+            - name: clean previous deployed files on server
               uses: appleboy/ssh-action@v1.0.3
               with:
                   host: ${{ secrets.REMOTE_HOST }}
@@ -48,8 +47,8 @@ jobs:
                   password: ${{ secrets.REMOTE_PASS }}
                   port: ${{ secrets.REMOTE_PORT }}
                   script: |
-                      rm -rf ~/website
-                      mkdir -p ~/website
+                      rm -rf ~/website/comp3030j
+                      rm -rf ~/website/instance
 
             - name: deploy the project
               uses: appleboy/scp-action@v0.1.7
@@ -58,7 +57,7 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   password: ${{ secrets.REMOTE_PASS }}
                   port: ${{ secrets.REMOTE_PORT }}
-                  source: "comp3030j,instance"  # copy the whole config directory since it contains pre-populated database
+                  source: "comp3030j,instance,pyproject.toml"  # copy the whole config directory since it contains pre-populated database
                   target: ~/website
 
             - name: reload server service
@@ -68,6 +67,12 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   password: ${{ secrets.REMOTE_PASS }}
                   port: ${{ secrets.REMOTE_PORT }}
-                  script: echo ${{secrets.REMOTE_PASS}} | sudo -S systemctl reload gunicorn
+                  script: |
+                      cd ~/website
+                      python -m venv .venv # if exists, python will do nothing
+                      source .venv/bin/activate
+                      pip install . # update dependencies
+                      pip install gunicorn # install gunicorn
+                      echo ${{secrets.REMOTE_PASS}} | sudo -S systemctl reload gunicorn
 
 
