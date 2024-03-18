@@ -17,6 +17,7 @@ jobs:
                 run: |
                     npm install daisyui --4.7.3
                     touch .justfile-env
+                    cp instance/config.py.example instance/config.py
             -   run: just build
             -   name: Setup SSH Key
                 run: |
