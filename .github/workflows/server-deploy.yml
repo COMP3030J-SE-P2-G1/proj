@@ -57,7 +57,7 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   password: ${{ secrets.REMOTE_PASS }}
                   port: ${{ secrets.REMOTE_PORT }}
-                  source: "comp3030j,config"  # copy the whole config directory since it contains pre-populated database
+                  source: "comp3030j,instance"  # copy the whole config directory since it contains pre-populated database
                   target: ~/website
 
             - name: reload server service
@@ -67,6 +67,6 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   password: ${{ secrets.REMOTE_PASS }}
                   port: ${{ secrets.REMOTE_PORT }}
-                  script: sudo -S systemctl reload gunicorn
+                  script: echo ${{secrets.REMOTE_PASS}} | sudo -S systemctl reload gunicorn
 
 
