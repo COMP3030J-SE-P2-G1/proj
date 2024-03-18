@@ -7,38 +7,64 @@ on:
 jobs:
     ubuntu:
         runs-on: ubuntu-latest
+                 
         steps:
-            -   name: install just
-                uses: extractions/setup-just@v1
-                with:
-                    just-version: 1.24.0
-            -   uses: actions/checkout@v4
-            -   name: initialize
-                run: |
-                    npm install daisyui --4.7.3
-                    touch .justfile-env
-                    cp instance/config.py.example instance/config.py
-            -   run: just build
-            -   name: Setup SSH Key
-                run: |
-                    ls -la ./comp3030j
-                    mkdir -p ~/.ssh
-                    echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-                    chmod 600 ~/.ssh/id_rsa
-                    ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
-                shell: bash
-            -   name: Transfer document with SCP
-                run: |
-                    scp -r -i ssh_key ./comp3030j/* ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/student/website/comp3030j/
-                    scp -r ./instance/config.py ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/student/website/instance/config.py
-                shell: bash
+            - name: install just
+              uses: extractions/setup-just@v1
+                  
+            - uses: actions/checkout@v4
 
-            -   name: executing remote ssh commands using password
-                uses: appleboy/ssh-action@v1.0.3
-                with:
-                    host: ${{ secrets.REMOTE_HOST }}
-                    username: ${{ secrets.REMOTE_USER }}
-                    password: ${{ secrets.REMOTE_PASS }}
-                    port: 22
-                    script: |
-                        echo ${{ secrets.REMOTE_PASS }} | sudo -S systemctl reload gunicorn
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12'
+                  cache: 'pip' # caching pip dependencies
+
+            - name: python initialization
+              run: |
+                   python -m venv .venv
+                   source .venv/bin/activate
+                   pip install .
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "lts/iron"
+            
+            - name: initialize project
+              run: |
+                  touch .justfile-env
+                  just initilize  # note that this command also can pre-populate the generated database
+                  
+            - name: build project
+              run: just build
+
+            - name: clean server ~/website directory
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  password: ${{ secrets.REMOTE_PASS }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  script: |
+                      rm -rf ~/website
+                      mkdir -p ~/website
+
+            - name: deploy the project
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  password: ${{ secrets.REMOTE_PASS }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  source: "comp3030j,config"  # copy the whole config directory since it contains pre-populated database
+                  target: ~/website
+
+            - name: reload server service
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  password: ${{ secrets.REMOTE_PASS }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  script: sudo -S systemctl reload gunicorn
+
+
