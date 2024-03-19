@@ -10,6 +10,8 @@
         {% block links %}
             <!-- inter font: if you don't use inter font, you may need to change the -->
             <!-- `font-inter` class below on `body` element (though it has fallback fonts). -->
+            <link href="/static/css/main.css" rel="stylesheet">
+
             <link rel="preconnect" href="https://rsms.me/">
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
             
@@ -17,8 +19,7 @@
         {% endblock %}
     </head>
     {% block body %}
-        <!-- NOTE: `additional_body_classes` can override the former classes -->
-        <body class="font-inter antialiased bg-base-100 text-base-content {% block additional_body_classes %} {% endblock %}">
+        <body class=" {% block body_classes %} font-inter antialiased bg-base-100 text-base-content {% endblock %}">
             {% block body_inner %}
                 {% block header %}
                     {% include 'component/header.j2' %}

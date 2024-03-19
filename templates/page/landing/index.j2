@@ -3,11 +3,8 @@
 
 {% block links %}
     <!-- inter font -->
-    <link rel="preconnect" href="https://rsms.me/">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    {{ super() }}
     
-    <link href="/static/css/main.css" rel="stylesheet">
-    <script type="module" src="/static/js/main.ts"></script>
     <script type="module" src="/static/js/landing.ts"></script>
 
     <style>
@@ -17,7 +14,10 @@
     </style>
 {% endblock %}
 
-{% block additional_body_classes %} tracking-tight {% endblock %}
+{% block body_classes %}
+    {{ super() }}
+    tracking-tight
+{% endblock %}
 
 {% block body_inner %}
 <div class="drawer">

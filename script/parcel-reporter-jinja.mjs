@@ -30,33 +30,33 @@ function get_final_relative_path(rel_file_path) {
 
     let root_dir, second_dir_name;
     switch (ext_name) {
-        case ".css":
-            root_dir = FLASK_STATIC_DIRECTORY;
-            second_dir_name = "css";
-            break;
-        case ".js":
-            root_dir = FLASK_STATIC_DIRECTORY;
-            second_dir_name = "js";
-            break;
-        case ".j2":
-            root_dir = FLASK_TEMPLATES_DIRECTORY;
-            second_dir_name = "";
-            break;
-        case ".png":
-        case ".jpg":
-        case ".jpeg":
-        case ".webp":
-        case ".gif":
-        case ".tiff":
-        case ".avif":
-        case ".heic":
-        case ".heif":
-        case ".svg":
-            root_dir = FLASK_STATIC_DIRECTORY;
-            second_dir_name = "image";
-            break;
-        default:
-            throw Error("Unrecognized file extension: ${ext_name} from ${rel_file_path}");
+    case ".css":
+        root_dir = FLASK_STATIC_DIRECTORY;
+        second_dir_name = "css";
+        break;
+    case ".js":
+        root_dir = FLASK_STATIC_DIRECTORY;
+        second_dir_name = "js";
+        break;
+    case ".j2":
+        root_dir = FLASK_TEMPLATES_DIRECTORY;
+        second_dir_name = "";
+        break;
+    case ".png":
+    case ".jpg":
+    case ".jpeg":
+    case ".webp":
+    case ".gif":
+    case ".tiff":
+    case ".avif":
+    case ".heic":
+    case ".heif":
+    case ".svg":
+        root_dir = FLASK_STATIC_DIRECTORY;
+        second_dir_name = "image";
+        break;
+    default:
+        throw Error("Unrecognized file extension: ${ext_name} from ${rel_file_path}");
     }
     return [join(second_dir_name, rel_file_path), root_dir];
 }
@@ -161,15 +161,16 @@ export default new Reporter({
                     rel_file_path = rel_file_path.split(sep).join(posix.sep);
                     final_rel_file_path = final_rel_file_path.split(sep).join(posix.sep);
                 }
-                if (!bundle_map.has(final_rel_file_path)) {
+                if (!bundle_map.has(rel_file_path)) {
                     bundle_map.set(rel_file_path, final_rel_file_path);
                 }
-
-                for (const bundle of bundles) {
-                    const file_path = bundle.filePath;
-                    process_file(DIST_DIRECTORY, file_path);
-                }
             }
+
+            for (const bundle of bundles) {
+                const file_path = bundle.filePath;
+                process_file(DIST_DIRECTORY, file_path);
+            }
+
         }
     }
 });
