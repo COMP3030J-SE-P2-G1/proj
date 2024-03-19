@@ -1,5 +1,3 @@
-{% from '/component/theme-controller.j2' import theme_controller %}
-
 <header id="sticky-header" class="w-full bg-base-100 text-base-content sticky top-0 z-30 h-16 flex justify-center bg-opacity-80 backdrop-blur transition-shadow duration-100">
     <div class="navbar w-full">
         <div class="flex-1 flex">
@@ -12,15 +10,11 @@
         </nav>
         <nav class="flex-none hidden lg:block">
             <ul class="menu menu-horizontal px-1 items-center gap-1">
-                <li>
-                    {{ theme_controller("p-0") }}
-                </li>
                 <div class="avatar online">
                     <div class="w-12 rounded-full">
                         <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                     </div>
                 </div>
-
             </ul>
         </nav>
     </div>
