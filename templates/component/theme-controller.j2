@@ -1,5 +1,5 @@
 {% macro theme_controller(additional_classes, id = "theme-selector") -%}
-    <label class="swap swap-rotate {{ additional_classes }}">
+    <label class="swap swap-rotate{{- additional_classes -}}">
         <!-- this hidden checkbox controls the state -->
         <input id="{{- id -}}" type="checkbox" class="theme-controller" value="dim" />
         <label for="{{- id -}}"></label>
