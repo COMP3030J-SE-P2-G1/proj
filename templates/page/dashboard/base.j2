@@ -1,0 +1,8 @@
+{% extends 'base.j2' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block links %}
+    {{ super() }}
+    <script type="module" src="/static/js/dashboard.ts"></script>
+{% endblock %}

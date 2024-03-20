@@ -70,6 +70,11 @@
   ```bash
   just --list
   ```
+  
+- Update dependencies (if you run into dependency error after a `git pull`)
+  ```bash
+  just sync
+  ```
 
 - Start development
   ```bash

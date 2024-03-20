@@ -4,7 +4,7 @@ bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 @bp.route('/')
 def dashboard():
-    return render_template("page/dashboard/index.j2")
+    return render_template("page/dashboard/layout1/index.j2")
 
 @bp.route('/index')
 def index():

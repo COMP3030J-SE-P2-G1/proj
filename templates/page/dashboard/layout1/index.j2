@@ -1,14 +1,12 @@
-{% extends 'base.j2' %}
+{% extends '/page/dashboard/base.j2' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block body_inner %}
 
-{% block header %}
-    {% include '/page/dashboard/layout1/header.j2' %}
+    <div class="flex">
+        <aside class="w-44 fixed left-0 top-0 h-screen bg-slate-700 p-10">
+            <h1 class="text-white text-4xl">Sidebar</h1>
+        </aside>
+        {# page loaded by htmx #}
+        <main id="main" hx-get="/dashboard/index" hx-trigger="load"></main>
+    </div>
 {% endblock %}
-
-{% block main %}
-{% endblock %}
-
-{% block footer %}
-{% endblock %}
-

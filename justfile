@@ -8,6 +8,12 @@ python := env("python", "python3")
 npm := env("npm", "npm")
 npx := env("npx", "npx")
 rye_run := env("rye_run", "")
+# use pip to update
+pip_update := if rye_run != "" {
+  "rye sync"
+} else {
+  "pip install ."
+}
 
 # run the project
 [windows]
@@ -44,6 +50,11 @@ flask $FLASK_RUN_EXTRA_FILES="comp3030j/translations/zh/LC_MESSAGES/messages.mo"
 initialize: && trans
     {{npm}} install
     {{python}} ./script/initialize.py
+
+# update the dependencies
+sync:
+    {{npm}} install
+    {{pip_update}}
 
 # Automatically refresh browser when page changes
 [unix]

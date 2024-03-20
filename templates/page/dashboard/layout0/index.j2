@@ -1,14 +1,8 @@
-{% extends 'base.j2' %}
+{% extends '/page/dashboard/base.j2' %}
 
-{% block title %}Dashboard{% endblock %}
-
-{% block header %}
+{% block body_inner %}
     {% include '/page/dashboard/layout0/header.j2' %}
-{% endblock %}
 
-{% block main %}
+    {# page will be loaded by htmx #}
+    <main id="main" hx-get="/dashboard/index" hx-trigger="load"></main>
 {% endblock %}
-
-{% block footer %}
-{% endblock %}
-
