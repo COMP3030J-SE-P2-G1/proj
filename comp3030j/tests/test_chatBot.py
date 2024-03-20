@@ -1,6 +1,6 @@
 import unittest
 from comp3030j import app
-from comp3030j.util.chatBot import answer_question
+from comp3030j.api.chatBot import answer_question
 
 
 class ChatBotTestCase(unittest.TestCase):

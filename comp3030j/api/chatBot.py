@@ -3,6 +3,7 @@ from openai import OpenAI
 import json
 import requests
 from datetime import date, timedelta
+from tqdm import tqdm
 import numpy as np
 
 OPENAI_API_KEY = app.config.get('OPENAI_API_KEY')
@@ -81,7 +82,7 @@ def search_related_news(user_question: str) -> list[dict]:
         return response.json()
 
     articles = []
-    for query in queries:  # TODO: use tqdm(queries) to show progress bar?
+    for query in tqdm(queries):
         result = search_news(query)
         if result["status"] == "ok":
             articles = articles + result["articles"]
