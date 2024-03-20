@@ -2,7 +2,6 @@
 pyrightconfig.json
 .justfile-env
 
-
 # flask
 /instance/*
 !/instance/config.py.example
@@ -14,6 +13,9 @@ pyrightconfig.json
 # node
 /node_modules
 bun.lockb
+
+# lighthouse
+*.report.html
 
 # parcel
 .parcel-cache
