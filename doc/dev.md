@@ -26,6 +26,7 @@
     - `image`: output image file (don't put your code here)
     - other directories (you can put your code or other resources here)
   - `templates`: the output templates directory, which holds the processed html/jinja file
+  - `tests`: test code
 
 ## Setup
 + Clone this project and change directory into the project root
