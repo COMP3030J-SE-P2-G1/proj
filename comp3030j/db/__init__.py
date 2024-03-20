@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 def initialize_db(app: Flask):
     db.init_app(app)
     
@@ -10,5 +11,5 @@ def initialize_db(app: Flask):
     
     with app.app_context():
         db.create_all()
-        
+
 

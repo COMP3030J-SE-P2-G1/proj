@@ -10,6 +10,7 @@ sys.path.append(project_dir)
 
 DIRECTORY = "instance"
 
+
 def env(name: str) -> str:
     e = getenv(name)
     if (e is None):
@@ -18,21 +19,23 @@ def env(name: str) -> str:
     else:
         return e
 
+
 def init_db():
-    # since pakcage initialization requires `config.py` file, we need to
+    # since package initialization requires `config.py` file, we need to
     # put these `import` clause here.
     from comp3030j import app
     from comp3030j.db import db
     from comp3030j.db.User import User
-    
+
     if getenv("POPULATE_DB"):
         with app.app_context():
-             user = User(
-                 username=env("ADMIN"),
-                 email=env("ADMIN_EMAIL"),
-             )
-             db.session.add(user)
-             db.session.commit()
+            user = User(
+                username=env("ADMIN"),
+                email=env("ADMIN_EMAIL"),
+            )
+            db.session.add(user)
+            db.session.commit()
+
 
 def gen_config_py(filename: str):
     # Generate a secure secret key
@@ -46,11 +49,12 @@ LANGUAGES=['en', 'zh']
     with open(filename, "w") as config_file:
         config_file.write(configuration)
         print(f"Configuration file '{filename}' has been generated.")
-    
+
 
 def initialize():
     gen_config_py(path.join(DIRECTORY, "config.py"))
     init_db()
+
 
 if __name__ == "__main__":
     initialize()
