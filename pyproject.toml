@@ -16,7 +16,7 @@ dependencies = [
     "requests>=2.26.0",
     "numpy>=1.21.2",
     "tqdm>=4.62.3",
-    "flask_bcrypt>=1.0.1"
+    "flask_bcrypt>=1.0.1",
     "flask_login>=0.6.3"]
 readme = "README.md"
 requires-python = ">= 3.8"
