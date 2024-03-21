@@ -35,55 +35,29 @@
 
 {% block body_inner %}
 <div class="register-container p-4 shadow-lg rounded-lg max-w-md mx-auto mt-10 bg-base-100">
-  <form action="{{ url_for('auth.register') }}" method="post" class="form-control">
+  <form action="/register" method="post" class="form-control">
     <h2 class="text-2xl font-bold mb-4">Register</h2>
-    {{ form.hidden_tag() }}
+    {% include "component/header.j2" %}
     <div class="form-group">
-      {{ form.username.label(class="label") }}
-      {{ form.username(class="input input-bordered" + (" is-invalid" if form.username.errors else "")) }}
-      {% if form.username.errors %}
-      <div class="invalid-feedback">
-          {% for error in form.username.errors %}
-              <span>{{ error }}</span>
-          {% endfor %}
-      </div>
-      {% endif %}
+      <label for="username" class="label">
+        <span class="label-text">Username:</span>
+      </label>
+      <input type="text" id="username" name="username" class="input input-bordered" required>
     </div>
     <div class="form-group">
-      {{ form.email.label(class="label") }}
-      {{ form.email(class="input input-bordered" + (" is-invalid" if form.email.errors else "")) }}
-      {% if form.email.errors %}
-      <div class="invalid-feedback">
-          {% for error in form.email.errors %}
-              <span>{{ error }}</span>
-          {% endfor %}
-      </div>
-      {% endif %}
+      <label for="email" class="label">
+        <span class="label-text">Email:</span>
+      </label>
+      <input type="email" id="email" name="email" class="input input-bordered" required>
     </div>
     <div class="form-group">
-      {{ form.password.label(class="label") }}
-      {{ form.password(class="input input-bordered" + (" is-invalid" if form.password.errors else "")) }}
-      {% if form.password.errors %}
-      <div class="invalid-feedback">
-          {% for error in form.password.errors %}
-              <span>{{ error }}</span>
-          {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-    <div class="form-group">
-      {{ form.confirm_password.label(class="label") }}
-      {{ form.confirm_password(class="input input-bordered" + (" is-invalid" if form.confirm_password.errors else "")) }}
-      {% if form.confirm_password.errors %}
-      <div class="invalid-feedback">
-          {% for error in form.confirm_password.errors %}
-              <span>{{ error }}</span>
-          {% endfor %}
-      </div>
-      {% endif %}
+      <label for="password" class="label">
+        <span class="label-text">Password:</span>
+      </label>
+      <input type="password" id="password" name="password" class="input input-bordered" required>
     </div>
     <div class="form-group mt-4">
-      {{ form.submit(class="btn btn-primary") }}
+      <button type="submit" class="btn btn-primary">Register</button>
     </div>
   </form>
 </div>
