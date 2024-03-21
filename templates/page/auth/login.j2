@@ -1,6 +1,6 @@
 {% extends "base.j2" %}
 
-{% block content %}
+{% block body_inner %}
 <div class="login-container">
   <form action="/login" method="post">
     <h2>Login</h2>
@@ -12,7 +12,7 @@
     <input type="password" id="password" name="password" required>
     
     <input type="submit" value="Login">
-    <a href="/register">Don't have an account? Register</a>
+    <a href="./register">Don't have an account? Register</a>
   </form>
 </div>
 {% include "component/theme-controller.j2" %}

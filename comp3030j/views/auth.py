@@ -31,8 +31,14 @@ def register():
     #     flash('Your account has been created! You are now able to log in','success')
     #     return redirect(url_for('login'))
     # Pass in the form
-    return render_template("page/landing/register.j2", title='Register')
+    return render_template("page/auth/register.j2", title='Register')
 
+
+@bp.route('/login',
+          # To accept get and post request from register route with the form data
+          methods=['GET', 'POST'])
+def login():
+    return render_template("page/auth/login.j2", title='Login')
 
 @bp.route('/profile')
 def profile():
