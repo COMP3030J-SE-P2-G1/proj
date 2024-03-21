@@ -15,6 +15,8 @@ anyio==4.3.0
     # via openai
 babel==2.14.0
     # via flask-babel
+bcrypt==4.1.2
+    # via flask-bcrypt
 blinker==1.7.0
     # via flask
 certifi==2024.2.2
@@ -30,9 +32,15 @@ distro==1.9.0
 flask==3.0.2
     # via comp3030j
     # via flask-babel
+    # via flask-bcrypt
+    # via flask-login
     # via flask-sqlalchemy
     # via flask-wtf
 flask-babel==4.0.0
+    # via comp3030j
+flask-bcrypt==1.0.1
+    # via comp3030j
+flask-login==0.6.3
     # via comp3030j
 flask-sqlalchemy==3.1.1
     # via comp3030j
@@ -90,5 +98,6 @@ urllib3==2.2.1
     # via requests
 werkzeug==3.0.1
     # via flask
+    # via flask-login
 wtforms==3.1.2
     # via flask-wtf
