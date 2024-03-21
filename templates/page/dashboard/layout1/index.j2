@@ -2,10 +2,8 @@
 
 {% block body_inner %}
     <div class="flex">
-        <aside class="w-44 fixed left-0 top-0 h-screen bg-slate-700 p-10">
-            <h1 class="text-white text-4xl">Sidebar</h1>
-        </aside>
+        {% include '/page/dashboard/layout1/sidebar.j2' %}
+        <main id="main" class="w-full h-screen ml-20 xl:ml-60" hx-get="/dashboard/index" hx-trigger="load"></main>
         {# page loaded by htmx #}
-        <main id="main" hx-get="/dashboard/index" hx-trigger="load"></main>
     </div>
 {% endblock %}
