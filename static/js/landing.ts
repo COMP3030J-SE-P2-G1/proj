@@ -24,12 +24,15 @@ function bindEvents(): void {
     }
 }
 
+/**
+ * Bind Locomotive Scroll Events
+ */
 function bindLocomotiveScrollEvents() {
     /* eslint-disable */
     // @ts-expect-error locomotive scroll
     window.addEventListener('hero-bg-0-scroll', (e: CustomEvent) => {
         const { target , way } = e.detail;
-        console.log(`target: ${target}`, `way: ${way}`);
+        // console.log(`target: ${target}`, `way: ${way}`);
         if (way === "enter") {
             // note: pls ensure `scale-125` is in tailwind's safelist
             target.classList.add("scale-125");

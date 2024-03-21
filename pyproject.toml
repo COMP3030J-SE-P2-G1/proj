@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 authors = [
     { name = "Meow King", email = "mr.meowking@anche.no" }, # ziqi yang 21207440
+    { name = "AuroraZoer", email = "yiran.zhao3@ucdconnect.ie" }, # yiran zhao 21207295
     # add yours below
 ]
 dependencies = [
@@ -11,6 +12,10 @@ dependencies = [
     "Flask-SQLAlchemy>=3.1.1",
     "flask-wtf>=1.2.1",
     "Flask-Babel>=4.0.0",
+    "openai==1.14.2",
+    "requests>=2.26.0",
+    "numpy>=1.21.2",
+    "tqdm>=4.62.3",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

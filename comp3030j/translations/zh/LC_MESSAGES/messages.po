@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: templates/page/landing/header.j2:18
+#: templates/page/landing/header.j2:18 templates/page/landing/index.j2:42
 msgid "Sign In"
 msgstr "登录"
 
-#: templates/page/landing/header.j2:19
+#: templates/page/landing/header.j2:19 templates/page/landing/index.j2:43
 msgid "Sign Up"
 msgstr "注册"
 

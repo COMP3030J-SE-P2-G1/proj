@@ -1,4 +1,10 @@
-{% extends 'base.j2' %}
+{% extends 'page/dashboard/layout0/index.j2' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block links %}
+    {{ super() }}
+    <script type="module" src="/static/js/dashboard.ts"></script>
+{% endblock %}
 
+{% block main %}
+    <div id="main" hx-get="/dashboard/index" hx-trigger="load"></div>
+{% endblock %}

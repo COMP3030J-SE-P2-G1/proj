@@ -1,5 +1,5 @@
 /*
-this file is meant to only contain functions that is necessary to all the pages, such as theme control
+ this file is meant to only contain functions that is necessary to all the pages, such as theme control
  */
 
 import { ready } from "./lib/utils";

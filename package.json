@@ -6,6 +6,7 @@
     "buffer": "^5.5.0||^6.0.0",
     "daisyui": "^4.7.3",
     "eslint": "^8.57.0",
+    "lite-youtube-embed": "^0.3.2",
     "parcel": "^2.12.0",
     "pm2": "^5.3.1",
     "tailwindcss": "^3.4.1",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "echarts": "^5.5.0",
+    "htmx.org": "^1.9.11",
     "locomotive-scroll": "^5.0.0-beta.11"
   }
 }

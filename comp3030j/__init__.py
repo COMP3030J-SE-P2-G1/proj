@@ -5,8 +5,10 @@ from comp3030j.views import bind_views
 from .extensions import bcrypt, login_manager
 
 
+
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
