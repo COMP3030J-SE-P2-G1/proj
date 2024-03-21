@@ -1,13 +1,18 @@
-{% macro logo(additional_classes) -%}
-    <a class="btn btn-ghost text-xl {{- additional_classes -}}">SolarScape</a>
+{% macro logo(ad_classes, text_classes = "", image_classes = "") -%}
+    <div class="flex items-center gap-1 {{ ad_classes }}">
+        {{ imageLogo(image_classes) }}
+        {{ textLogo(text_classes) }}
+    </div>
 {%- endmacro %}
 
-{% macro textLogo(additional_classes) %}
-    <a class="btn btn-ghost text-xl {{- additional_classes -}}">SolarScape</a>
+{% macro textLogo(ad_classes = "") %}
+    <a class="cursor-pointer text-xl font-bold p-2 {{- ad_classes -}}">SolarScape</a>
 {%- endmacro %}
 
-{% macro imageLogo(additional_classes) %}
-    <a class="btn btn-ghost text-xl {{- additional_classes -}}">SolarScape</a>
+{% macro imageLogo(ad_classes = "") %}
+    <a>
+        <img class="w-14 cursor-pointer {{ ad_classes }}" src="/static/image/logo.webp" alt="logo">
+    </a>
 {%- endmacro %}
 
 

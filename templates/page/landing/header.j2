@@ -1,9 +1,10 @@
 {% from '/component/theme-controller.j2' import theme_controller %}
+{% from '/component/logo.j2' import logo %}
 
 <header id="sticky-header" class="w-full bg-base-100 text-base-content sticky top-0 z-30 h-16 flex justify-center bg-opacity-80 backdrop-blur transition-shadow duration-100">
     <div class="navbar w-full">
         <div class="flex-1">
-            <a class="btn btn-ghost text-xl">SolarScape</a>
+            {{ logo("", "hidden xl:block", "") }}
         </div>
         <nav class="flex-none">
             <ul class="menu menu-horizontal px-1 items-center gap-1">

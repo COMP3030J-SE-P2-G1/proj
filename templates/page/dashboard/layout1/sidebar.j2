@@ -1,12 +1,15 @@
-{% from '/component/logo.j2' import textLogo %}
+{% from '/component/logo.j2' import logo %}
 
 <aside class="fixed inset-y-0 left-0 bg-base-300 w-20 xl:w-60 flex flex-col overflow-x-hidden overflow-auto">
-    <div class="shrink-0 p-2 flex">
-        <div class="hidden xl:block">
-            {{ textLogo("") }}
+    {# Logo #}
+    <div class="shrink-0 p-2">
+        <div class="w-full grid place-content-center">
+            {{ logo("", "hidden xl:block", "") }}
         </div>
     </div>
-    <div class="p-2">
+
+    {# Main Menu #}
+    <div class="flex-1 overflow-y-auto p-2">
         <ul class="menu bg-base-200 rounded-box">
             <li>
                 <a>
@@ -27,5 +30,23 @@
                 </a>
             </li>
         </ul>
+    </div>
+
+    {# Footer #}
+    <div class="shrink-0 p-2 flex flex-col border-t-2 border-[var(--fallback-bc,oklch(var(--bc)/.1))]">
+        <div class="flex h-full items-center justify-center xl:justify-start">
+            <div class="avatar">
+                <div class="w-12 rounded-full">
+                    <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                </div>
+            </div>
+            <div class="hidden xl:block ml-2 font-bold">
+                Violet Evergarden
+            </div>
+            <div class="grow block hidden xl:block"></div>
+            <div class="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.75" fill="currentColor"/><circle cx="12" cy="5" r="1.75" fill="currentColor"/><circle cx="12" cy="19" r="1.75" fill="currentColor"/></svg>
+            </div>
+        </div>
     </div>
 </aside>
