@@ -1,6 +1,6 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 set dotenv-load
-set dotenv-path := ".justfile-env"
+set dotenv-filename := ".justfile-env"
 
 # If you want to customize the command, take a look at .justfile-env.example
 # file, rename it to .justfile-env and make changes to it.
