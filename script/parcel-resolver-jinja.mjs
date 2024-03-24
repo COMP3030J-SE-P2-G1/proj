@@ -3,7 +3,7 @@ import {Resolver} from '@parcel/plugin';
 export default new Resolver({
     async resolve({specifier}) {
         // don't handle jinja code
-        if (/\s*{[{%].*[%}]}\s*/.test(specifier)) {
+        if (/\{\{.*?\}\}|\{%.*?%\}/.test(specifier)) {
             return {isExcluded: true};
         }
 
