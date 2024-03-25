@@ -1,0 +1,47 @@
+{% from '/component/theme-controller.j2' import theme_controller %}
+{% extends 'base.j2' %}
+
+{% block links %}
+    {{ super() }}
+
+    {# lite-youtube-embed - for improving youtube video performance #}
+    <link rel="stylesheet" href="../../../../node_modules/lite-youtube-embed/src/lite-yt-embed.css" />
+    <script src="../../../../node_modules/lite-youtube-embed/src/lite-yt-embed.js"></script>
+    
+    <script type="module" src="/static/js/landing.ts"></script>
+
+    <style>
+        #hero-bg-0 {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1023%26quot%3b)' fill='none'%3e%3cpath d='M319.2541192428867-77.12227730031864L216.07008189397405 45.847669908623175 339.04002910291587 149.03170725753583 442.22406645182855 26.06176004859401z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M49.556%2c225.879C69.049%2c225.075%2c87.136%2c216.899%2c98.016%2c200.705C110.459%2c182.186%2c118.941%2c158.429%2c107.898%2c139.043C96.781%2c119.528%2c72.013%2c115.315%2c49.556%2c115.634C27.793%2c115.943%2c5.556%2c122.207%2c-5.988%2c140.658C-18.183%2c160.149%2c-18.918%2c185.75%2c-6.364%2c205.012C5.28%2c222.877%2c28.25%2c226.758%2c49.556%2c225.879' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M884.6581294399484 434.9726872219003L1011.6741250278719 491.5238519506663 1068.225289756638 364.50785636274287 941.2092941687145 307.9566916339768z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M268.1864752778136 453.9505983630929L198.37598267491938 373.64281318018743 118.0681974920139 443.45330578308165 187.8786900949081 523.7610909659871z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M941.449%2c249.425C970.78%2c251.622%2c1000.571%2c239.621%2c1016.056%2c214.614C1032.31%2c188.366%2c1031.987%2c154.916%2c1016.516%2c128.199C1001.079%2c101.539%2c972.201%2c83.936%2c941.449%2c85.769C913.192%2c87.453%2c892.745%2c110.822%2c880.43%2c136.31C869.783%2c158.347%2c872.354%2c183.182%2c883.974%2c204.722C896.324%2c227.616%2c915.509%2c247.482%2c941.449%2c249.425' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1188.74 258.64 a123.74 123.74 0 1 0 247.48 0 a123.74 123.74 0 1 0 -247.48 0z' fill='rgba(28%2c 83%2c 142%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1023'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+        }
+    </style>
+{% endblock %}
+
+{% block body_classes %}
+    {{ super() }}
+    tracking-tight
+{% endblock %}
+
+{% block body_inner %}
+<div class="drawer">
+    <input id="drawer-controller" type="checkbox" class="drawer-toggle" />
+    
+        <div class="drawer-content">
+            {% include '/page/auth/profile/header.j2' %}
+            {% include '/page/auth/profile/profile.j2' %}
+        </div>
+        
+        <div class="drawer-side z-40">
+            <!-- TODO -->
+            <label for="drawer-controller" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu p-4 w-80 min-h-full bg-base-200">
+                <li>
+                    {{ theme_controller("", "theme-controller-drawer-side") }}
+                </li>
+                <li><a>{{ _tr("Sign In") }}</a></li>
+                <li><a>{{ _tr("Sign Up") }}</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
