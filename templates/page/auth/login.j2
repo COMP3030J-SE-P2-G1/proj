@@ -26,6 +26,7 @@
 {% from '/component/theme-controller.j2' import theme_controller %}
 {% extends "base.j2" %}
 
+
 {% block links %}
 <link rel="preconnect" href="https://rsms.me/">
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,50 +35,44 @@
 {% endblock %}
 
 {% block body_inner %}
-<div class="register-container p-4 shadow-lg rounded-lg max-w-md mx-auto mt-10 bg-base-100">
-    <div class="row">
-        <div class="col-md-6 m-auto">
-            <form action="{{ url_for('auth.login') }}" method="POST" class="form-control">
-                <h2 class="text-center mb-4">Log In</h2>
-                <form method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <div class="form-group">
-                        {{ form.email.label(class="form-label") }}
-                        {% if form.email.errors %}
-                            {{ form.email(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.email.errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.email(class="form-control") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group">
-                        {{ form.password.label(class="form-label") }}
-                        {% if form.password.errors %}
-                            {{ form.password(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.password.errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.password(class="form-control") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group form-check">
-                        {{ form.remember(class="form-check-input") }}
-                        {{ form.remember.label(class="form-check-label") }}
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
-                </form>
-            </div>
-            <div class="text-center mt-3">
-                <a href="#">Forgot Password?</a> | <a href="{{ url_for('auth.register') }}">Sign Up</a>
-            </div>
-        </div>
+<div class="register-container p-4 shadow-md rounded-lg max-w-md mx-auto mt-10 bg-base-100">
+    <div class="text-center mb-6">
+        {{ logo("", "inline-block", "") }}
     </div>
+    <form action="{{ url_for('auth.login') }}" method="POST" class="form-control w-full">
+        <h2 class="text-xl font-bold text-center mb-4">Log In</h2>
+        {{ form.hidden_tag() }}
+        {% macro render_field(field) %}
+            <div class="form-group mb-2">
+                {{ field.label(class="label text-sm") }}
+                {% if field.errors %}
+                    {{ field(class="input input-bordered input-error w-full text-sm") }}
+                    <div class="alert alert-error shadow-lg mt-1 p-2 text-xs" style="background-color: #FECACA; color: #B91C1C;">
+                        <div>
+                            {% for error in field.errors %}
+                                <span>{{ error }}</span>{% if not loop.last %}<br>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    {{ field(class="input input-bordered w-full text-sm") }}
+                {% endif %}
+            </div>
+        {% endmacro %}
+
+        {{ render_field(form.email) }}
+        {{ render_field(form.password) }}
+
+        <div class="form-group form-check mb-4">
+            <label class="cursor-pointer label">
+                {{ form.remember(class="checkbox") }}
+                <span class="label-text">{{ form.remember.label.text }}</span>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary w-full text-sm py-2">Log In</button>
+        <div class="text-center mt-4 text-sm">
+            <a href="{{ url_for('auth.register') }}" class="link link-secondary" style="color: #6B7280;">Need An Account? Sign Up</a>
+        </div>
+    </form>
 </div>
 {% endblock %}
