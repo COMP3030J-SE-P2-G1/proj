@@ -5,8 +5,6 @@ from comp3030j.views import bind_views
 from .extensions import bcrypt, login_manager
 
 
-
-
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
@@ -16,7 +14,6 @@ app.config.from_pyfile('config.py')
 
 babel = Babel(app, locale_selector=get_locale)
 
-
 # add functions for jinja template
 app.jinja_env.globals.update(_tr=gettext, _ntr=ngettext, _ltr=lazy_gettext)
 
@@ -25,8 +22,3 @@ bind_views(app)
 
 bcrypt.init_app(app)
 login_manager.init_app(app)
-
-
-
-
-

@@ -2,9 +2,10 @@ from . import db
 from comp3030j.extensions import login_manager
 from flask_login import UserMixin
 
+
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(User,int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 class User(db.Model, UserMixin):
