@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, render_template, url_for, flash, redirect
-from flask_login import current_user
+from flask import Blueprint, render_template, render_template, url_for, flash, redirect, request
+from flask_login import current_user, login_user, logout_user, login_required
 from comp3030j.db import db
 from comp3030j.extensions import bcrypt
 from comp3030j.db.User import User
@@ -15,7 +15,7 @@ bp = Blueprint("auth", __name__)
 def register():
     # check if the auth is already registered
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('auth.profile'))
     # An instance of the form that going to send application 
     form = RegistrationForm()
     #Checks wether we have post data and that data is valid to the form
@@ -39,7 +39,28 @@ def register():
           # To accept get and post request from register route with the form data
           methods=['GET', 'POST'])
 def login():
-    return render_template("page/auth/login.j2", title='Login')
+    # check if the user is already logined
+    if current_user.is_authenticated:
+        return redirect(url_for('auth.profile'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        #Query our database to make sure the user exist
+        user = User.query.filter_by(email=form.email.data).first()
+        # conditional that simoutaneosly checks that the user exist and that their password veryfies
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user,remember=form.remember.data)
+            # Back the user to the page they visited before login
+            next_page = request.args.get('next')
+            #Ternary conditional
+            return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
+        else:
+            flash('Login Unsuccessful. Please check email and password','danger')
+    return render_template("page/auth/login.j2", title='Login',form=form)
+
+@bp.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('auth.profile'))
 
 @bp.route('/profile')
 def profile():

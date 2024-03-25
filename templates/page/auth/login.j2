@@ -1,19 +1,83 @@
+{% from '/component/theme-controller.j2' import theme_controller %}
+{% from '/component/logo.j2' import logo %}
+
+<header id="sticky-header" class="w-full bg-base-100 text-base-content sticky top-0 z-30 h-16 flex justify-center bg-opacity-80 backdrop-blur transition-shadow duration-100">
+    <div class="navbar w-full">
+        <div class="flex-1">
+            {{ logo("", "hidden xl:block", "") }}
+        </div>
+        <nav class="flex-none">
+            <ul class="menu menu-horizontal px-1 items-center gap-1">
+                <li>
+                    {{ theme_controller("p-0") }}
+                </li>
+                
+            </ul>
+        </nav>
+        <nav class="flex-none lg:hidden">
+            <label for="drawer-controller" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </label>
+        </nav>
+    </div>
+</header>
+
+
+{% from '/component/theme-controller.j2' import theme_controller %}
 {% extends "base.j2" %}
 
+{% block links %}
+<link rel="preconnect" href="https://rsms.me/">
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link href="/static/css/main.css" rel="stylesheet">
+<script type="module" src="/static/js/main.ts"></script>
+{% endblock %}
+
 {% block body_inner %}
-<div class="login-container">
-  <form action="/login" method="post">
-    <h2>Login</h2>
-    {% include "component/header.j2" %}
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    
-    <input type="submit" value="Login">
-    <a href="./register">Don't have an account? Register</a>
-  </form>
+<div class="register-container p-4 shadow-lg rounded-lg max-w-md mx-auto mt-10 bg-base-100">
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <form action="{{ url_for('auth.login') }}" method="POST" class="form-control">
+                <h2 class="text-center mb-4">Log In</h2>
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.email.label(class="form-label") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label(class="form-label") }}
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group form-check">
+                        {{ form.remember(class="form-check-input") }}
+                        {{ form.remember.label(class="form-check-label") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                </form>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#">Forgot Password?</a> | <a href="{{ url_for('auth.register') }}">Sign Up</a>
+            </div>
+        </div>
+    </div>
 </div>
-{% include "component/theme-controller.j2" %}
 {% endblock %}
