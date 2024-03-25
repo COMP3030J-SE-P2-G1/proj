@@ -4,6 +4,9 @@ from comp3030j.db import db
 from comp3030j.extensions import bcrypt
 from comp3030j.db.User import User
 from comp3030j.auth import RegistrationForm, LoginForm
+from werkzeug.utils import secure_filename
+from comp3030j.util import allowed_file
+import os, uuid
 
 bp = Blueprint("auth", __name__)
 
@@ -70,6 +73,26 @@ def logout():
 def profile():
     return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first())
 
+
+@bp.route('/image_edit', methods=['POST'])
+def upload_picture():
+    if 'image' not in request.files:
+        flash('Can not find image')
+        return redirect(request.url)
+    file = request.files['image']
+    if file.filename == '':
+        flash('You have not selected a file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        # generate the unique filename
+        unique_filename = str(uuid.uuid4()) + os.path.splitext(filename)[1]
+        file.save(os.path.join('static/profile_pics', unique_filename))
+        flash('Profile picture uploaded and saved')
+        return 'Profile picture uploaded and saved'
+    else:
+        flash('Upload failed')
+        return 'Upload failed'
 
 @bp.route('/history')
 def history():
