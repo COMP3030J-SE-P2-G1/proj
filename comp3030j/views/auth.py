@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, render_template, url_for, flash, redirect, request
+from flask import Blueprint, render_template, render_template, url_for, session, flash, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
 from comp3030j.db import db
 from comp3030j.extensions import bcrypt
@@ -51,6 +51,7 @@ def login():
             # Back the user to the page they visited before login
             next_page = request.args.get('next')
             # Ternary conditional
+            session['user_id'] = user.id
             return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
@@ -67,7 +68,7 @@ def logout():
 #make sure the user login before they can access the acount page 
 @login_required
 def profile():
-    return render_template("page/auth/profile/index.j2")
+    return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first())
 
 
 @bp.route('/history')

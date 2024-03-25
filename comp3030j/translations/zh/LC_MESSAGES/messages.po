@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-21 22:01+0800\n"
+"POT-Creation-Date: 2024-03-25 19:17+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,13 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: templates/page/auth/header1.j2:14 templates/page/auth/index.j2:41
-#: templates/page/landing/header.j2:14 templates/page/landing/index.j2:38
+#: templates/page/auth/header1.j2:14 templates/page/auth/history/index.j2:41
+#: templates/page/auth/profile/index.j2:41 templates/page/landing/header.j2:14
+#: templates/page/landing/index.j2:38
 msgid "Sign In"
 msgstr "登录"
 
-#: templates/page/auth/header1.j2:15 templates/page/auth/index.j2:42
-#: templates/page/landing/header.j2:15 templates/page/landing/index.j2:39
+#: templates/page/auth/header1.j2:15 templates/page/auth/history/index.j2:42
+#: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:15
+#: templates/page/landing/index.j2:39
 msgid "Sign Up"
 msgstr "注册"
 
