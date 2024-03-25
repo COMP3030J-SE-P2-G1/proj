@@ -11,8 +11,13 @@
                 <li>
                     {{ theme_controller("p-0") }}
                 </li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('auth.logout') }}" class="btn btn-neutral">{{ _tr("Logout") }}</a></li>
+                <li><a href="{{ url_for('auth.profile') }}" class="btn btn-neutral">{{ _tr("Profile") }}</a></li>
+                {% else %}
                 <li class="hidden lg:block"><a href="{{ url_for('auth.login') }}">{{ _tr("Sign In") }}</a></li>
                 <li class="hidden lg:block"><a href="{{ url_for('auth.register') }}" class="btn btn-neutral">{{ _tr("Sign Up") }}</a></li>
+                {% endif %}
             </ul>
         </nav>
         <nav class="flex-none lg:hidden">
@@ -22,4 +27,3 @@
         </nav>
     </div>
 </header>
-
