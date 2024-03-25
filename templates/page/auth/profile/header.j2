@@ -21,29 +21,39 @@
             <ul class="menu menu-horizontal px-1 items-center gap-1">
                 <!-- Home Button -->
                 <li><a href="{{ url_for('landing.hello') }}" class="btn btn-ghost">Home</a></li>
-                
+
                 <li>
                     {{ theme_controller("p-0 mx-2") }}
                 </li>
                 <li>
                     {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                    </a>
+                        <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                        </a>
                     {% else %}
-                    <a href="{{ url_for('auth.login') }}" class="btn btn-ghost">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
-                    </a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                            </svg>
+                        </a>
                     {% endif %}
                 </li>
-                <div class="avatar">
-                    <div class="w-9 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2">
-                        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
-                    </div>
+                <div class="avatar w-9 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2">
+                    {% if form.avatar %}
+                        <img src="/static/profile_pics/{{ form.avatar }}">
+                    {% else %}
+                        <div class="avatar placeholder">
+                            <div class="bg-neutral text-neutral-content rounded-full w-9">
+                                <span class="text-xs">{{ form.username }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </ul>
         </nav>

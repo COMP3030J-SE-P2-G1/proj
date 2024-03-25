@@ -84,12 +84,28 @@ def upload_picture():
         flash('You have not selected a file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        filename = User.query.filter_by(id=session['user_id']).first().avatar
+        # remove the old avatar
+        if filename:
+            try:
+                os.remove(os.path.join('static/profile_pics', filename))
+            except FileNotFoundError:
+                pass
         # generate the unique filename
+        filename = secure_filename(file.filename)
         unique_filename = str(uuid.uuid4()) + os.path.splitext(filename)[1]
-        file.save(os.path.join('static/profile_pics', unique_filename))
-        flash('Profile picture uploaded and saved')
-        return 'Profile picture uploaded and saved'
+        # update the avatar in the database
+        user_to_update = User.query.filter_by(id=session['user_id']).first()
+        if user_to_update:
+            user_to_update.avatar = unique_filename
+            db.session.commit()
+            # save the new avatar
+            file.save(os.path.join('static/profile_pics', unique_filename))
+            flash('Profile picture uploaded and saved')
+            return 'Profile picture uploaded and saved' + unique_filename
+        else:
+            flash('Unavaiable Account')
+            return 'Unavaiable Account'
     else:
         flash('Upload failed')
         return 'Upload failed'
