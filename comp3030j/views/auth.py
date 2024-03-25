@@ -60,7 +60,7 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('auth.profile'))
+    return redirect(url_for('landing.hello'))
 
 @bp.route('/profile')
 def profile():

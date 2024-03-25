@@ -19,6 +19,9 @@
         </nav>
         <nav class="flex-none hidden lg:block">
             <ul class="menu menu-horizontal px-1 items-center gap-1">
+                <!-- Home Button -->
+                <li><a href="{{ url_for('landing.hello') }}" class="btn btn-ghost">Home</a></li>
+                
                 <li>
                     {{ theme_controller("p-0 mx-2") }}
                 </li>
