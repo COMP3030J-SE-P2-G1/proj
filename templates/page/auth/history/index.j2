@@ -5,8 +5,8 @@
     {{ super() }}
 
     {# lite-youtube-embed - for improving youtube video performance #}
-    <link rel="stylesheet" href="../../../node_modules/lite-youtube-embed/src/lite-yt-embed.css" />
-    <script src="../../../node_modules/lite-youtube-embed/src/lite-yt-embed.js"></script>
+    <link rel="stylesheet" href="../../../../node_modules/lite-youtube-embed/src/lite-yt-embed.css" />
+    <script src="../../../../node_modules/lite-youtube-embed/src/lite-yt-embed.js"></script>
     
     <script type="module" src="/static/js/landing.ts"></script>
 
@@ -27,8 +27,8 @@
     <input id="drawer-controller" type="checkbox" class="drawer-toggle" />
     
         <div class="drawer-content">
-            {% include '/page/auth/header.j2' %}
-            {% include '/page/auth/profile.j2' %}
+            {% include '/page/auth/history/header.j2' %}
+            {% include '/page/auth/history/history.j2' %}
         </div>
         
         <div class="drawer-side z-40">

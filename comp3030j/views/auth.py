@@ -43,4 +43,8 @@ def login():
 
 @bp.route('/profile')
 def profile():
-    return render_template("page/auth/index.j2")
+    return render_template("page/auth/profile/index.j2")
+
+@bp.route('/history')
+def history():
+    return render_template("page/auth/history/index.j2")
