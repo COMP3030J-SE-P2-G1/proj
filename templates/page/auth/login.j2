@@ -2,7 +2,7 @@
 {% from '/component/logo.j2' import logo %}
 
 <header id="sticky-header" class="w-full bg-base-100 text-base-content sticky top-0 z-30 h-16 flex justify-center bg-opacity-80 backdrop-blur transition-shadow duration-100">
-    <div class="navbar w-full">
+    <div class="navbar w-full ">
         <div class="flex-1">
             {{ logo("", "hidden xl:block", "") }}
         </div>
@@ -35,7 +35,7 @@
 {% endblock %}
 
 {% block body_inner %}
-<div class="register-container p-4 shadow-md rounded-lg max-w-md mx-auto mt-10 bg-base-100">
+<div class="register-container p-5 shadow-2xl rounded-lg max-w-md mx-auto bg-base-100">
     <div class="text-center mb-6">
         {{ logo("", "inline-block", "") }}
     </div>
