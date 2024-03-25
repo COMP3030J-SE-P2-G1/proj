@@ -63,6 +63,8 @@ def logout():
     return redirect(url_for('landing.hello'))
 
 @bp.route('/profile')
+#make sure the user login before they can access the acount page 
+@login_required
 def profile():
     return render_template("page/auth/profile/index.j2")
 
