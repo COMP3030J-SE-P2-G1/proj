@@ -34,40 +34,42 @@
 {% endblock %}
 
 {% block body_inner %}
-<div class="register-container p-5 shadow-2xl rounded-lg max-w-md mx-auto bg-base-100">
-    <div class="text-center mb-6">
-        {{ logo("", "inline-block", "") }}
-    </div>
-    <form action="{{ url_for('auth.register') }}" method="POST" class="form-control w-full">
-        <h2 class="text-xl font-bold text-center mb-4">Register</h2> <!-- Reverted style -->
-        {{ form.hidden_tag() }}
-        {% macro render_field(field) %}
-            <div class="form-group mb-2">
-                {{ field.label(class="label text-sm") }}
-                {% if field.errors %}
-                    {{ field(class="input input-bordered input-error w-full text-sm") }}
-                    <div class="alert alert-error shadow-lg mt-1 p-2 text-xs" style="background-color: #FECACA; color: #B91C1C;"> <!-- Custom colors for errors -->
-                        <div>
-                            {% for error in field.errors %}
-                                <span>{{ error }}</span>{% if not loop.last %}<br>{% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% else %}
-                    {{ field(class="input input-bordered w-full text-sm") }}
-                {% endif %}
-            </div>
-        {% endmacro %}
-
-        {{ render_field(form.username) }}
-        {{ render_field(form.email) }}
-        {{ render_field(form.password) }}
-        {{ render_field(form.confirm_password) }}
-
-        <button type="submit" class="btn btn-primary w-full text-sm py-2 mt-4">Register</button> <!-- Reverted style -->
-        <div class="text-center mt-4 text-sm">
-            <a href="{{ url_for('auth.login') }}" class="link link-secondary" style="color: #6B7280;">Already Have An Account? Log in</a> <!-- Custom color for link -->
+<div class="flex items-center justify-center min-h-screen bg-base-200">
+    <div class="container p-5 shadow-2xl rounded-lg max-w-md mx-auto bg-base-100">
+        <div class="text-center mb-6">
+            {{ logo("", "inline-block", "") }}
         </div>
-    </form>
+        <form action="{{ url_for('auth.register') }}" method="POST" class="form-control w-full">
+            <h2 class="text-xl font-bold text-center mb-4">Register</h2> <!-- Reverted style -->
+            {{ form.hidden_tag() }}
+            {% macro render_field(field) %}
+                <div class="form-group mb-2">
+                    {{ field.label(class="label text-sm") }}
+                    {% if field.errors %}
+                        {{ field(class="input input-bordered input-error w-full text-sm") }}
+                        <div class="alert alert-error shadow-lg mt-1 p-2 text-xs" style="background-color: #FECACA; color: #B91C1C;"> <!-- Custom colors for errors -->
+                            <div>
+                                {% for error in field.errors %}
+                                    <span>{{ error }}</span>{% if not loop.last %}<br>{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ field(class="input input-bordered w-full text-sm") }}
+                    {% endif %}
+                </div>
+            {% endmacro %}
+
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm_password) }}
+
+            <button type="submit" class="btn btn-primary w-full text-sm py-2 mt-4">Register</button> <!-- Reverted style -->
+            <div class="text-center mt-4 text-sm">
+                <a href="{{ url_for('auth.login') }}" class="link link-secondary" style="color: #6B7280;">Already Have An Account? Log in</a> <!-- Custom color for link -->
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}
