@@ -1,18 +1,6 @@
-/* parcel will automatically split the CSS file for you, so you can just put
-all the shareable CSS configurations in this file without hesitation */
+@import './aos.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* locomotive-scroll */
-html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}.lenis.lenis-stopped{overflow:hidden}.lenis.lenis-scrolling iframe{pointer-events:none}
-
-.scroll-opacity {
-    animation: fadeIn 3s;
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}

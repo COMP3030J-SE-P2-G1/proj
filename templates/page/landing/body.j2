@@ -1,36 +1,25 @@
 {# header is h-16, which is of 4rem height #}
 <div class="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden supports-[overflow:clip]:overflow-clip">
     <section class="relative">
-        <div data-scroll
-            data-scroll-call="hero-bg-0-scroll"
-            id="hero-bg-0" class="absolute inset-0 z-0 bg-base-100 transition-transform bg-cover duration-1000">
-        </div>
+        <div id="hero-bg-0" data-aos="enlarge-125" class="absolute inset-0 z-0 bg-base-100 transition-transform bg-cover duration-1000"></div>
         <div class="size-full relative bg-opacity-80 z-10">
             <div class="hero min-h-[calc(100vh-4rem)]">
                 <div class="hero-content text-center flex-col">
-                    <div class="">
-                        <h1 class="text-5xl font-bold"
-                            data-scroll
-                            data-scroll-class="scroll-opacity">El Psy Kongroo</h1>
-                        <p class="py-4"
-                            data-scroll
-                            data-scroll-class="scroll-opacity">
+                    <div>
+                        <h1 class="text-5xl font-bold" data-aos="zoom-out" data-aos-duration="400">El Psy Kongroo</h1>
+                        <p class="py-4" data-aos="zoom-out" data-aos-delay="150">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
                         </p>
                     </div>
                     {# the size of the following div will be limited since it's in a flex box and it's aspect retio #}
-                    <div class="w-7/12 min-w-80 aspect-[16/9]"
-                        data-scroll
-                        data-scroll-class="scroll-opacity">
+                    <div class="w-7/12 min-w-80 aspect-[16/9]" data-aos="zoom-out" data-aos-delay="300">
                         <lite-youtube videoid="AEUffI4nAIM" style='background-image: url("https://i.ytimg.com/vi_webp/AEUffI4nAIM/sddefault.webp");'>
                             <a href="https://www.youtube.com/embed/AEUffI4nAIM?si=3zj_GBuhgro2LF1t" class="lty-playbtn" title="Play Video">
                                 <span class="lyt-visually-hidden">Play Video: Keynote (Google I/O '18)</span>
                             </a>
                         </lite-youtube>
                     </div>
-                    <button class="btn btn-primary"
-                        data-scroll
-                        data-scroll-class="scroll-opacity">
+                    <button class="btn btn-primary" data-aos="zoom-out-up" data-aos-delay="450">
                         Get Started</button>
                 </div>
             </div>
@@ -42,15 +31,9 @@
             class="hero min-h-[calc(100vh-4rem)] bg-base-200">
             <div class="hero-content text-center">
                 <div class="max-w-md">
-                    <h1 class="text-5xl font-bold"
-                        data-scroll
-                        data-scroll-class="scroll-opacity">Hello world</h1>
-                    <p class="py-6"
-                        data-scroll
-                        data-scroll-class="scroll-opacity">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-                    <button class="btn btn-primary"
-                        data-scroll
-                        data-scroll-class="scroll-opacity">Get Started</button>
+                    <h1 class="text-5xl font-bold">Hello world</h1>
+                    <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                    <button class="btn btn-primary">Get Started</button>
                 </div>
             </div>
         </div>
