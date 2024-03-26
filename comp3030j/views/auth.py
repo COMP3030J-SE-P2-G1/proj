@@ -64,13 +64,15 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
+    session.pop('user_id')
     return redirect(url_for('landing.hello'))
 
 
 @bp.route('/profile')
-#make sure the user login before they can access the acount page 
-@login_required
+#make sure the user login before they can access the acount page
 def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
     return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first())
 
 
