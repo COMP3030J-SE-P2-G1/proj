@@ -2,7 +2,7 @@
  this file is meant to only contain functions that is necessary to all the pages, such as theme control
  */
 
-import { ready } from "./lib/utils";
+import {ready} from "./lib/utils";
 import * as Constants from "./constants.ts";
 
 /**
@@ -35,10 +35,26 @@ function bindEvents(): void {
     themeSelector?.addEventListener("change", rememberThemeState);
 }
 
+/**
+ * Hides flash messages after a specified duration.
+ * @param messageSelector  The CSS selector for the flash message element(s).
+ * @param duration The duration in milliseconds after which the message(s) should be hidden.
+ */
+function hideFlashMessage(messageSelector: string, duration: number) {
+    const message = document.querySelectorAll(messageSelector);
+
+    message.forEach((msg) => {
+        setTimeout(() => {
+            msg.classList.add("none");
+        }, duration);
+    });
+}
+
 (function () {
     ready(() => {
         restoreState();
         bindEvents();
+        hideFlashMessage(".flash-message", 5000);
     });
 })();
 
