@@ -45,7 +45,7 @@ function hideFlashMessage(messageSelector: string, duration: number) {
 
     message.forEach((msg) => {
         setTimeout(() => {
-            msg.classList.add("none");
+            msg.classList.add("hidden");
         }, duration);
     });
 }
@@ -54,7 +54,7 @@ function hideFlashMessage(messageSelector: string, duration: number) {
     ready(() => {
         restoreState();
         bindEvents();
-        hideFlashMessage(".flash-message", 5000);
+        hideFlashMessage(".flash-message", 3000);
     });
 })();
 
