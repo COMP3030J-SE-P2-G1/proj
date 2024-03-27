@@ -13,11 +13,6 @@ def get_locale():
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
-if not app.debug:
-    # 指定日志的级别和格式
-    logging.basicConfig(filename='app.log', level=logging.WARNING,
-                        format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
-
 babel = Babel(app, locale_selector=get_locale)
 
 # add functions for jinja template
