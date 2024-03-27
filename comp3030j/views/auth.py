@@ -1,10 +1,10 @@
-import os, uuid
+import os
+import uuid
 
 from flask import Blueprint, render_template, url_for, session, flash, redirect, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
-from comp3030j import app
 from comp3030j.auth import RegistrationForm, LoginForm
 from comp3030j.db import db
 from comp3030j.db.User import User
@@ -106,7 +106,7 @@ def upload_picture():
             save_file(file, 'static/profile_pics', unique_filename)
             flash('Profile picture uploaded and saved')
         else:
-            flash('Unavaiable Account')
+            flash('Unavailable Account')
     else:
         flash('Upload failed' + file.filename)
     return redirect(url_for('auth.profile'))
