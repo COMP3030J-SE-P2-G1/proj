@@ -32,11 +32,11 @@ msgstr "注册"
 
 #: templates/page/landing/header.j2:15
 msgid "Logout"
-msgstr ""
+msgstr "登出"
 
 #: templates/page/landing/header.j2:16
 msgid "Profile"
-msgstr ""
+msgstr "个人中心"
 
 #~ msgid "El Psy Kongaroo"
 #~ msgstr "Ciallo～(∠・ω< )⌒★"
