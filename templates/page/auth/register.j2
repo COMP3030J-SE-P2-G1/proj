@@ -1,31 +1,6 @@
+{% extends "base.j2" %}
 {% from '/component/theme-controller.j2' import theme_controller %}
 {% from '/component/logo.j2' import logo %}
-
-<header id="sticky-header" class="w-full bg-base-100 text-base-content sticky top-0 z-30 h-16 flex justify-center bg-opacity-80 backdrop-blur transition-shadow duration-100">
-    <div class="navbar w-full">
-        <div class="flex-1">
-            {{ logo("", "hidden xl:block", "") }}
-        </div>
-        <nav class="flex-none">
-            <ul class="menu menu-horizontal px-1 items-center gap-1">
-                <li>
-                    {{ theme_controller("p-0") }}
-                </li>
-                
-            </ul>
-        </nav>
-        <nav class="flex-none lg:hidden">
-            <label for="drawer-controller" aria-label="open sidebar" class="btn btn-square btn-ghost">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </label>
-        </nav>
-    </div>
-</header>
-
-
-{% from '/component/theme-controller.j2' import theme_controller %}
-{% extends "base.j2" %}
-
 {% block links %}
 <link rel="preconnect" href="https://rsms.me/">
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,6 +9,9 @@
 {% endblock %}
 
 {% block body_inner %}
+<div class="drawer-content">
+    {% include '/page/auth/header1.j2' %}
+</div>
 <div class="flex items-center justify-center min-h-screen bg-base-200">
     <div class="container p-5 shadow-2xl rounded-lg max-w-md mx-auto bg-base-100">
         <div class="text-center mb-6">
