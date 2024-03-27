@@ -3,6 +3,7 @@ from flask_babel import Babel, gettext, ngettext, lazy_gettext
 from comp3030j.db import initialize_db
 from comp3030j.views import bind_views
 from .extensions import bcrypt, login_manager
+import logging
 
 
 def get_locale():
@@ -11,6 +12,11 @@ def get_locale():
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
+
+if not app.debug:
+    # 指定日志的级别和格式
+    logging.basicConfig(filename='app.log', level=logging.WARNING,
+                        format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
 
 babel = Babel(app, locale_selector=get_locale)
 
