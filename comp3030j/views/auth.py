@@ -1,7 +1,7 @@
 import os, uuid
 
 from flask import Blueprint, render_template, url_for, session, flash, redirect, request
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
 from comp3030j import app
@@ -73,6 +73,7 @@ def logout():
 
 @bp.route('/profile')
 # make sure the user login before they can access the account page
+@login_required
 def profile():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
@@ -80,6 +81,7 @@ def profile():
 
 
 @bp.route('/image_edit', methods=['POST'])
+@login_required
 def upload_picture():
     if 'file' not in request.files:
         return redirect(url_for('auth.profile'))
