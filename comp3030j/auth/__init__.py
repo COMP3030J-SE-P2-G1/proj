@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from comp3030j.db.User import User
 import re
 
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -18,18 +19,19 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise ValidationError('That username is taken. Please choose a different one')
+            raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('That email is taken. Please choose a different one')
+            raise ValidationError('That email is taken. Please choose a different one.')
 
     def validate_password(self, password):
         if not re.search(r"\d", password.data):  # Checks for at least one digit
             raise ValidationError('The password must contain at least one digit.')
         if not re.search(r"[A-Za-z]", password.data):  # Checks for at least one letter
             raise ValidationError('The password must contain at least one alphabetic character.')
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
