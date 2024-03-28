@@ -27,6 +27,8 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email is taken. Please choose a different one.')
 
     def validate_password(self, password):
+        if len(password.data) < 6:  # Check for minimum length
+            raise ValidationError('The password must be at least 6 characters long.')
         if not re.search(r"\d", password.data):  # Checks for at least one digit
             raise ValidationError('The password must contain at least one digit.')
         if not re.search(r"[A-Za-z]", password.data):  # Checks for at least one letter
