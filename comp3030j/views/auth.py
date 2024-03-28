@@ -59,8 +59,8 @@ def login():
             # Ternary conditional
             session['user_id'] = user.id
             return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
-        else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+        # else:
+        #     flash('Login Unsuccessful. Please check email and password', 'error')
     return render_template("page/auth/login.j2", title='Login', form=form)
 
 
@@ -104,11 +104,11 @@ def upload_picture():
             db.session.commit()
             # save the new avatar
             save_file(file, 'static/profile_pics', unique_filename)
-            flash('Profile picture uploaded and saved')
+            flash('Profile picture uploaded and saved', 'success')
         else:
-            flash('Unavailable Account')
+            flash('Unavailable Account', 'error')
     else:
-        flash('Upload failed' + file.filename)
+        flash('Upload failed ' + file.filename, 'error')
     return redirect(url_for('auth.profile'))
 
 
