@@ -1,0 +1,12 @@
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+}
+::-webkit-scrollbar-track {
+    background: oklch(var(--b1)) !important;
+}
+::-webkit-scrollbar-thumb {
+    background-color: oklch(var(--nc)) !important;
+    border: 1px solid oklch(var(--n)) !important;
+    border-radius: 2px !important;
+}
