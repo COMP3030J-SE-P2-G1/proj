@@ -107,7 +107,8 @@
                     <dialog id="my_modal_1" class="modal">
                         <div class="modal-box">
                             <h1 class="font-bold text-lg text-center py-4">Change Your Password</h1>
-                            <form action="{{ url_for('auth.change_pass') }}" method="POST" class="form-control w-full">
+                            <form action="{{ url_for('auth.change_pass') }}" id="passwordForm" method="POST"
+                                  class="form-control w-full">
                                 {{ password.hidden_tag() }}
                                 <input type="hidden" name="email" value="{{ form.email }}">
                                 {% macro render_field(field) %}
@@ -133,13 +134,13 @@
                                 {{ render_field(password.OriginalPassword) }}
                                 {{ render_field(password.password) }}
                                 {{ render_field(password.confirm_password) }}
-                                <div class="modal-action justify-center">
-                                    <button type="submit" class="btn">Confirm</button>
-                                </div>
-                                <form class="justify-center" method="dialog">
+                            </form>
+                            <div class="modal-action justify-center">
+                                <button type="submit" form="passwordForm" class="btn">Confirm</button>
+                                <form method="dialog">
                                     <button class="btn">Close</button>
                                 </form>
-                            </form>
+                            </div>
                         </div>
                     </dialog>
                 </div>
