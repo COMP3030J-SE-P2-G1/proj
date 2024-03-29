@@ -28,6 +28,7 @@ comp3030j/static/js/*
 comp3030j/static/image/*
 comp3030j/templates/*
 
+.DS_Store
 # =================================
 
 # python generated files
