@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, url_for, session, flash, redirect,
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
-from comp3030j.auth import RegistrationForm, LoginForm
+from comp3030j.auth import RegistrationForm, LoginForm, ChangePassForm
 from comp3030j.db import db
 from comp3030j.db.User import User
 from comp3030j.extensions import bcrypt
@@ -77,7 +77,9 @@ def logout():
 def profile():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-    return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first())
+    password = ChangePassForm()
+    return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first(),
+                           password=password)
 
 
 @bp.route('/image_edit', methods=['POST'])
@@ -110,6 +112,27 @@ def upload_picture():
     else:
         flash('Upload failed ' + file.filename, 'error')
     return redirect(url_for('auth.profile'))
+
+
+@bp.route('/change_password', methods=['POST'])
+@login_required
+def change_pass():
+    password = ChangePassForm()
+    if password.validate_on_submit():
+        # Query our database to make sure the user exist
+        user = User.query.filter_by(id=session['user_id']).first()
+        # conditional that simultaneously checks that the user exist and that their password verifies
+        if user and bcrypt.check_password_hash(user.password, password.OriginalPassword.data):
+            hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
+            user.password = hashed_password
+            db.session.commit()
+        # Back the user to the page they visited before login
+        next_page = request.args.get('next')
+        # Ternary conditional
+        session['user_id'] = user.id
+        return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
+    return render_template("page/auth/profile/index.j2", title='Profile',
+                           form=User.query.filter_by(id=session['user_id']).first(), password=password)
 
 
 @bp.route('/history')

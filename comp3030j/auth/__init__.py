@@ -1,12 +1,13 @@
 # Python classes representative forms, then automatically be inverted in the html forms within  template
 
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-from comp3030j.db.User import User
 import re
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo
+
+from comp3030j.db.User import User
+from comp3030j.extensions import bcrypt
 
 
 class RegistrationForm(FlaskForm):
@@ -41,3 +42,23 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+
+class ChangePassForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    OriginalPassword = PasswordField('Current Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+
+    def validate_password(self, password):
+        if len(password.data) < 6:  # Check for minimum length
+            raise ValidationError('The password must be at least 6 characters long.')
+        if not re.search(r"\d", password.data):  # Checks for at least one digit
+            raise ValidationError('The password must contain at least one digit.')
+        if not re.search(r"[A-Za-z]", password.data):  # Checks for at least one letter
+            raise ValidationError('The password must contain at least one alphabetic character.')
+
+    def validate_original_password(self, email, OriginalPassword):
+        user = User.query.filter_by(email=email.data).first()
+        if not user and bcrypt.check_password_hash(user.password, OriginalPassword):
+            raise ValidationError('Please check your password again!')
