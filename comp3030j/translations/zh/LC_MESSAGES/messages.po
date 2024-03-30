@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-30 10:01+0800\n"
+"POT-Creation-Date: 2024-03-30 13:39+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,17 +18,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: templates/page/auth/history/index.j2:41
+#: comp3030j/auth/__init__.py:14
+msgid "Username"
+msgstr "用户名"
+
+#: comp3030j/auth/__init__.py:15 comp3030j/auth/__init__.py:40
+msgid "Email"
+msgstr "邮件"
+
+#: comp3030j/auth/__init__.py:16 comp3030j/auth/__init__.py:41
+msgid "Password"
+msgstr "密码"
+
+#: comp3030j/auth/__init__.py:17
+msgid "Confirm Password"
+msgstr "确认密码"
+
+#: comp3030j/auth/__init__.py:18 templates/page/auth/history/index.j2:42
+#: templates/page/auth/profile/index.j2:42 templates/page/auth/register.j2:21
+#: templates/page/auth/register.j2:46 templates/page/landing/header.j2:19
+#: templates/page/landing/index.j2:41
+msgid "Sign Up"
+msgstr "注册"
+
+#: comp3030j/auth/__init__.py:32 comp3030j/auth/__init__.py:59
+msgid "The password must be at least 6 characters long."
+msgstr ""
+
+#: comp3030j/auth/__init__.py:34 comp3030j/auth/__init__.py:61
+msgid "The password must contain at least one digit."
+msgstr ""
+
+#: comp3030j/auth/__init__.py:36 comp3030j/auth/__init__.py:63
+msgid "The password must contain at least one alphabetic character."
+msgstr ""
+
+#: comp3030j/auth/__init__.py:42
+msgid "Remember Me"
+msgstr "记住我"
+
+#: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
+#: templates/page/auth/login.j2:21 templates/page/auth/login.j2:50
 #: templates/page/auth/profile/index.j2:41 templates/page/landing/header.j2:18
 #: templates/page/landing/index.j2:40
 msgid "Sign In"
 msgstr "登录"
 
-#: templates/page/auth/history/index.j2:42
-#: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:19
-#: templates/page/landing/index.j2:41
-msgid "Sign Up"
-msgstr "注册"
+#: comp3030j/auth/__init__.py:48
+msgid "Invalid password. Please try again."
+msgstr ""
+
+#: comp3030j/auth/__init__.py:68
+msgid "Please check your password again!"
+msgstr ""
+
+#: templates/page/auth/login.j2:52
+msgid "Need An Account? Sign Up"
+msgstr "还没有账户？立即注册"
+
+#: templates/page/auth/register.j2:48
+msgid "Already Have An Account? Login"
+msgstr "已有账户？立即登录"
 
 #: templates/page/landing/header.j2:15
 msgid "Logout"
@@ -37,22 +87,6 @@ msgstr "登出"
 #: templates/page/landing/header.j2:16
 msgid "Profile"
 msgstr "个人中心"
-
-#: templates/page/auth/login.j2:52
-msgid "Need An Account? Sign Up"
-msgstr "还没有账户？立即注册"
-
-msgid "Email"
-msgstr "邮件"
-
-msgid "Password"
-msgstr "密码"
-
-msgid "Remember Me"
-msgstr "记住我"
-
-msgid "Already Have An Account? Login"
-msgstr "已有账户？立即登录"
 
 #~ msgid "El Psy Kongaroo"
 #~ msgstr "Ciallo～(∠・ω< )⌒★"
