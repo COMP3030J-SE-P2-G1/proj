@@ -30,6 +30,9 @@ comp3030j/static/js/*
 comp3030j/static/image/*
 comp3030j/templates/*
 
+# test
+comp3030j/tests/*
+
 .DS_Store
 # =================================
 
