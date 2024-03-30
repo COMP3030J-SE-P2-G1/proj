@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-29 17:16+0800\n"
+"POT-Creation-Date: 2024-03-30 10:01+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -37,6 +37,26 @@ msgstr "登出"
 #: templates/page/landing/header.j2:16
 msgid "Profile"
 msgstr "个人中心"
+
+#: templates/page/auth/login.j2:21
+msgid "Login"
+msgstr "登录"
+
+#: templates/page/auth/login.j2:52
+msgid "Need An Account? Sign Up"
+msgstr "还没有账户？立即注册"
+
+msgid "Email"
+msgstr "邮件"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Remember Me"
+msgstr "记住我"
+
+msgid "Already Have An Account? Login"
+msgstr "已有账户？立即登录"
 
 #~ msgid "El Psy Kongaroo"
 #~ msgstr "Ciallo～(∠・ω< )⌒★"

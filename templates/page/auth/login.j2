@@ -18,7 +18,7 @@
             {{ logo("", "inline-block", "") }}
         </div>
         <form action="{{ url_for('auth.login') }}" method="POST" class="form-control w-full">
-            <h2 class="text-xl font-bold text-center mb-4">Log In</h2>
+            <h2 class="text-xl font-bold text-center mb-4">{{ _("Login") }}</h2>
             {{ form.hidden_tag() }}
             {% macro render_field(field) %}
                 <div class="form-group mb-2">
@@ -47,9 +47,9 @@
                     <span class="label-text">{{ form.remember.label.text }}</span>
                 </label>
             </div>
-            <button type="submit" class="btn btn-primary w-full text-sm py-2">Log In</button>
+            <button type="submit" class="btn btn-primary w-full text-sm py-2">{{ _("Login") }}</button>
             <div class="text-center mt-4 text-sm">
-                <a href="{{ url_for('auth.register') }}" class="link link-secondary" style="color: #6B7280;">Need An Account? Sign Up</a>
+                <a href="{{ url_for('auth.register') }}" class="link link-secondary" style="color: #6B7280;">{{ _("Need An Account? Sign Up") }}</a>
             </div>
         </form>
     </div>
