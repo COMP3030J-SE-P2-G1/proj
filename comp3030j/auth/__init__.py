@@ -40,7 +40,7 @@ class LoginForm(FlaskForm):
     email = StringField(gettext('Email'), validators=[DataRequired(), Email()])
     password = PasswordField(gettext('Password'), validators=[DataRequired()])
     remember = BooleanField(gettext('Remember Me'))
-    submit = SubmitField(gettext('Login'))
+    submit = SubmitField(gettext('Sign In'))
 
     def validate_password(self, field):
         user = User.query.filter_by(email=self.email.data).first()

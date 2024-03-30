@@ -38,10 +38,6 @@ msgstr "登出"
 msgid "Profile"
 msgstr "个人中心"
 
-#: templates/page/auth/login.j2:21
-msgid "Login"
-msgstr "登录"
-
 #: templates/page/auth/login.j2:52
 msgid "Need An Account? Sign Up"
 msgstr "还没有账户？立即注册"
