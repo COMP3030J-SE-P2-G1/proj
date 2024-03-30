@@ -18,7 +18,8 @@ dependencies = [
     "tqdm>=4.62.3",
     "flask_bcrypt>=1.0.1",
     "flask_login>=0.6.3",
-    "email_validator>=2.1.1"]
+    "email_validator>=2.1.1",
+]
 readme = "README.md"
 requires-python = ">= 3.8"
 
