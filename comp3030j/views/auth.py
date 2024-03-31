@@ -89,7 +89,7 @@ def upload_picture():
         return redirect(url_for('auth.profile'))
     file = request.files['file']
     if file and allowed_file(file.filename):
-        filename = User.query.filter_by(id=session['user_id']).first().image_file
+        filename = User.query.filter_by(id=session['user_id']).first().avatar_file
         # remove the old avatar
         if filename != 'default.jpg':
             delete_file('static/profile_pics', filename)
@@ -102,7 +102,7 @@ def upload_picture():
         # update the avatar in the database
         user_to_update = User.query.filter_by(id=session['user_id']).first()
         if user_to_update:
-            user_to_update.image_file = unique_filename
+            user_to_update.avatar_file = unique_filename
             db.session.commit()
             # save the new avatar
             save_file(file, 'static/profile_pics', unique_filename)
