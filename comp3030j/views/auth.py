@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from flask import Blueprint, render_template, url_for, session, flash, redirect, request
+from flask import Blueprint, render_template, url_for, session, flash, redirect, request, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
@@ -121,18 +121,13 @@ def change_pass():
     if password.validate_on_submit():
         # Query our database to make sure the user exist
         user = User.query.filter_by(id=session['user_id']).first()
-        # conditional that simultaneously checks that the user exist and that their password verifies
-        if user and bcrypt.check_password_hash(user.password, password.OriginalPassword.data):
-            hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
-            user.password = hashed_password
-            db.session.commit()
-        # Back the user to the page they visited before login
-        next_page = request.args.get('next')
-        # Ternary conditional
-        session['user_id'] = user.id
-        return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
-    return render_template("page/auth/profile/index.j2", title='Profile',
-                           form=User.query.filter_by(id=session['user_id']).first(), password=password)
+        hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Password updated successfully', 'success')
+        return jsonify({'status': 'success', 'message': 'Password updated successfully'}), 200
+    form_errors = {field: error[0] for field, error in password.errors.items()}
+    return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': form_errors}), 400
 
 
 @bp.route('/history')

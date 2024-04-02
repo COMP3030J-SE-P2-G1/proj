@@ -55,16 +55,16 @@ class ChangePassForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
     def validate_password(self, password):
-        if len(password.data) < 6:  # Check for minimum length
+        if len(password.data) < 6:
             raise ValidationError(_ltr('The password must be at least 6 characters long.'))
-        if not re.search(r"\d", password.data):  # Checks for at least one digit
+        if not re.search(r"\d", password.data):
             raise ValidationError(_ltr('The password must contain at least one digit.'))
-        if not re.search(r"[A-Za-z]", password.data):  # Checks for at least one letter
+        if not re.search(r"[A-Za-z]", password.data):
             raise ValidationError(_ltr('The password must contain at least one alphabetic character.'))
 
-    def validate_original_password(self, email, OriginalPassword):
-        user = User.query.filter_by(email=email.data).first()
-        if not user and bcrypt.check_password_hash(user.password, OriginalPassword):
+    def validate_OriginalPassword(self, OriginalPassword):
+        user = User.query.filter_by(email=self.email.data).first()
+        if user is None or not bcrypt.check_password_hash(user.password, OriginalPassword.data):
             raise ValidationError(_ltr('Please check your password again!'))
 
         
