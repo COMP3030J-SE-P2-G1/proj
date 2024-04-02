@@ -10,12 +10,12 @@
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         {% block links %}
             <link href="/static/css/main.css" rel="stylesheet">
-            
+
             {# inter font: if you don't use inter font, you may need to change the
                 `font-inter` class below on `body` element (though it has fallback fonts). #}
             <link rel="preconnect" href="https://rsms.me/">
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-            
+
             <script type="module" src="/static/js/main.ts"></script>
         {% endblock %}
     </head>
@@ -25,10 +25,10 @@
                 {% block header %}
                     {% include 'component/header.j2' %}
                 {% endblock %}
-                
+
                 {% block main %}
                 {% endblock %}
-                
+
                 {% block footer %}
                 {% endblock %}
             {% endblock %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-31 20:34+0800\n"
+"POT-Creation-Date: 2024-04-02 21:01+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -35,7 +35,7 @@ msgid "Confirm Password"
 msgstr "确认密码"
 
 #: comp3030j/auth/__init__.py:18 templates/page/auth/history/index.j2:42
-#: templates/page/auth/profile/index.j2:42 templates/page/auth/register.j2:21
+#: templates/page/auth/profile/index.j2:43 templates/page/auth/register.j2:21
 #: templates/page/auth/register.j2:46 templates/page/landing/header.j2:19
 #: templates/page/landing/index.j2:41
 msgid "Sign Up"
@@ -59,7 +59,7 @@ msgstr "记住我"
 
 #: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
 #: templates/page/auth/login.j2:21 templates/page/auth/login.j2:50
-#: templates/page/auth/profile/index.j2:41 templates/page/landing/header.j2:18
+#: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:18
 #: templates/page/landing/index.j2:40
 msgid "Sign In"
 msgstr "登录"
