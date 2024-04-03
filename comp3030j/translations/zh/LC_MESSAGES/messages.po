@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-03 10:39+0800\n"
+"POT-Creation-Date: 2024-04-03 21:27+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -18,11 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: comp3030j/auth/__init__.py:14
+#: comp3030j/auth/__init__.py:14 templates/page/auth/profile/profile.j2:83
 msgid "Username"
 msgstr "用户名"
 
 #: comp3030j/auth/__init__.py:15 comp3030j/auth/__init__.py:40
+#: comp3030j/auth/__init__.py:52 templates/page/auth/profile/profile.j2:84
 msgid "Email"
 msgstr "邮件"
 
@@ -30,7 +31,7 @@ msgstr "邮件"
 msgid "Password"
 msgstr "密码"
 
-#: comp3030j/auth/__init__.py:17
+#: comp3030j/auth/__init__.py:17 comp3030j/auth/__init__.py:55
 msgid "Confirm Password"
 msgstr "确认密码"
 
@@ -43,22 +44,22 @@ msgstr "注册"
 
 #: comp3030j/auth/__init__.py:32 comp3030j/auth/__init__.py:59
 msgid "The password must be at least 6 characters long."
-msgstr ""
+msgstr "密码长度需要超过6个字符"
 
 #: comp3030j/auth/__init__.py:34 comp3030j/auth/__init__.py:61
 msgid "The password must contain at least one digit."
-msgstr ""
+msgstr "密码至少需要包括一个阿拉伯数字"
 
 #: comp3030j/auth/__init__.py:36 comp3030j/auth/__init__.py:63
 msgid "The password must contain at least one alphabetic character."
-msgstr ""
+msgstr "密码至少要包括一个英文字母"
 
 #: comp3030j/auth/__init__.py:42
 msgid "Remember Me"
 msgstr "记住我"
 
 #: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
-#: templates/page/auth/login.j2:41 templates/page/auth/login.j2:70
+#: templates/page/auth/login.j2:43 templates/page/auth/login.j2:72
 #: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:18
 #: templates/page/landing/index.j2:40
 msgid "Sign In"
@@ -66,19 +67,77 @@ msgstr "登录"
 
 #: comp3030j/auth/__init__.py:48
 msgid "Invalid password. Please try again."
-msgstr ""
+msgstr "不合规的密码，请重试"
+
+#: comp3030j/auth/__init__.py:53
+msgid "Current Password"
+msgstr "当前密码"
+
+#: comp3030j/auth/__init__.py:54
+msgid "New Password"
+msgstr "新密码"
 
 #: comp3030j/auth/__init__.py:68
 msgid "Please check your password again!"
-msgstr ""
+msgstr "请重新检查输入的密码"
 
-#: templates/page/auth/login.j2:72
+#: comp3030j/views/auth.py:36
+msgid "Your account has been created! You are now able to log in."
+msgstr "成功注册账号！你现在可以登录了"
+
+#: comp3030j/views/auth.py:105
+msgid "Profile picture uploaded and saved."
+msgstr "头像文件已上传并修改"
+
+#: comp3030j/views/auth.py:107
+msgid "Unavailable Account."
+msgstr "未登录用户"
+
+#: comp3030j/views/auth.py:109
+msgid "Upload failed"
+msgstr "图像上传失败"
+
+#: comp3030j/views/auth.py:123
+msgid "Password updated successfully."
+msgstr "密码修改成功"
+
+#: templates/page/auth/login.j2:74
 msgid "Need An Account? Sign Up"
 msgstr "还没有账户？立即注册"
 
 #: templates/page/auth/register.j2:48
 msgid "Already Have An Account? Login"
 msgstr "已有账户？立即登录"
+
+#: templates/page/auth/history/history.j2:40
+#: templates/page/auth/profile/profile.j2:157
+msgid "Your info"
+msgstr "个人信息"
+
+#: templates/page/auth/history/history.j2:44
+#: templates/page/auth/profile/profile.j2:161
+msgid "History"
+msgstr "历史记录"
+
+#: templates/page/auth/profile/profile.j2:96
+msgid "Change Password"
+msgstr "修改密码"
+
+#: templates/page/auth/profile/profile.j2:97
+msgid "Security"
+msgstr "安全"
+
+#: templates/page/auth/profile/profile.j2:101
+msgid "Change Your Password"
+msgstr "修改密码"
+
+#: templates/page/auth/profile/profile.j2:131
+msgid "Confirm"
+msgstr "确认"
+
+#: templates/page/auth/profile/profile.j2:133
+msgid "Close"
+msgstr "取消"
 
 #: templates/page/landing/header.j2:15
 msgid "Logout"

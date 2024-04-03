@@ -9,7 +9,7 @@ from comp3030j.auth import RegistrationForm, LoginForm, ChangePassForm
 from comp3030j.db import db
 from comp3030j.db.User import User
 from comp3030j.extensions import bcrypt
-from comp3030j.util import allowed_file, save_file, delete_file
+from comp3030j.util import allowed_file, save_file, delete_file, _ltr
 
 bp = Blueprint("auth", __name__)
 
@@ -33,7 +33,7 @@ def register():
         db.session.add(auth)
         db.session.commit()
         # Flash message: Easy way to send one time alert
-        flash('Your account has been created! You are now able to log in.', 'success')
+        flash(_ltr('Your account has been created! You are now able to log in.'), 'success')
         return redirect(url_for('auth.login'))
     # Pass in the form
     return render_template("page/auth/register.j2", title='Register', form=form)
@@ -58,8 +58,6 @@ def login():
             # Ternary conditional
             session['user_id'] = user.id
             return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
-        # else:
-        #     flash('Login Unsuccessful. Please check email and password', 'error')
     return render_template("page/auth/login.j2", title='Login', form=form)
 
 
@@ -95,7 +93,6 @@ def upload_picture():
 
         # generate the unique filename
         filename = secure_filename(file.filename)
-        print("Original filename:", file.filename)
         unique_filename = str(uuid.uuid4()) + os.path.splitext(filename)[1]
 
         # update the avatar in the database
@@ -105,11 +102,11 @@ def upload_picture():
             db.session.commit()
             # save the new avatar
             save_file(file, 'static/profile_pics', unique_filename)
-            flash('Profile picture uploaded and saved.', 'success')
+            flash(_ltr('Profile picture uploaded and saved.'), 'success')
         else:
-            flash('Unavailable Account.', 'error')
+            flash(_ltr('Unavailable Account.'), 'error')
     else:
-        flash('Upload failed ' + file.filename, 'error')
+        flash(_ltr('Upload failed'), 'error')
     return redirect(url_for('auth.profile'))
 
 
@@ -123,7 +120,7 @@ def change_pass():
         hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
-        flash('Password updated successfully.', 'success')
+        flash(_ltr('Password updated successfully.'), 'success')
         return jsonify({'status': 'success', 'message': 'Password updated successfully'}), 200
     form_errors = {field: error[0] for field, error in password.errors.items()}
     return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': form_errors}), 400

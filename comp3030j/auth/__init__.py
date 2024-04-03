@@ -49,10 +49,10 @@ class LoginForm(FlaskForm):
 
 
 class ChangePassForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    OriginalPassword = PasswordField('Current Password', validators=[DataRequired()])
-    password = PasswordField('New Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    email = StringField(_ltr('Email'), validators=[DataRequired(), Email()])
+    OriginalPassword = PasswordField(_ltr('Current Password'), validators=[DataRequired()])
+    password = PasswordField(_ltr('New Password'), validators=[DataRequired()])
+    confirm_password = PasswordField(_ltr('Confirm Password'), validators=[DataRequired(), EqualTo('password')])
 
     def validate_password(self, password):
         if len(password.data) < 6:
