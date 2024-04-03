@@ -33,7 +33,7 @@ def register():
         db.session.add(auth)
         db.session.commit()
         # Flash message: Easy way to send one time alert
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('Your account has been created! You are now able to log in.', 'success')
         return redirect(url_for('auth.login'))
     # Pass in the form
     return render_template("page/auth/register.j2", title='Register', form=form)
