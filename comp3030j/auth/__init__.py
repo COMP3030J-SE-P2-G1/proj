@@ -20,19 +20,19 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise ValidationError('That username is taken. Please choose a different one.')
+            raise ValidationError(_ltr('That username is taken. Please choose a different one.'))
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('That email is taken. Please choose a different one.')
+            raise ValidationError(_ltr('That email is taken. Please choose a different one.'))
 
     def validate_password(self, password):
-        if len(password.data) < 6:  # Check for minimum length
+        if len(password.data) < 6:
             raise ValidationError(_ltr('The password must be at least 6 characters long.'))
-        if not re.search(r"\d", password.data):  # Checks for at least one digit
+        if not re.search(r"\d", password.data):
             raise ValidationError(_ltr('The password must contain at least one digit.'))
-        if not re.search(r"[A-Za-z]", password.data):  # Checks for at least one letter
+        if not re.search(r"[A-Za-z]", password.data):
             raise ValidationError(_ltr('The password must contain at least one alphabetic character.'))
 
 
