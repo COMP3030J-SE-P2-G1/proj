@@ -105,9 +105,9 @@ def upload_picture():
             db.session.commit()
             # save the new avatar
             save_file(file, 'static/profile_pics', unique_filename)
-            flash('Profile picture uploaded and saved', 'success')
+            flash('Profile picture uploaded and saved.', 'success')
         else:
-            flash('Unavailable Account', 'error')
+            flash('Unavailable Account.', 'error')
     else:
         flash('Upload failed ' + file.filename, 'error')
     return redirect(url_for('auth.profile'))
@@ -123,7 +123,7 @@ def change_pass():
         hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
-        flash('Password updated successfully', 'success')
+        flash('Password updated successfully.', 'success')
         return jsonify({'status': 'success', 'message': 'Password updated successfully'}), 200
     form_errors = {field: error[0] for field, error in password.errors.items()}
     return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': form_errors}), 400
