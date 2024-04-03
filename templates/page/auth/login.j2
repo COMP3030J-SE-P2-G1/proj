@@ -12,28 +12,30 @@
 <div class="drawer-content">
     {% include '/page/auth/header1.j2' %}
 </div>
+<div class="flex items-center justify-center bg-base-200 ">
+{% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+        <div class="flash-message mt-2">
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        <div role="alert" class="alert alert-success h-10 p-2 px-6 bg-green-200 text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6"
+                                 fill="none" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>{{ message }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endwith %}
+</div>
 <div class="flex flex-col items-center justify-center min-h-screen bg-base-200">
-    {% with messages = get_flashed_messages(category_filter=["success"]) %}
-        {% if messages %}
-            <div class="flash-message mb-6">
-                <ul>
-                    {% for message in messages %}
-                        <li>
-                            <div role="alert" class="alert alert-success h-10 p-2 px-6 bg-green-200 text-green-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6"
-                                     fill="none" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <span>{{ message }}</span>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    {% endwith %}
-    <div class="container p-5 shadow-2xl rounded-lg max-w-md mx-auto bg-base-100">
+    <div class="container p-5 shadow-2xl rounded-lg max-w-md bg-base-100">
         <div class="text-center mb-6">
             {{ logo("", "inline-block", "") }}
         </div>
