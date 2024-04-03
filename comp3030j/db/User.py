@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String)
     password = db.Column(db.String(60), nullable=False)
-    avatar_file = db.Column(db.String(20), unique=True, default='default.jpg')
+    avatar_file = db.Column(db.String(20), default='default.jpg')
 
     def __repr__(self):
         return f"User('{self.username}','{self.email},'{self.avatar_file}')"

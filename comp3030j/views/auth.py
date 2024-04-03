@@ -33,7 +33,6 @@ def register():
         db.session.add(auth)
         db.session.commit()
         # Flash message: Easy way to send one time alert
-        flash(f'Account created for {form.username.data}!', 'success')
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('auth.login'))
     # Pass in the form
