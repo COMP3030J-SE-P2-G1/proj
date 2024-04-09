@@ -9,6 +9,8 @@ class SEMSpot(db.Model):
         spot: price in EUR/MWh
     @陈嘉文 please write this
     """
+    time = db.Column(db.DateTime, primary_key=True)
+    spot = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return f"SEMSpot('{self.time}','{self.spot}'"
