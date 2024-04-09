@@ -22,8 +22,6 @@ jobs:
             - name: python initialization
               run: |
                    python -m venv .venv
-                   source .venv/bin/activate
-                   pip install .
 
             - uses: actions/setup-node@v4
               with:

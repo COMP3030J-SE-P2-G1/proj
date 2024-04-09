@@ -5,15 +5,9 @@ set dotenv-filename := ".justfile-env"
 # If you want to customize the command, take a look at .justfile-env.example
 # file, rename it to .justfile-env and make changes to it.
 python := env("python", "python3")
+pip := env("pip", "pip")
 npm := env("npm", "npm")
 npx := env("npx", "npx")
-rye_run := env("rye_run", "")
-# use pip to update
-pip_update := if rye_run != "" {
-  "rye sync"
-} else {
-  "pip install ."
-}
 
 # run the project
 [windows]
@@ -35,26 +29,27 @@ trans:
     # if you run into problem, you probably need to do (enter virtual environment first)
     # pip install --upgrade setuptools
     # see https://stackoverflow.com/questions/78123222/error-configuring-flask-babel-method-jinja2-not-found
-    {{rye_run}} pybabel extract -F babel.cfg -k _tr -k _ntr -k _ltr -o comp3030j/messages.pot .
+    pybabel extract -F babel.cfg -k _tr -k _ntr -k _ltr -o comp3030j/messages.pot .
     # if a specific language hasn't been initialized, run the following command(example):
     #   pybabel init -i messages.pot -d comp3030j/translations -l zh
-    {{rye_run}} pybabel update -i comp3030j/messages.pot -d comp3030j/translations
-    {{rye_run}} pybabel compile -d comp3030j/translations
+    pybabel update -i comp3030j/messages.pot -d comp3030j/translations
+    pybabel compile -d comp3030j/translations
     
 # `FLASK_RUN_EXTRA_FILES` environment variable allows us to hot load translation
 # Run flask application in debug mode
 flask $FLASK_RUN_EXTRA_FILES="comp3030j/translations/zh/LC_MESSAGES/messages.mo":
-    {{rye_run}} flask --app comp3030j run --debug
+    flask --app comp3030j run --debug
 
 # install node modules, create flask application configuration file and create database
 initialize: && trans
     {{npm}} install
+    {{pip}} install .
     {{python}} ./script/initialize.py
 
 # update the dependencies
 sync:
     {{npm}} install
-    {{pip_update}}
+    {{pip}} install .
 
 # Automatically refresh browser when page changes
 [unix]

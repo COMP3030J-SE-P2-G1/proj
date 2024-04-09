@@ -40,10 +40,6 @@
    python -m venv .venv
    ```
 + Activate virtual environment
-+ Download dependencies
-   ```bash
-   pip install . # note the trailing dot
-   ```
 
 + Initialize project   
   You need to have [bun](https://github.com/oven-sh/bun) or [node](https://nodejs.org) installed.  
