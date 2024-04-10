@@ -1,5 +1,5 @@
 python="python"
+pip="pip"
 npm="bun"
 npx="bun"
-rye_run="rye run"
 
