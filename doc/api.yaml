@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  version: 0.1.0
+servers:
+  - url: https://localhost:5000
+  - url: https://localhost:3000
+    description: browsersync
+  
+paths:
+  /register:
+    post:
+      summary: Creates a user.
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+      responses: 
+        '200':
+          description: success
+      tags:
+        - auth
+  /login:
+    post:
+      summary: login
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: success
+      tags:
+        - auth
+
+  /logout:
+    get:
+      summary: logout
+      responses:
+        '200':
+          description: success
+      tags:
+        - auth
+  
+  /user/change_password:
+    post:
+      summary: change password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                new_password: 
+                  type: string
+      responses:
+        '200':
+          description: success
+      tags:
+        - user
+        
+  /user/profiles:
+    get:
+      summary: get all profiles of a user. Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/profile'
+      tags:
+        - user
+        - profile
+        - electricity
+        
+  /profile/{profileId}:
+    get:
+      summary: get specifc profile
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profile'
+                
+      tags:
+        - profile
+        - electricity
+        
+  /profile/{profileId}/usage:
+    post:
+      summary: usage data
+      description: note user permission
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - profile
+        - electricity
+        
+  /profile/{profileId}/solar:
+    post:
+      summary: generated solar electricity data
+      description: note user permission
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - profile
+        - electricity
+  
+  /data/sems:
+    post:
+      summary: Single Electricity Market Spot
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - electricity
+        
+components:
+  schemas:
+    profile:
+      type: object
+      properties:
+        profile_id:
+          type: integer
+          description: id of this profile
+        usage_id:
+          type: string
+          description: id of the usage profile
+        solar_id:
+          type: string
+          description: id of the solar panel configuration profile
+          
+  requestBodies:
+    time_interval:
+      description: time interval. Note that the `step` property is enum type, which is not noted in the `exmaple value` tab
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              step:
+                type: string
+                description: time step
+                enum: 
+                 - 15m
+                 - 30m
+                 - 1d
+                 - 1m
+                 - 1y
+              start_time:
+                type: string
+                format: date-time
+              end_time:
+                type: string
+                format: date-time
+          
+  parameters:
+    profileId:
+      in: path
+      name: profileId
+      schema:
+        type: integer
+      required: true
+      description: id of a profile
+
+  

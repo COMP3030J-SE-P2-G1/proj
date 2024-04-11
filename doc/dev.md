@@ -193,4 +193,6 @@ The browser will automatically update since we have configured `browser-sync` to
 
 Install browser extension [Locale Switcher](https://github.com/locale-switcher/locale-switcher) to enable smooth language switch.
 
+## API Document
 
+It is defined in file [./api.yaml](./api.yaml) in OpenAPI format, which can be visualized in [swagger editor](https://editor.swagger.io/).
