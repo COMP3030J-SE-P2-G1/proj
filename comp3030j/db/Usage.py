@@ -10,9 +10,9 @@ class Usage(db.Model):
             (up to your discretion, tell me after you've decided)
         time: hourly timestamp (use appropriate format, please tell me after you've decided)
         usage: ...kWh
-    @陈嘉文 please write this
     """
-    __tablename__ = 'usage'
+
+    __tablename__ = "usage"
     id = db.Column(db.Integer, primary_key=True)
     u_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, default=0)
     time = db.Column(db.DateTime, nullable=False)

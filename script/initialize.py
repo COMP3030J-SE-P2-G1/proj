@@ -13,7 +13,7 @@ DIRECTORY = "instance"
 
 def env(name: str) -> str:
     e = getenv(name)
-    if (e is None):
+    if e is None:
         print(f"You should set environment variable {name} first!")
         exit(1)
     else:
@@ -26,6 +26,10 @@ def init_db():
     from comp3030j import app
     from comp3030j.db import db
     from comp3030j.db.User import User
+    from comp3030j.db.SEMSpot import SEMSpot
+    from comp3030j.db.Usage import Usage
+
+    from script.parse_csv_data import read_spot_from_csv, read_quarter_hourly_usage_csv
 
     if getenv("POPULATE_DB"):
         with app.app_context():
@@ -34,6 +38,18 @@ def init_db():
                 email=env("ADMIN_EMAIL"),
             )
             db.session.add(user)
+
+            spots = read_spot_from_csv("historical-irish-electricity-prices.csv")
+            usages = read_quarter_hourly_usage_csv("UCD_2023_profile.csv")
+
+            for timestamp, value in spots.item():
+                spot = SEMSpot(time=timestamp, spot=value)
+                db.session.add(spot)
+
+            for timestamp, value in usages.item():
+                usage = Usage(time=timestamp, usage=value)
+                db.session.add(usage)
+
             db.session.commit()
 
 

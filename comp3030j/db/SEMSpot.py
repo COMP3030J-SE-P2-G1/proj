@@ -7,8 +7,8 @@ class SEMSpot(db.Model):
     required attr:
         time: hourly timestamp (use appropriate format, please tell me after you've decided)
         spot: price in EUR/MWh
-    @陈嘉文 please write this
     """
+
     time = db.Column(db.DateTime, primary_key=True)
     spot = db.Column(db.Float, nullable=False)
 
