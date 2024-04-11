@@ -7,10 +7,8 @@ bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 def dashboard():
     return render_template("page/dashboard/layout1/index.j2")
 
-@bp.route('/index')
-def index():
-    return render_template("page/dashboard/page/index.j2")
+@bp.route('/<path:path>')
+def serve_static(path):
+    print(f"page/dashboard/page/{path}.j2")
+    return render_template(f"page/dashboard/page/{path}.j2")
 
-@bp.route('/electricity_usage_calculator')
-def electricity_usage_calculator():
-    return render_template("page/dashboard/page/electricity_usage_calculator.j2")
