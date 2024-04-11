@@ -33,20 +33,14 @@ def init_db():
 
     if getenv("POPULATE_DB"):
         with app.app_context():
-            user = User(
-                username=env("ADMIN"),
-                email=env("ADMIN_EMAIL"),
-            )
-            db.session.add(user)
+            spots = read_spot_from_csv("./script/historical-irish-electricity-prices.csv")
+            usages = read_quarter_hourly_usage_csv("./script/UCD_2023_profile.csv")
 
-            spots = read_spot_from_csv("historical-irish-electricity-prices.csv")
-            usages = read_quarter_hourly_usage_csv("UCD_2023_profile.csv")
-
-            for timestamp, value in spots.item():
+            for timestamp, value in spots.items():
                 spot = SEMSpot(time=timestamp, spot=value)
                 db.session.add(spot)
 
-            for timestamp, value in usages.item():
+            for timestamp, value in usages.items():
                 usage = Usage(time=timestamp, usage=value)
                 db.session.add(usage)
 
