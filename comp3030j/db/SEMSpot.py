@@ -1,6 +1,10 @@
 from . import db
+from dataclasses import dataclass
+from datetime import datetime
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
-
+@dataclass
 class SEMSpot(db.Model):
     """
     Single Electricity Market Spot Profile
@@ -9,8 +13,9 @@ class SEMSpot(db.Model):
         spot: price in EUR/MWh
     """
 
-    time = db.Column(db.DateTime, primary_key=True)
-    spot = db.Column(db.Float, nullable=False)
+    __tablename__ = "sems"
+    time: Mapped[datetime] = mapped_column(primary_key=True)
+    spot: Mapped[float] = mapped_column(nullable=False)
 
     def __repr__(self):
-        return f"SEMSpot('{self.time}','{self.spot}'"
+        return f"SEMSpot('{self.time}','{self.spot}')"

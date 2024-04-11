@@ -1,6 +1,10 @@
 from . import db
+from .Profile import Profile
+from dataclasses import dataclass
+from datetime import datetime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
+@dataclass
 class Solar(db.Model):
     """
     Solar panel calculation result cache
@@ -15,16 +19,15 @@ class Solar(db.Model):
         loss: float，内损
         power: float, 装机发电量（瓦特）
     """
-    __tablename__ = 'solar'
-    id = db.Column(db.Integer, primary_key=True)
-    p_id = db.Column(db.Integer, db.ForeignKey("profile.id"), nullable=False, default=0)
-    time = db.Column(db.DateTime, nullable=False)
-    value = db.Column(db.Float, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    profile: Mapped[Profile] = relationship(back_populates="solar")
+    time: Mapped[datetime] = mapped_column()
+    value: Mapped[float] = mapped_column()
 
-    lon = db.Column(db.Float, nullable=False)
-    lat = db.Column(db.Float, nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
-    size = db.Column(db.Integer, nullable=False)
-    tech = db.Column(db.Integer, nullable=False)  # use Integer to represent different techs
-    loss = db.Column(db.Float, nullable=False)
-    power = db.Column(db.Float, nullable=False)
+    lon: Mapped[float] = mapped_column()
+    lat: Mapped[float] = mapped_column()
+    amount: Mapped[float] = mapped_column()
+    size: Mapped[int] = mapped_column()
+    tech: Mapped[int] = mapped_column()  # use Integer to represent different techs
+    loss: Mapped[float] = mapped_column()
+    power: Mapped[float] = mapped_column()

@@ -1,6 +1,11 @@
 from . import db
+from .Profile import Profile
+from dataclasses import dataclass
+from datetime import datetime
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
+@dataclass
 class Usage(db.Model):
     """
     Business usage profile
@@ -12,13 +17,11 @@ class Usage(db.Model):
         usage: ...kWh
     """
 
-    __tablename__ = "usage"
-    id = db.Column(db.Integer, primary_key=True)
-    p_id = db.Column(db.Integer, db.ForeignKey("profile.id"), nullable=False, default=0)
-    time = db.Column(db.DateTime, nullable=False)
-    usage = db.Column(db.Float, nullable=False)
-
-    publicize = db.Column(db.Boolean, nullable=False, default=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    profile: Mapped[Profile] = relationship(back_populates="usage")
+    time: Mapped[datetime] = mapped_column()
+    usage: Mapped[float] = mapped_column()
+    publicize: Mapped[bool] = mapped_column(default=False)
 
     def __repr__(self):
         return f"Usage('{self.p_id}','{self.time}','{self.usage}'"

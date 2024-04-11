@@ -12,6 +12,7 @@ def get_profile(id):
     - profile is the profile object if accessible, otherwise None
     - response is None if access is granted, otherwise an error response
     """
+    # return Profile(id = 1, u_id = 2, usage_id = 3, solar_id = 4), None
     profile = db.session.scalar(
         db.select(Profile)
         .filter_by(id=id))
