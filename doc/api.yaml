@@ -65,7 +65,7 @@ paths:
       tags:
         - auth
   
-  /user/change_password:
+  /api/user/change_password:
     post:
       summary: change password
       requestBody:
@@ -85,7 +85,7 @@ paths:
       tags:
         - user
         
-  /user/profiles:
+  /api/user/profiles:
     get:
       summary: get all profiles of a user. Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
       responses:
@@ -102,7 +102,7 @@ paths:
         - profile
         - electricity
         
-  /profile/{profileId}:
+  /api/profile/{profileId}:
     get:
       summary: get specifc profile
       parameters:
@@ -119,7 +119,7 @@ paths:
         - profile
         - electricity
         
-  /profile/{profileId}/usage:
+  /api/profile/{profileId}/usage:
     post:
       summary: usage data
       description: note user permission
@@ -144,7 +144,7 @@ paths:
         - profile
         - electricity
         
-  /profile/{profileId}/solar:
+  /api/profile/{profileId}/solar:
     post:
       summary: generated solar electricity data
       description: note user permission
@@ -169,7 +169,7 @@ paths:
         - profile
         - electricity
   
-  /data/sems:
+  /api/data/sems:
     post:
       summary: Single Electricity Market Spot
       requestBody:

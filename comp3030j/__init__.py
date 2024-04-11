@@ -2,8 +2,8 @@ from flask import Flask, request
 from flask_babel import Babel, gettext, ngettext, lazy_gettext
 from comp3030j.db import initialize_db
 from comp3030j.views import bind_views
+from comp3030j.api import bind_apis
 from .extensions import bcrypt, login_manager
-import logging
 
 
 def get_locale():
@@ -20,6 +20,7 @@ app.jinja_env.globals.update(_tr=gettext, _ntr=ngettext, _ltr=lazy_gettext)
 
 initialize_db(app)
 bind_views(app)
+bind_apis(app)
 
 bcrypt.init_app(app)
 login_manager.init_app(app)
