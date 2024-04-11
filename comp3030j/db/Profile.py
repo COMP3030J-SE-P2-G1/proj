@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 from . import db
 
-
+@dataclass
 class Profile(db.Model):
     """
     Business usage profile
@@ -12,6 +13,13 @@ class Profile(db.Model):
         desc: short description?
     @陈嘉文 please write this
     """
+    
+    id: int
+    u_id: int
+    usage_id: int
+    solar_id: int
+    desc: str
+    
     __tablename__ = 'profile'
     id = db.Column(db.Integer, primary_key=True)
     u_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -20,4 +28,4 @@ class Profile(db.Model):
     desc = db.Column(db.String)
 
     def __repr__(self):
-        return f"Profile('{self.u_id}','{self.longitude}','{self.latitude}','{self.amount}','{self.size}','{self.generate_way}','{self.desc}')"
+        return f"Profile('{self.u_id}', '{self.usage_id}', '{self.solar_id}','{self.desc}')"

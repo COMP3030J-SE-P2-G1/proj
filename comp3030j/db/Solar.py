@@ -17,7 +17,7 @@ class Solar(db.Model):
     """
     __tablename__ = 'solar'
     id = db.Column(db.Integer, primary_key=True)
-    u_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, default=0)
+    p_id = db.Column(db.Integer, db.ForeignKey("profile.id"), nullable=False, default=0)
     time = db.Column(db.DateTime, nullable=False)
     value = db.Column(db.Float, nullable=False)
 
