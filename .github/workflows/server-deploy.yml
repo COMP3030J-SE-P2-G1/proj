@@ -32,7 +32,7 @@ jobs:
               run: |
                   source .venv/bin/activate
                   pip install --upgrade setuptools # fix `just trans`'s flask-babel error - ValueError: Unknown extraction method 'jinja2'
-                  just initialize  # note that this command also can pre-populate the generated database
+                  env POPULATE_DB=1 just initialize
                   
             - name: build project
               run: just build
