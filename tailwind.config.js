@@ -8,13 +8,13 @@ module.exports = {
     ],
     theme: {
         extend: {
+            colors: {
+                "base-content-shadow": "oklch(var(--bc) / .6)",
+            },
             fontFamily: {
                 inter: ["Inter var", "sans-serif"],
             },
         }
-    },
-    daisyui: {
-        themes: ["light", "dim"],
     },
     plugins: [require("daisyui")],
     safelist: ['scale-125', 'shadow']

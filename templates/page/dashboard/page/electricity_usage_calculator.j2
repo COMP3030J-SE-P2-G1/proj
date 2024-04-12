@@ -1,3 +1,22 @@
 <div class="size-full flex flex-col p-3">
-    El Psy Congroo
+    <header class="flex m-1 flex flex-col">
+        <h1 class="text-3xl font-bold text-base-content">Electricity Usage Calculator</h1>
+        <span class="text-base-content-shadow">Simply select appliances that are in-use and an estimation will be outputed instantly.</span>
+    </header>
+    <section>
+        <div class="overflow-x-auto">
+            <table class="table">
+                <!-- head -->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Item</th>
+                    </tr>
+                </thead>
+                <tbody id="calc-table-body">
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script type="module" src="/static/js/dashboard/electricity_usage_calculator.ts"></script>
 </div>

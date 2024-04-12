@@ -7,6 +7,5 @@ import 'htmx.org';
 
 (function (){
     ready(() => {
-        console.log("dashboard");
     });
 })();

@@ -9,6 +9,5 @@ def dashboard():
 
 @bp.route('/<path:path>')
 def serve_static(path):
-    print(f"page/dashboard/page/{path}.j2")
     return render_template(f"page/dashboard/page/{path}.j2")
 
