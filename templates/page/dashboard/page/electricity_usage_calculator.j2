@@ -3,19 +3,29 @@
         <h1 class="text-3xl font-bold text-base-content">Electricity Usage Calculator</h1>
         <span class="text-base-content-shadow">Simply select appliances that are in-use and an estimation will be outputed instantly.</span>
     </header>
-    <section>
-        <div class="overflow-x-auto">
-            <table class="table">
-                <!-- head -->
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Item</th>
-                    </tr>
-                </thead>
-                <tbody id="calc-table-body">
-                </tbody>
-            </table>
+    <section class="overflow-auto flex justify-center">
+        <div class="size-11/12 flex gap-2">
+            <div class="rounded-2xl bg-base-200 basis-1/4 m-2 overflow-auto">
+                
+            </div>
+            <div class="h-full overflow-auto basis-3/4 flex flex-col gap-2">
+                <div class="basis-11/12 overflow-auto">
+                    <table class="table table-xs urelative h-full overflow-auto">
+                        <!-- head -->
+                        <thead class="sticky top-0">
+                            <tr>
+                                <th></th>
+                                <th>Item</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calc-table-body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="rounded-2xl basis-1/12 bg-base-200">
+                    
+                </div>
+            </div>
         </div>
     </section>
     <script type="module" src="/static/js/dashboard/electricity_usage_calculator.ts"></script>
