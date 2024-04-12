@@ -1,4 +1,5 @@
 from . import db
+from typing import Optional
 from .Profile import Profile
 from dataclasses import dataclass
 from datetime import datetime
@@ -20,7 +21,7 @@ class Solar(db.Model):
         power: float, 装机发电量（瓦特）
     """
     id: Mapped[int] = mapped_column(primary_key=True)
-    profile: Mapped[Profile] = relationship(back_populates="solar")
+    profile: Mapped[Optional[Profile]] = relationship(back_populates="solar")
     time: Mapped[datetime] = mapped_column()
     value: Mapped[float] = mapped_column()
 

@@ -1,4 +1,5 @@
 from . import db
+from typing import Optional
 from .Profile import Profile
 from dataclasses import dataclass
 from datetime import datetime
@@ -18,7 +19,7 @@ class Usage(db.Model):
     """
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    profile: Mapped[Profile] = relationship(back_populates="usage")
+    profile: Mapped[Optional[Profile]] = relationship(back_populates="usage")
     time: Mapped[datetime] = mapped_column()
     usage: Mapped[float] = mapped_column()
     publicize: Mapped[bool] = mapped_column(default=False)

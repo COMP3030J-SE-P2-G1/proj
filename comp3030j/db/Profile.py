@@ -1,4 +1,5 @@
 from . import db
+from typing import Optional
 from dataclasses import dataclass
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -18,10 +19,10 @@ class Profile(db.Model):
     __tablename__ = 'profile'
     id: Mapped[int] = mapped_column(primary_key=True)
     u_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    usage_id: Mapped[int] = mapped_column(ForeignKey("usage.id"))
-    usage: Mapped["Usage"] = relationship(back_populates="profile")
-    solar_id: Mapped[int] = mapped_column(ForeignKey("solar.id"))
-    solar: Mapped["Solar"] = relationship(back_populates="profile")
+    usage_id: Mapped[Optional[int]] = mapped_column(ForeignKey("usage.id"))
+    usage: Mapped[Optional["Usage"]] = relationship(back_populates="profile")
+    solar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("solar.id"))
+    solar: Mapped[Optional["Solar"]] = relationship(back_populates="profile")
     desc: Mapped[str]
 
     def __repr__(self):
