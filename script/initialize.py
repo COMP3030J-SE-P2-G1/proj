@@ -63,8 +63,6 @@ def gen_config_py(filename: str):
     configuration = f"""SECRET_KEY="{secret_key}"
 SQLALCHEMY_DATABASE_URI="sqlite:///comp3030j.db"
 LANGUAGES=['en', 'zh']
-OPENAI_API_KEY="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"
-NEWS_API_KEY="590da50736284e36986ee5cddabc1624"
 """
 
     with open(filename, "w") as config_file:
