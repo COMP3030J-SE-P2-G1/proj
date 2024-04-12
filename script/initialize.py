@@ -26,6 +26,7 @@ def init_db():
     from comp3030j import app
     from comp3030j.db import db
     from comp3030j.db.User import User
+    from comp3030j.db.Profile import Profile
     from comp3030j.db.SEMSpot import SEMSpot
     from comp3030j.db.Usage import Usage
 
@@ -35,14 +36,22 @@ def init_db():
         with app.app_context():
             spots = read_spot_from_csv("./script/historical-irish-electricity-prices.csv")
             usages = read_quarter_hourly_usage_csv("./script/UCD_2023_profile.csv")
+            
+            user = User(username="public_profiles", email="null", password="not_a_password")
+            db.session.add(user)
+            db.session.flush()
+            demo_profile = Profile(u_id=user.id, name="Demo", desc="Demo Profile")
+            db.session.add(demo_profile)
+            db.session.flush()
 
             for timestamp, value in spots.items():
                 spot = SEMSpot(time=timestamp, spot=value)
                 db.session.add(spot)
 
             for timestamp, value in usages.items():
-                usage = Usage(time=timestamp, usage=value)
+                usage = Usage(time=timestamp, usage=value, profile_id=demo_profile.id)
                 db.session.add(usage)
+
 
             db.session.commit()
 

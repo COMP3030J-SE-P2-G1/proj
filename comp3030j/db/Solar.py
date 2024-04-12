@@ -3,6 +3,7 @@ from typing import Optional
 from .Profile import Profile
 from dataclasses import dataclass
 from datetime import datetime
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 @dataclass
@@ -20,8 +21,9 @@ class Solar(db.Model):
         loss: float，内损
         power: float, 装机发电量（瓦特）
     """
-    id: Mapped[int] = mapped_column(primary_key=True)
-    profile: Mapped[Optional[Profile]] = relationship(back_populates="solar")
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
+    profile: Mapped[Profile] = relationship(back_populates="solar")
     time: Mapped[datetime] = mapped_column()
     value: Mapped[float] = mapped_column()
 

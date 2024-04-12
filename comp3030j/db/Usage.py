@@ -3,6 +3,7 @@ from typing import Optional
 from .Profile import Profile
 from dataclasses import dataclass
 from datetime import datetime
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
@@ -18,8 +19,9 @@ class Usage(db.Model):
         usage: ...kWh
     """
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    profile: Mapped[Optional[Profile]] = relationship(back_populates="usage")
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
+    profile: Mapped[Profile] = relationship(back_populates="usage")
     time: Mapped[datetime] = mapped_column()
     usage: Mapped[float] = mapped_column()
     publicize: Mapped[bool] = mapped_column(default=False)

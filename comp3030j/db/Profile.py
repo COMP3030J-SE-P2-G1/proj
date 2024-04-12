@@ -1,5 +1,5 @@
 from . import db
-from typing import Optional
+from typing import Optional, List
 from dataclasses import dataclass
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,13 +17,13 @@ class Profile(db.Model):
     """
     
     __tablename__ = 'profile'
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     u_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    usage_id: Mapped[Optional[int]] = mapped_column(ForeignKey("usage.id"))
-    usage: Mapped[Optional["Usage"]] = relationship(back_populates="profile")
-    solar_id: Mapped[Optional[int]] = mapped_column(ForeignKey("solar.id"))
-    solar: Mapped[Optional["Solar"]] = relationship(back_populates="profile")
-    desc: Mapped[str]
+    user: Mapped["User"] = relationship(back_populates="profiles")
+    name: Mapped[str]
+    desc: Mapped[Optional[str]]
+    usage: Mapped[List["Usage"]] = relationship(back_populates="profile")
+    solar: Mapped[List["Solar"]] = relationship(back_populates="profile")
 
     def __repr__(self):
         return f"Profile('{self.u_id}', '{self.usage_id}', '{self.solar_id}','{self.desc}')"
