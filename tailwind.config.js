@@ -16,7 +16,10 @@ module.exports = {
             },
         }
     },
+    daisyui: {
+        themes: ["light", "dim"],
+    },
     plugins: [require("daisyui")],
-    safelist: ['scale-125', 'shadow', 'input', 'input-ghost']
+    safelist: ['scale-125', 'shadow', 'font-normal']
 }
 

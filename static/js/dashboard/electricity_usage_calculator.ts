@@ -61,15 +61,15 @@ function populateTable() {
         const colItem = document.createElement('td');
         colItem.textContent = item.name;
         const colPrice = document.createElement('td');
-        colPrice.textContent = "hello";
+        if (typeof item.consumption == "number") {
+            colPrice.textContent = `${item.consumption} kWh`;
+        } else {
+            colPrice.textContent = "hi";
+        }
         
         row.appendChild(colNumber);
         row.appendChild(colItem);
         row.appendChild(colPrice);
-        
-        // row.appendChild(rowHeader);
-
-        // Add kWh input/dropdown and hours input here...
 
         tableBody.appendChild(row);
     });
