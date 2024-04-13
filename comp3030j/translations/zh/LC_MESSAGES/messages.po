@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-12 23:21+0800\n"
+"POT-Creation-Date: 2024-04-13 22:41+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -23,7 +23,7 @@ msgid "Username"
 msgstr "用户名"
 
 #: comp3030j/auth/__init__.py:15 comp3030j/auth/__init__.py:40
-#: comp3030j/auth/__init__.py:52 templates/page/auth/profile/profile.j2:84
+#: comp3030j/auth/__init__.py:57 templates/page/auth/profile/profile.j2:84
 msgid "Email"
 msgstr "邮件"
 
@@ -31,7 +31,7 @@ msgstr "邮件"
 msgid "Password"
 msgstr "密码"
 
-#: comp3030j/auth/__init__.py:17 comp3030j/auth/__init__.py:55
+#: comp3030j/auth/__init__.py:17 comp3030j/auth/__init__.py:60
 msgid "Confirm Password"
 msgstr "确认密码"
 
@@ -50,15 +50,15 @@ msgstr "用户名已被占用，请选择其他用户名"
 msgid "That email is taken. Please choose a different one."
 msgstr "邮箱已被占用，请选择其他邮箱"
 
-#: comp3030j/auth/__init__.py:32 comp3030j/auth/__init__.py:59
+#: comp3030j/auth/__init__.py:32 comp3030j/auth/__init__.py:64
 msgid "The password must be at least 6 characters long."
-msgstr "密码长度需要至少6个字符"
+msgstr "密码长度至少需要6个字符"
 
-#: comp3030j/auth/__init__.py:34 comp3030j/auth/__init__.py:61
+#: comp3030j/auth/__init__.py:34 comp3030j/auth/__init__.py:66
 msgid "The password must contain at least one digit."
 msgstr "密码至少需要包括一个阿拉伯数字"
 
-#: comp3030j/auth/__init__.py:36 comp3030j/auth/__init__.py:63
+#: comp3030j/auth/__init__.py:36 comp3030j/auth/__init__.py:68
 msgid "The password must contain at least one alphabetic character."
 msgstr "密码至少需要包括一个英文字母"
 
