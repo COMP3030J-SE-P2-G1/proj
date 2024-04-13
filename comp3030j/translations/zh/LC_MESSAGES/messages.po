@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-11 14:10+0800\n"
+"POT-Creation-Date: 2024-04-12 23:21+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -74,18 +74,22 @@ msgid "Sign In"
 msgstr "登录"
 
 #: comp3030j/auth/__init__.py:48
+msgid "User does not exist. Please register first."
+msgstr "用户不存在，请先注册"
+
+#: comp3030j/auth/__init__.py:53
 msgid "Invalid password. Please try again."
 msgstr "不正确的密码，请重试"
 
-#: comp3030j/auth/__init__.py:53
+#: comp3030j/auth/__init__.py:58
 msgid "Current Password"
 msgstr "当前密码"
 
-#: comp3030j/auth/__init__.py:54
+#: comp3030j/auth/__init__.py:59
 msgid "New Password"
 msgstr "新密码"
 
-#: comp3030j/auth/__init__.py:68
+#: comp3030j/auth/__init__.py:73
 msgid "Please check your password again!"
 msgstr "请重新检查输入的密码"
 

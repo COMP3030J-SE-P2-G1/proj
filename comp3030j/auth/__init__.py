@@ -42,6 +42,11 @@ class LoginForm(FlaskForm):
     remember = BooleanField(_ltr('Remember Me'))
     submit = SubmitField(_ltr('Sign In'))
 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError(_ltr('User does not exist. Please register first.'))
+
     def validate_password(self, field):
         user = User.query.filter_by(email=self.email.data).first()
         if user and not bcrypt.check_password_hash(user.password, field.data):
