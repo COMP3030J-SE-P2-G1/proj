@@ -9,7 +9,7 @@ from comp3030j.auth import RegistrationForm, LoginForm, ChangePassForm
 from comp3030j.db import db
 from comp3030j.db.User import User
 from comp3030j.extensions import bcrypt
-from comp3030j.util import allowed_file, save_file, delete_file, _ltr
+from comp3030j.util import allowed_img, save_file, delete_file, _ltr
 
 bp = Blueprint("auth", __name__)
 
@@ -85,7 +85,7 @@ def upload_picture():
     if 'file' not in request.files:
         return redirect(url_for('auth.profile'))
     file = request.files['file']
-    if file and allowed_file(file.filename):
+    if file and allowed_img(file.filename):
         filename = User.query.filter_by(id=session['user_id']).first().avatar_file
         # remove the old avatar
         if filename != 'default.jpg':
