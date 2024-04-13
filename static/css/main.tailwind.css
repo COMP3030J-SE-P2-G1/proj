@@ -1,5 +1,6 @@
 @import './aos.css';
 @import './scrollbar.css';
+@import './input-number.css';
 
 @tailwind base;
 @tailwind components;

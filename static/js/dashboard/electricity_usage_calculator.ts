@@ -1,4 +1,4 @@
-import { ready } from "../lib/utils";
+import { initInputNumber } from '../lib/input-number.ts';
 
 type ItemConsumption = number | number[];
 
@@ -37,7 +37,16 @@ const items: Item[] = Object.entries(jsonData).map(([name, consumption]) => ({
     consumption
 }));
 
-// const items = 
+
+function createInputNumberHTML(): string {
+    return `
+    <div>
+    <span class="input-number-decrement">–</span>
+    <input class="input-number" type="text" value="0" min="0" max="10">
+    <span class="input-number-increment">+</span>
+    </div>
+  `;
+}
 
 function populateTable() {
     const tableBody = document.getElementById('calc-table-body');
@@ -46,23 +55,19 @@ function populateTable() {
     items.forEach(item => {
         const row = document.createElement('tr');
         
-        const rowHeader = document.createElement('th');
-        const checker = document.createElement('label');
-        // don't use check box, use input box number input instead
-        const checkerInput = document.createElement('input');
-        checkerInput.setAttribute('type', "checkbox");
-        checkerInput.setAttribute('class', "checkbox");
-        checker.appendChild(checkerInput);
-        rowHeader.appendChild(checker);
+        const colNumber = document.createElement('th');
+        colNumber.setAttribute("class", "font-normal");
+        colNumber.innerHTML += createInputNumberHTML(); 
+        const colItem = document.createElement('td');
+        colItem.textContent = item.name;
+        const colPrice = document.createElement('td');
+        colPrice.textContent = "hello";
         
+        row.appendChild(colNumber);
+        row.appendChild(colItem);
+        row.appendChild(colPrice);
         
-        const rowBody = document.createElement('td');
-        const itemName = document.createElement('tr');
-        itemName.textContent = item.name;
-        rowBody.appendChild(itemName);
-        
-        row.appendChild(rowHeader);
-        row.appendChild(rowBody);
+        // row.appendChild(rowHeader);
 
         // Add kWh input/dropdown and hours input here...
 
@@ -72,4 +77,5 @@ function populateTable() {
 
 export default function onLoad() {
     populateTable();
+    initInputNumber(".input-number");
 }

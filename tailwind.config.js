@@ -17,6 +17,6 @@ module.exports = {
         }
     },
     plugins: [require("daisyui")],
-    safelist: ['scale-125', 'shadow']
+    safelist: ['scale-125', 'shadow', 'input', 'input-ghost']
 }
 

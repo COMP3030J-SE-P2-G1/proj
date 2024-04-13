@@ -1,0 +1,8 @@
+{# NOTE, please also import corrresponding script file #}
+{# js version: <span class="input-number-decrement">–</span><input class="input-number" type="text" value="1" min="0" max="10"><span class="input-number-increment">+</span> #}
+{% macro input_number(class_name_prefix = "input-number", ad_classes = "") %}
+    <div class="{{ ad_classes }}">
+        <span class="{{- class_name_prefix -}}-decrement">–</span><input class="{{- class_name_prefix -}}" type="text" value="1" min="0" max="10"><span class="{{- class_name_prefix -}}-increment">+</span>
+    </div>
+{%- endmacro %}
+
