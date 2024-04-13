@@ -15,7 +15,6 @@ const jsonData = {
     "Tumble dryer": 5,
     "Microwave": [0.47, 0.601, 0.705, 0.872, 1.1235, 1.411, 1.543],
     "Dishwasher": [0.34, 0.4, 0.46, 0.53, 0.59, 0.65],
-    "Dishwasher": 0.65,
     "Iron": 1,
     "Desktop computer": 0.2,
     "Refrigerator": [100, 124, 155, 194, 243, 303],
@@ -71,11 +70,6 @@ function populateTable() {
     });
 }
 
-
-(function (){
-    ready(() => {
-        console.log(items);
-        populateTable()
-    });
-})();
-
+export default function onLoad() {
+    populateTable();
+}
