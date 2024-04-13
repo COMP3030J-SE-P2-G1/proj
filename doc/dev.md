@@ -196,3 +196,7 @@ Install browser extension [Locale Switcher](https://github.com/locale-switcher/l
 ## API Document
 
 It is defined in file [./api.yaml](./api.yaml) in OpenAPI format, which can be visualized in [swagger editor](https://editor.swagger.io/).
+
+### Common Pitfalls
+
+1. JavaScript generated tailwindcss class names cannot work -> add the class to the `safelist` in `tailwind.config.js` file.

@@ -20,6 +20,9 @@ module.exports = {
         themes: ["light", "dim"],
     },
     plugins: [require("daisyui")],
-    safelist: ['scale-125', 'shadow', 'font-normal']
+    safelist: [
+        'scale-125', 'shadow',
+        // electricity usage calculator
+        'font-bold', 'font-normal', 'p-1.5', 'text-right', 'ml-2']
 }
 

@@ -6,7 +6,11 @@
     <section class="overflow-auto flex-auto flex justify-center items-center">
         <div class="size-11/12 flex gap-2">
             <div class="rounded-2xl bg-base-200 basis-1/4 m-2 overflow-auto">
-
+                <div id="sidebar-prompt" class="text-sm text-base-content-shadow flex justify-center">
+                    <div class="my-3">
+                        Select appliances to start estimation
+                    </div>
+                </div>
             </div>
             <div class="h-full overflow-auto basis-3/4 flex flex-col gap-2">
                 <div class="basis-11/12 overflow-auto">
@@ -16,14 +20,20 @@
                             <tr>
                                 <th>Number</th>
                                 <th>Item</th>
-                                <th>hello</th>
+                                <th class="text-right">Price</th>
                             </tr>
                         </thead>
                         <tbody id="calc-table-body">
                         </tbody>
                     </table>
                 </div>
-                <div class="rounded-2xl basis-1/12 bg-base-200 shrink-0 min-h-12">
+                <div class="rounded-2xl basis-1/12 bg-base-200 shrink-0 min-h-12 flex p-2 items-center overflow-x-auto text-nowrap">
+                    <div class="mx-1"> <input id="total-hours" class="bg-base-300 rounded p-0.5 w-20" type="number"> </div> hours
+                    <span class="mx-1 font-bold">OR</span>
+                    Average <div class="mx-1"> <input id="hours-per-day" class="bg-base-300 rounded p-0.5 w-20" type="number"> </div> hours every day, for total 
+                    <div class="mx-1"> <input id="weeks" class="bg-base-300 rounded p-0.5 w-20" type="number"> </div> weeks
+                    <div class="flex-auto"></div>
+                    <button class="btn btn-sm bg-base-300">clac</button>
                 </div>
             </div>
         </div>

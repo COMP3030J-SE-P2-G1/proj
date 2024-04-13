@@ -57,14 +57,38 @@ function populateTable() {
         
         const colNumber = document.createElement('th');
         colNumber.setAttribute("class", "font-normal");
-        colNumber.innerHTML += createInputNumberHTML(); 
+        colNumber.innerHTML += createInputNumberHTML();
+        
         const colItem = document.createElement('td');
+        colItem.setAttribute("class", "font-bold");
         colItem.textContent = item.name;
+        
         const colPrice = document.createElement('td');
+        colPrice.setAttribute("class", "text-right");
         if (typeof item.consumption == "number") {
-            colPrice.textContent = `${item.consumption} kWh`;
+            const span = document.createElement("span");
+            span.setAttribute("class", "font-bold");
+            span.textContent = `${item.consumption}`;
+            const span1 = document.createElement("span");
+            span1.textContent = "kWh";
+            span1.setAttribute("class", "ml-2");
+            colPrice.appendChild(span);
+            colPrice.appendChild(span1);
+            // colPrice.textContent = `${item.consumption} kWh`;
         } else {
-            colPrice.textContent = "hi";
+            const selectElm = document.createElement("select");
+            selectElm.setAttribute("class", "p-1.5 text-right");
+            item.consumption.forEach(price => {
+                const optionElm = document.createElement("option");
+                optionElm.setAttribute("class", "font-bold"); // TODO not work?
+                optionElm.textContent = `${price}`;
+                selectElm.appendChild(optionElm);
+            });
+            const span = document.createElement("span");
+            span.setAttribute("class", "ml-2");
+            span.textContent = "kWh";
+            colPrice.appendChild(selectElm);
+            colPrice.appendChild(span);
         }
         
         row.appendChild(colNumber);
