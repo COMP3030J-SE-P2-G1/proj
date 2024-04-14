@@ -34,13 +34,17 @@ def init_db():
 
     if getenv("POPULATE_DB"):
         with app.app_context():
-            spots = read_spot_from_csv("./script/historical-irish-electricity-prices.csv")
+            spots = read_spot_from_csv(
+                "./script/historical-irish-electricity-prices.csv"
+            )
             usages = read_quarter_hourly_usage_csv("./script/UCD_2023_profile.csv")
-            
-            user = User(username="public_profiles", email="null", password="not_a_password")
+
+            user = User(
+                username="public_profiles", email="null", password="not_a_password"
+            )
             db.session.add(user)
             db.session.flush()
-            demo_profile = Profile(u_id=user.id, name="Demo", desc="Demo Profile")
+            demo_profile = Profile(user_id=user.id, name="Demo", desc="Demo Profile")
             db.session.add(demo_profile)
             db.session.flush()
 
@@ -51,7 +55,6 @@ def init_db():
             for timestamp, value in usages.items():
                 usage = Usage(time=timestamp, usage=value, profile_id=demo_profile.id)
                 db.session.add(usage)
-
 
             db.session.commit()
 
