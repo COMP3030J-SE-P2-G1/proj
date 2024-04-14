@@ -37,12 +37,15 @@ const items: Item[] = Object.entries(jsonData).map(([name, consumption]) => ({
     consumption
 }));
 
+function updateItems(event: Event): void {
+    console.log(event);
+}
 
 function createInputNumberHTML(): string {
     return `
-    <div>
+    <div class="input-number-div">
     <span class="input-number-decrement">–</span>
-    <input class="input-number" type="text" value="0" min="0" max="10">
+    <input class="input-number" type="text" value="0" min="0">
     <span class="input-number-increment">+</span>
     </div>
   `;
@@ -99,7 +102,17 @@ function populateTable() {
     });
 }
 
+function bindEvents(): void {
+    const input_number_divs = document.querySelectorAll(".input-number-div");
+    input_number_divs.forEach(divElm => {
+        [divElm.firstElementChild, divElm.lastElementChild].forEach(elm => {
+            elm?.addEventListener("click", updateItems);
+        });
+    });
+}
+
 export default function onLoad() {
     populateTable();
     initInputNumber(".input-number");
+    bindEvents();
 }

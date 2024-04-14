@@ -3,7 +3,7 @@
 {% block body_inner %}
     <div class="flex">
         {% include '/page/dashboard/layout1/sidebar.j2' %}
-        <main id="main" class="w-full h-screen ml-20 xl:ml-60" hx-get="/dashboard/index" hx-trigger="load"></main>
+        <main id="main" class="w-full h-screen ml-20 xl:ml-60" hx-get="/dashboard/electricity_usage_calculator" hx-trigger="load"></main>
         {# page loaded by htmx #}
     </div>
 {% endblock %}
