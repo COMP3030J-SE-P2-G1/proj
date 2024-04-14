@@ -1,3 +1,6 @@
+// TODO table allow user to add custom items
+// This will can also deal with the problem that user can only choose one price from a list of price for a specific item
+
 import { initInputNumber } from '../lib/input-number.ts';
 
 type ItemConsumption = number | number[];
@@ -31,11 +34,13 @@ const jsonData = {
     "Mobile phone": 0.002
 };
 
-
 const items: Item[] = Object.entries(jsonData).map(([name, consumption]) => ({
     name,
     consumption
 }));
+
+// itemName -> total money of this item
+const selectedItems = new Map();
 
 function createSidePanelItemCounterElm(itemName: string, itemNum: string, price: string): HTMLDivElement {
     const divElm = document.createElement("div");
@@ -93,12 +98,43 @@ function updateItems(event: Event, inputNumElm: HTMLInputElement): void {
         sidePanelElm.appendChild(createSidePanelItemCounterElm(itemName, itemNum, price));
     }
 
+    selectedItems.set(itemName, parseInt(itemNum) * parseFloat(price));
+    updateTotalPriceDisplay()
+}
+
+function getTotalHours(): number | null {
+    let hours = 0;
+    const totalHoursElm = document.getElementById("total-hours") as HTMLInputElement;
+    const hoursPerDayElm = document.getElementById("hours-per-day") as HTMLInputElement;
+    const weeksElm = document.getElementById("weeks") as HTMLInputElement;
+    if (!totalHoursElm || !hoursPerDayElm || !weeksElm) {
+        console.error("Hour element missing!");
+        return null;
+    }
+    if (totalHoursElm.value != "" && totalHoursElm.value != "0") {
+        hours = parseInt(totalHoursElm.value);
+    } else if (totalHoursElm.value != "" && weeksElm.value != "") {
+        hours = parseInt(hoursPerDayElm.value) * 7 * parseInt(weeksElm.value);
+    } else {
+        return 0;
+    }
+    return hours;
+}
+
+function calculateSum(hours: number): number  {
+    return hours * [...selectedItems.values()].reduce((acc, val) => acc + val, 0);
+}
+
+
+function updateTotalPriceDisplay() {
+    const sidePanelElm = document.getElementById("side-panel")!;
     const sidePanelItemElmCount = sidePanelElm.querySelectorAll("[data-item]").length;
     const sidePanelPromptElm = document.getElementById("sidebar-prompt");
-    if (sidePanelItemElmCount == 0 && !sidePanelPromptElm) {
-        sidePanelElm.appendChild(createSidePanelPromptElm());
-    } else if (sidePanelItemElmCount > 0 && sidePanelPromptElm) {
-        sidePanelElm.removeChild(sidePanelPromptElm);
+    const hours = getTotalHours() ?? 0;
+    if (sidePanelItemElmCount == 0) {
+        sidePanelPromptElm!.firstElementChild!.textContent = "Select appliances to start estimation";
+    } else {
+        sidePanelPromptElm!.firstElementChild!.textContent = `Total: $${calculateSum(hours).toFixed(2)} (${hours} hours)`;
     }
 }
 
@@ -172,9 +208,16 @@ function bindEvents(): void {
     //         elm?.addEventListener("click", updateItems);
     //     });
     // });
+    const totalHoursElm = document.getElementById("total-hours") as HTMLInputElement;
+    const hoursPerDayElm = document.getElementById("hours-per-day") as HTMLInputElement;
+    const weeksElm = document.getElementById("weeks") as HTMLInputElement;
+    [totalHoursElm, hoursPerDayElm, weeksElm].forEach(elm => {
+        elm?.addEventListener("change", updateTotalPriceDisplay);
+    });
 }
 
 export default function onLoad() {
+    selectedItems.clear();
     populateTable();
     initInputNumber(".input-number", updateItems);
     bindEvents();
