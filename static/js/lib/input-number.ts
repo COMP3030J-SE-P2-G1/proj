@@ -3,7 +3,7 @@ type NullableNumber = number | null;
 /**
  * @param selector: a selector for selectoring 
  */
-export function initInputNumber(selector: string) {
+export function initInputNumber(selector: string, clickEvent: (event: Event, el: HTMLInputElement) => void = () => {}) {
     const elements: NodeListOf<HTMLInputElement> = document.querySelectorAll(selector);
 
     elements.forEach((element) => {
@@ -14,27 +14,29 @@ export function initInputNumber(selector: string) {
         const incButton: HTMLElement | null = element.nextElementSibling as HTMLElement;
 
         if (decButton) {
-            decButton.addEventListener('click', () => decrement(element, min));
+            decButton.addEventListener('click', event => decrement(event, element, min));
         }
 
         if (incButton) {
-            incButton.addEventListener('click', () => increment(element, max));
+            incButton.addEventListener('click', event => increment(event, element, max));
         }
     });
 
-    function decrement(el: HTMLInputElement, min: NullableNumber) {
+    function decrement(event: Event, el: HTMLInputElement, min: NullableNumber) {
         let value: number = parseInt(el.value) || 0;
         value--;
         if (min === null || value >= min) {
             el.value = value.toString();
         }
+        clickEvent(event, el);
     }
 
-    function increment(el: HTMLInputElement, max: NullableNumber) {
+    function increment(event: Event, el: HTMLInputElement, max: NullableNumber) {
         let value: number = parseInt(el.value) || 0;
         value++;
         if (max === null || value <= max) {
             el.value = value.toString();
         }
+        clickEvent(event, el)
     }
 }

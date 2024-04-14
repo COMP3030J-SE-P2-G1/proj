@@ -37,8 +37,69 @@ const items: Item[] = Object.entries(jsonData).map(([name, consumption]) => ({
     consumption
 }));
 
-function updateItems(event: Event): void {
-    console.log(event);
+function createSidePanelItemCounterElm(itemName: string, itemNum: string, price: string): HTMLDivElement {
+    const divElm = document.createElement("div");
+    divElm.setAttribute("data-item", itemName);
+    divElm.setAttribute("class", "flex justify-between text-sm items-center");
+    
+    const itemNumElm = document.createElement("div");
+    const nameElm = document.createElement("span"); nameElm.textContent = `${itemName} x `;
+    const numElm = document.createElement("span"); numElm.textContent = itemNum;
+    itemNumElm.appendChild(nameElm); itemNumElm.appendChild(numElm);
+    
+    const priceElm = document.createElement("span"); priceElm.textContent = `per ${price} kWh`;
+    
+    divElm.appendChild(itemNumElm); divElm.appendChild(priceElm);
+    return divElm;
+}
+
+function createSidePanelPromptElm(): HTMLDivElement {
+    const divElm = document.createElement("div");
+    divElm.setAttribute("id", "sidebar-prompt");
+    divElm.setAttribute("class", "text-sm text-base-content-shadow flex justify-center");
+    const subDivElm = document.createElement("div");
+    subDivElm.textContent = "Select appliances to start estimation";
+    divElm.appendChild(subDivElm);
+    return divElm;
+}
+
+function updateItems(event: Event, inputNumElm: HTMLInputElement): void {
+    const sidePanelElm = document.getElementById("side-panel")!;
+    const input_number_div = inputNumElm.parentElement;
+    if (!input_number_div) return;
+    const rowElm = input_number_div.parentElement?.parentElement;
+    if (!rowElm) return;
+    const itemNum = inputNumElm.value;
+    const itemName = rowElm.children[1].textContent!;
+    const priceElm = rowElm.children[2].children[0];
+    let price: string = "";
+    if (priceElm.nodeName == "SPAN") {
+        price = priceElm.textContent!;
+    } else {
+        price = (priceElm as HTMLSelectElement).value;
+    }
+
+    const sidePanelItemDivElm = document.querySelector(`[data-item="${itemName}"]`);
+    if (sidePanelItemDivElm) {
+        if (itemNum == "0") {
+            sidePanelElm.removeChild(sidePanelItemDivElm);
+        } else {
+            const numElm = sidePanelItemDivElm.firstChild?.lastChild;
+            if (numElm) {
+                numElm.textContent = itemNum;
+            }
+        }
+    } else if (itemNum != "0") {
+        sidePanelElm.appendChild(createSidePanelItemCounterElm(itemName, itemNum, price));
+    }
+
+    const sidePanelItemElmCount = sidePanelElm.querySelectorAll("[data-item]").length;
+    const sidePanelPromptElm = document.getElementById("sidebar-prompt");
+    if (sidePanelItemElmCount == 0 && !sidePanelPromptElm) {
+        sidePanelElm.appendChild(createSidePanelPromptElm());
+    } else if (sidePanelItemElmCount > 0 && sidePanelPromptElm) {
+        sidePanelElm.removeChild(sidePanelPromptElm);
+    }
 }
 
 function createInputNumberHTML(): string {
@@ -72,9 +133,11 @@ function populateTable() {
             const span = document.createElement("span");
             span.setAttribute("class", "font-bold");
             span.textContent = `${item.consumption}`;
+            
             const span1 = document.createElement("span");
             span1.textContent = "kWh";
             span1.setAttribute("class", "ml-2");
+            
             colPrice.appendChild(span);
             colPrice.appendChild(span1);
             // colPrice.textContent = `${item.consumption} kWh`;
@@ -103,16 +166,16 @@ function populateTable() {
 }
 
 function bindEvents(): void {
-    const input_number_divs = document.querySelectorAll(".input-number-div");
-    input_number_divs.forEach(divElm => {
-        [divElm.firstElementChild, divElm.lastElementChild].forEach(elm => {
-            elm?.addEventListener("click", updateItems);
-        });
-    });
+    // const input_number_divs = document.querySelectorAll(".input-number-div");
+    // input_number_divs.forEach(divElm => {
+    //     [divElm.firstElementChild, divElm.lastElementChild].forEach(elm => {
+    //         elm?.addEventListener("click", updateItems);
+    //     });
+    // });
 }
 
 export default function onLoad() {
     populateTable();
-    initInputNumber(".input-number");
+    initInputNumber(".input-number", updateItems);
     bindEvents();
 }

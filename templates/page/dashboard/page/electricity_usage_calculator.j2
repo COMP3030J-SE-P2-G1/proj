@@ -5,9 +5,9 @@
     </header>
     <section class="overflow-auto flex-auto flex justify-center items-center">
         <div class="size-11/12 flex gap-2">
-            <div class="rounded-2xl bg-base-200 basis-1/4 m-2 overflow-auto">
+            <div id="side-panel" class="rounded-2xl bg-base-200 basis-1/4 m-2 p-3 pt-5 overflow-auto">
                 <div id="sidebar-prompt" class="text-sm text-base-content-shadow flex justify-center">
-                    <div class="my-3">
+                    <div>
                         Select appliances to start estimation
                     </div>
                 </div>
@@ -32,9 +32,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="rounded-2xl basis-1/12 bg-base-200 shrink-0 min-h-12 flex p-2 items-center overflow-x-auto text-nowrap">
+                <div id="bottom-bar" class="rounded-2xl basis-1/12 bg-base-200 shrink-0 min-h-12 flex p-2 items-center overflow-x-auto text-nowrap text-sm">
                     <div class="mx-1"> <input id="total-hours" class="bg-base-300 rounded p-0.5 w-20" type="number" min="0"> </div> hours
-                    <span class="mx-1 font-bold">OR</span>
+                    <span class="mx-1 font-bold text-xl">OR</span>
                     Average <div class="mx-1"> <input id="hours-per-day" class="bg-base-300 rounded p-0.5 w-20" type="number" min="0" max="24"> </div> hours every day, for total 
                     <div class="mx-1"> <input id="weeks" class="bg-base-300 rounded p-0.5 w-20" type="number"> </div> weeks
                     <div class="flex-auto"></div>

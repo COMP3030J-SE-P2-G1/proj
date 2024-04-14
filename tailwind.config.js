@@ -23,6 +23,8 @@ module.exports = {
     safelist: [
         'scale-125', 'shadow',
         // electricity usage calculator
-        'font-bold', 'font-normal', 'p-1.5', 'text-right', 'ml-2']
+        'font-bold', 'font-normal', 'p-1.5', 'text-right', 'ml-2',
+        "flex", "justify-between", "text-sm", "items-center"
+    ]
 }
 
