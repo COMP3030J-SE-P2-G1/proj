@@ -14,13 +14,10 @@ def load_user(user_id):
 
 @dataclass
 class User(db.Model, UserMixin):
-    __tablename__ = 'user'
+    __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
-    avatar_file: Mapped[str] = mapped_column(default='default.jpg')
+    avatar_file: Mapped[str] = mapped_column(default="default.jpg")
     profiles: Mapped[List[Profile]] = relationship(back_populates="user")
-
-    def __repr__(self):
-        return f"User('{self.username}','{self.email},'{self.avatar_file}')"

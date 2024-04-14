@@ -11,12 +11,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 class Usage(db.Model):
     """
     Business usage profile
-    required attr:
-        id:
-        p_id: id to identify which profile this usage belong to
-            (up to your discretion, tell me after you've decided)
-        time: hourly timestamp (use appropriate format, please tell me after you've decided)
-        usage: ...kWh
     """
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -25,6 +19,3 @@ class Usage(db.Model):
     time: Mapped[datetime] = mapped_column()
     usage: Mapped[float] = mapped_column()
     publicize: Mapped[bool] = mapped_column(default=False)
-
-    def __repr__(self):
-        return f"Usage('{self.p_id}','{self.time}','{self.usage}'"
