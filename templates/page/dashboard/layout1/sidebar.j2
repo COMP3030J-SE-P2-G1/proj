@@ -21,6 +21,21 @@
     <use href="#carbon-tool-kit"/>
 </svg>
 
+<svg style="display: none" version="2.0">
+    <defs>
+        <symbol viewBox="0 0 24 24" id="material-symbols-api"><path fill="currentColor" d="m12 14l-2-2l2-2l2 2zM9.875 8.125l-2.5-2.5L12 1l4.625 4.625l-2.5 2.5L12 6zm-4.25 8.5L1 12l4.625-4.625l2.5 2.5L6 12l2.125 2.125zm12.75 0l-2.5-2.5L18 12l-2.125-2.125l2.5-2.5L23 12zM12 23l-4.625-4.625l2.5-2.5L12 18l2.125-2.125l2.5 2.5z"></path></symbol>
+    </defs>
+    <use href="#material-symbols-api"/>
+</svg>
+
+
+<svg style="display: none" version="2.0">
+    <defs>
+        <symbol viewBox="0 0 24 24" id="solar-document-text-linear"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10c0-3.771 0-5.657 1.172-6.828C5.343 2 7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172C21 4.343 21 6.229 21 10v4c0 3.771 0 5.657-1.172 6.828C18.657 22 16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172C3 19.657 3 17.771 3 14z"></path><path stroke-linecap="round" d="M8 12h8M8 8h8m-8 8h5"></path></g></symbol>
+    </defs>
+    <use href="#solar-document-text-linear"/>
+</svg>
+
 
 
 <aside class="fixed inset-y-0 left-0 bg-base-300 w-20 xl:w-60 flex flex-col overflow-x-hidden overflow-auto rounded-2xl m-2 ml-1">
@@ -80,10 +95,31 @@
                 </details>
             </li>
             <li>
-                <a>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <a class="block xl:hidden">
+                    <svg class="h-5 w-5">
+                        <use href="#material-symbols-api" />
+                    </svg>
                     <span class="hidden xl:inline">API Panel</span>
                 </a>
+                <details class="hidden xl:block">
+                    <summary>
+                        <svg class="h-5 w-5">
+                            <use href="#material-symbols-api" />
+                        </svg>
+                        <span class="inline">API</span>
+                    </summary>
+                    <ul>
+                        <li>
+                            <a hx-get="/dashboard/api_doc/restful" hx-target="#main">
+                                <svg class="h-5 w-5">
+                                    <use href="#solar-document-text-linear" />
+                                </svg>
+                                <span class="hidden xl:inline">Restful API</span>
+                            </a>
+                        </li>
+                    </ul>
+                </details>
+
             </li>
             <li>
                 <a class="block xl:hidden">

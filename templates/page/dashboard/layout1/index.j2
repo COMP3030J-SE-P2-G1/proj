@@ -1,5 +1,10 @@
 {% extends '/page/dashboard/base.j2' %}
 
+{% block links %}
+    {{ super() }}
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin defer></script>
+{% endblock %}
+
 {% block body_inner %}
     <div class="flex">
         {% include '/page/dashboard/layout1/sidebar.j2' %}

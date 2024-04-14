@@ -1,0 +1,11 @@
+<div class="size-full p-3">
+    <section>
+        <div id="swagger-ui"></div>
+        <script>
+            SwaggerUIBundle({
+                url: '{{ url_for("static", filename="api_doc/restful.yaml") }}',
+                dom_id: '#swagger-ui',
+            });
+        </script>
+    </section>
+</div>

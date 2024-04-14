@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: Restful API documentation
+  description: NOTE exposed API DOC. ADD user authentication key.
+  version: 0.1.0
+servers:
+  - url: https://localhost:5000
+  - url: https://localhost:3000
+    description: browsersync
+  
+paths:
+  /api/user/profiles:
+    get:
+      summary: get all profiles of a user. Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/profile'
+      tags:
+        - user
+        - profile
+        - electricity
+        
+  /api/profile/{profileId}:
+    get:
+      summary: get specifc profile
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/profile'
+                
+      tags:
+        - profile
+        - electricity
+        
+  /api/profile/{profileId}/usage:
+    post:
+      summary: usage data
+      description: note user permission
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - profile
+        - electricity
+        
+  /api/profile/{profileId}/solar:
+    post:
+      summary: generated solar electricity data
+      description: note user permission
+      parameters:
+        - $ref: '#/components/parameters/profileId'
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - profile
+        - electricity
+  
+  /api/data/sems:
+    post:
+      summary: Single Electricity Market Spot
+      requestBody:
+        $ref: '#/components/requestBodies/time_interval'
+      responses:
+        '200':
+          description: 'success'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: integer
+                  minItems: 2
+                  maxItems: 2
+      tags:
+        - electricity
+        
+components:
+  schemas:
+    profile:
+      type: object
+      properties:
+        profile_id:
+          type: integer
+          description: id of this profile
+        usage_id:
+          type: string
+          description: id of the usage profile
+        solar_id:
+          type: string
+          description: id of the solar panel configuration profile
+          
+  requestBodies:
+    time_interval:
+      description: time interval. Note that the `step` property is enum type, which is not noted in the `exmaple value` tab
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              step:
+                type: string
+                description: time step
+                enum: 
+                 - 15m
+                 - 30m
+                 - 1d
+                 - 1m
+                 - 1y
+              start_time:
+                type: string
+                format: date-time
+              end_time:
+                type: string
+                format: date-time
+          
+  parameters:
+    profileId:
+      in: path
+      name: profileId
+      schema:
+        type: integer
+      required: true
+      description: id of a profile
+
+  

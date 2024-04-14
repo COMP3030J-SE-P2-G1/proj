@@ -2,7 +2,7 @@
  * Dashboard
  */
 
-import { ready } from "./lib/utils";
+import { ready, loadCss, loadCssList } from "./lib/utils";
 import htmx from 'htmx.org';
 window.htmx = htmx;
 
@@ -29,7 +29,34 @@ async function loadModule(moduleName: string, importer: ModuleImporter) {
     });
 }
 
+/**
+ * handle htmx:confirm event, can do things like loading css files(you can use
+ * utility functions like `loadCss` and `loadCssList`)
+ * One disadvantage of it is that we cannot load css and do request for our sub-page
+ * in parallel. (It's also not possible to introduce a mutex and block/delay the subsequence
+ * htmx request since htmx's event hanlding is async)
+ */
+function htmxConfirmHanlder(event: CustomEvent<any>) {
+    event.preventDefault();
+    let requestPath: string = event.detail.path;
+    if (!requestPath.startsWith(DASHBOARD_URL_PREFIX)) return;
+    requestPath = requestPath.substring(DASHBOARD_URL_PREFIX.length);
+    switch (requestPath) {
+        case 'api_doc/restful':
+            loadCss(
+                "https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css",
+                () => { event.detail.issueRequest();}
+            );
+            break;
+        default:
+            event.detail.issueRequest();
+            break;
+    }
+}
 
+/**
+ * hanlde htmx:afterSettle event, can do things like load and execute an ES module
+ */
 function htmxAfterSettleHandler(event: CustomEvent<any>) {
     let requestPath: string = event.detail.pathInfo.requestPath;
     if (!requestPath.startsWith(DASHBOARD_URL_PREFIX)) return;
@@ -43,10 +70,25 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
     }
 }
 
+/**
+ * Use this function to async load resources
+ */
+function asyncLoad() {
+    // Promise may not be necessary here
+    return new Promise<void>(() => {
+        loadCssList(
+            ["https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css"],
+            () => {}
+        );
+        import("./dashboard/electricity_usage_calculator.ts");
+    });
+}
 
 
 (function (){
     ready(() => {
+        document.body.addEventListener<any>('htmx:confirm', htmxConfirmHanlder);
         document.body.addEventListener<any>('htmx:afterSettle', htmxAfterSettleHandler);
+        asyncLoad();
     });
 })();
