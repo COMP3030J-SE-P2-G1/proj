@@ -1,4 +1,4 @@
-var dom = document.getElementById('ele');
+var dom = document.getElementById('pricesChart');
 var myChart = echarts.init(dom, null, {
   renderer: 'canvas',
   useDirtyRect: false
@@ -7,7 +7,7 @@ var app = {};
 
 var option;
 
-async function updateChart() {
+async function updatePricesChart() {
   const response = await fetch('/static/others/historical-irish-electricity-prices.csv');
   const text = await response.text();
   const lines = text.trim().split('\n');
@@ -97,5 +97,5 @@ async function updateChart() {
   }
 }
 
-window.addEventListener('resize', myChart.resize);
-window.onload = updateChart;  // 在页面加载时初始化图表
+window.addEventListener('load', updatePricesChart);
+window.onload = updatePricesChart;  // 在页面加载时初始化图表

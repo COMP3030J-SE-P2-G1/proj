@@ -48,7 +48,16 @@
         </div>
     </div>
     <div style="height: 440px;">
-        <select class="select select-bordered max-w-xs border-white" id="yearSelect" onchange="updateChart()">
+        <select class="select select-bordered max-w-xs border-white" id="consumptionSelect" onchange="updateConsumptionChart()">
+            <option disabled selected>Electricity Consumption</option>
+            <option value="UCD">UCD</option>
+            <option value="usage">Usage</option>
+        </select>
+        <div id="consumptionChart" style="height: 100%"></div>
+    </div>
+
+    {# <div style="height: 440px;">
+        <select class="select select-bordered max-w-xs border-white" id="yearSelect" onchange="updatePricesChart()">
             <option class="text-cyan-500" disabled selected>Historical Irish Electricity Prices</option>
             <option value="2018">2018</option>
             <option value="2019">2019</option>
@@ -58,15 +67,11 @@
             <option value="2023">2023</option>
             <option value="2024">2024</option>
         </select>
-        <div class="" id="ele" style="height: 100%"></div>
-    </div>
-
-
-
-    <section id="analysis_panel" class="flex m-1">
-    </section>
+        <div class="" id="pricesChart" style="height: 100%"></div>
+    </div> #}
 </div>
 
 
 <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+<script type="text/javascript" src="/static/js/chart/electricity_consumption.js"></script>
 <script type="text/javascript" src="/static/js/chart/his_irish_ele_prices.js"></script>
