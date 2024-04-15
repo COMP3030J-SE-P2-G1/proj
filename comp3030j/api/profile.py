@@ -41,17 +41,22 @@ def profile(id):
 
 @bp.route("/<int:id>/usage", methods=["POST"])
 def usage(id):
+    """
+    request has body as:
+    {
+        start_time: YYYY-MM-DD HH:MM:SS
+        end_time: YYYY-MM-DD HH:MM:SS
+    }
+    """
+    content = request.json  # get POSTed content
+    start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
+    end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
         return response
-    # result = db.session.execute(db.select(Usage).filter_by(profile_id=profile.id))
-    # if not result:
-    #     return ({"code": 3, "errorMsg": "No usage data for given profile"}, 400)
-    # return jsonify(result.all())
 
-    if len(profile.usage) == 0:
-        return ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-    return profile.usage.to_dict()
+    return jsonify([v.to_dict() for v in profile.usage if start_dt <= v.time <= end_dt])
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
