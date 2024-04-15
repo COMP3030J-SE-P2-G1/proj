@@ -5,6 +5,7 @@ from comp3030j.db.Solar import Solar
 from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta
+import requests, json
 
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
 
@@ -93,4 +94,45 @@ def solar(id):
         )
         .filter(Solar.time.between(start_dt, end_dt))
     )
-    return jsonify([v.to_dict() for v in result])
+
+    result_list = [v.to_dict() for v in result]
+    # if len(result_list) == 0 and (end_dt - start_dt) > timedelta(hours=1):
+    #     query_pvgis(lon=round(profile.lon, 1), lat=round(profile.lat, 1), power = profile.power, )
+    # else:  # resource is aptly provided by local resources.
+    return jsonify(result_list)
+
+
+def query_pvgis(
+    lat: float,
+    lon: float,
+    year: int,
+    power: float,  # nominal capacity, in watts
+    pv_tech_code: int,
+    loss: float,  # system loss
+):
+    pvgis_5_2 = "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?"
+
+    try:
+        pv_tech_string = ["crystSi", "CIS", "CdTe"][pv_tech_code]
+    except KeyError:
+        raise ValueError("invalid pv_tech_code")
+
+    payload = {
+        "outputformat": "json",
+        "optimalinclination": 1,
+        "optimalangles": 1,
+        "pvcalculation": 1,
+        "lat": lat,
+        "lon": lon,
+        "startyear": year,
+        "endyear": year,
+        "peakpower": power,
+        "pvtechchoice": pv_tech_string,
+        "loss": loss,
+    }
+    response = requests.get(pvgis_5_2, params=payload)
+    if response.ok:
+        json_data = json.loads(response.content)
+        return json_data
+    else:
+        response.raise_for_status()
