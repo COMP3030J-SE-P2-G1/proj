@@ -28,9 +28,11 @@ def init_db():
     from comp3030j.db.User import User
     from comp3030j.db.Profile import Profile
     from comp3030j.db.SEMSpot import SEMSpot
+    from comp3030j.db.Solar import Solar
     from comp3030j.db.Usage import Usage
 
     from script.parse_csv_data import read_spot_from_csv, read_quarter_hourly_usage_csv
+    from script.parse_json_data import read_solar_json
 
     if getenv("POPULATE_DB"):
         with app.app_context():
@@ -38,6 +40,8 @@ def init_db():
                 "./script/historical-irish-electricity-prices.csv"
             )
             usages = read_quarter_hourly_usage_csv("./script/UCD_2023_profile.csv")
+            solar_input, solar_values = read_solar_json("./script/data.json")
+            (lat, lon, tech_code, power, loss) = solar_input
 
             user = User(
                 username="public_profiles", email="null", password="not_a_password"
@@ -55,6 +59,15 @@ def init_db():
             for timestamp, value in usages.items():
                 usage = Usage(time=timestamp, usage=value, profile_id=demo_profile.id)
                 db.session.add(usage)
+
+            for timestamp, value in solar_values.items():
+                # fmt: off
+                solar = Solar(
+                    time=timestamp, generation=value, profile_id=demo_profile.id,
+                    lat=lat, lon=lon, tech=tech_code, loss=loss, power=power
+                )
+                # fmt: on
+                db.session.add(solar)
 
             db.session.commit()
 
