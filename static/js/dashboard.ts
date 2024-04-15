@@ -37,16 +37,19 @@ async function loadModule(moduleName: string, importer: ModuleImporter) {
  * htmx request since htmx's event hanlding is async)
  */
 function htmxConfirmHanlder(event: CustomEvent<any>) {
+    function lc(url: string) {
+        loadCss(url, () => { event.detail.issueRequest();});
+    }
     event.preventDefault();
     let requestPath: string = event.detail.path;
     if (!requestPath.startsWith(DASHBOARD_URL_PREFIX)) return;
     requestPath = requestPath.substring(DASHBOARD_URL_PREFIX.length);
     switch (requestPath) {
         case 'api_doc/restful':
-            loadCss(
-                "https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css",
-                () => { event.detail.issueRequest();}
-            );
+            lc("https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css");
+            break;
+        case 'api_doc/graphql_playground':
+            lc("https://unpkg.com/graphiql/graphiql.min.css");
             break;
         default:
             event.detail.issueRequest();
@@ -68,6 +71,9 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
         case 'api_doc/restful':
             void loadModule("api_doc_restful.ts", () => import("./dashboard/api_doc_restful.ts"));
             break;
+        case 'api_doc/graphql_playground':
+            void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
+            break;
         default:
             break;
     }
@@ -80,11 +86,15 @@ function asyncLoad() {
     // Promise may not be necessary here
     return new Promise<void>(() => {
         loadCssList(
-            ["https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css"],
+            [
+                "https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css",
+                "https://unpkg.com/graphiql/graphiql.min.css"
+            ],
             () => {}
         );
         import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/api_doc_restful.ts");
+        import("./dashboard/api_doc_graphql_playground.ts");
     });
 }
 
