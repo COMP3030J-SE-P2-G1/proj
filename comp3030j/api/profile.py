@@ -19,7 +19,7 @@ def get_profile(id):
     profile = db.session.scalar(db.select(Profile).filter_by(id=id))
     if not profile:
         return None, ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-    elif profile.u_id < 1000:  # public data: user_id < 1000 (typically 0)
+    elif profile.user_id < 1000:  # public data: user_id < 1000 (typically 0)
         return profile, None
     elif not current_user.is_authenticated:
         return None, current_app.login_manager.unauthorized()
