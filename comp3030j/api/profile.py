@@ -56,7 +56,13 @@ def usage(id):
     if response:  # for some reason user profile is not available
         return response
 
-    return jsonify([v.to_dict() for v in profile.usage if start_dt <= v.time <= end_dt])
+    result = db.session.scalars(
+        db.select(Usage)
+        .filter_by(profile_id=profile.id)
+        .filter(Usage.time.between(start_dt, end_dt))
+    )
+
+    return jsonify([v.to_dict() for v in result])
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
@@ -77,14 +83,14 @@ def solar(id):
         return response
 
     result = db.session.scalars(
-        db.select(Solar).filter_by(
+        db.select(Solar)
+        .filter_by(
             lon=profile.lon,
             lat=profile.lat,
             tech=profile.tech,
             loss=profile.loss,
             power=profile.power,
         )
-    ).all()
-    return jsonify(
-        [v.to_dict() for v in result if start_dt <= v.time <= end_dt]
-    )  # ensure a valid json is returned
+        .filter(Solar.time.between(start_dt, end_dt))
+    )
+    return jsonify([v.to_dict() for v in result])
