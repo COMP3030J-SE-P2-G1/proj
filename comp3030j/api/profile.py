@@ -4,7 +4,6 @@ from comp3030j.db.Usage import Usage
 from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
 
-
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
 
 
@@ -34,7 +33,8 @@ def profile(id):
     profile, response = get_profile(id)
     if response:
         return response
-    return jsonify(profile)
+
+    return profile.to_dict()
 
 
 @bp.route("/<int:id>/usage", methods=["POST"])

@@ -1,17 +1,18 @@
 from . import db
-from typing import Optional
 from .Profile import Profile
-from dataclasses import dataclass
 from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy_serializer import SerializerMixin
 
 
-@dataclass
-class Usage(db.Model):
+class Usage(db.Model, SerializerMixin):
     """
     Business usage profile
     """
+
+    # Exclude ORM relationships
+    serialize_rules = ("-profile",)
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))

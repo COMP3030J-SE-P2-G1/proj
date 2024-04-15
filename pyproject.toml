@@ -19,6 +19,7 @@ dependencies = [
     "flask_bcrypt>=1.0.1",
     "flask_login>=0.6.3",
     "email_validator>=2.1.1",
+    "sqlalchemy_serializer>=1.4.12",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

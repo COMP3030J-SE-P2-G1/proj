@@ -1,12 +1,11 @@
 from . import db
 from typing import Optional, List
-from dataclasses import dataclass
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy_serializer import SerializerMixin
 
 
-@dataclass
-class Profile(db.Model):
+class Profile(db.Model, SerializerMixin):
     """
     Business usage profile
     required attr:
@@ -15,6 +14,9 @@ class Profile(db.Model):
         solar_id: id of the solar panel configuration
         desc: short description?
     """
+
+    # Exclude ORM relationships
+    serialize_rules = ("-user", "-usage", "-solar")
 
     __tablename__ = "profile"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

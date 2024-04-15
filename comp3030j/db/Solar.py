@@ -1,14 +1,12 @@
 from . import db
-from typing import Optional
 from .Profile import Profile
-from dataclasses import dataclass
 from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy_serializer import SerializerMixin
 
 
-@dataclass
-class Solar(db.Model):
+class Solar(db.Model, SerializerMixin):
     """
     Solar panel calculation result cache
     required attr:
@@ -22,6 +20,9 @@ class Solar(db.Model):
         loss: float，内损
         power: float, 装机发电量（瓦特）
     """
+
+    # Exclude ORM relationships
+    serialize_rules = ("-profile",)
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
