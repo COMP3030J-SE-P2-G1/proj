@@ -1,4 +1,4 @@
-// TODO table allow user to add custom items
+// TODO table allow user to add custom items (note: we should change the inputNumberUpdateItem functions since it uses itemName as selectQuery key)
 // This will can also deal with the problem that user can only choose one price from a list of price for a specific item
 
 import { initInputNumber } from '../lib/input-number.ts';
@@ -42,15 +42,15 @@ const items: Item[] = Object.entries(jsonData).map(([name, consumption]) => ({
 // itemName -> total money of this item
 const selectedItems = new Map();
 
-function createSidePanelItemCounterElm(itemName: string, itemNum: string, price: string): HTMLDivElement {
+function createSidePanelItemCounterElm(itemName: string, itemNum: number, price: number): HTMLDivElement {
     const divElm = document.createElement("div");
     divElm.setAttribute("data-item", itemName);
     divElm.setAttribute("class", "flex justify-between text-sm items-center");
     
     const itemNumElm = document.createElement("div");
-    const nameElm = document.createElement("span"); nameElm.textContent = `${itemName} x `;
-    const numElm = document.createElement("span"); numElm.textContent = itemNum;
-    itemNumElm.appendChild(nameElm); itemNumElm.appendChild(numElm);
+    const itemNameSpanElm = document.createElement("span"); itemNameSpanElm.textContent = `${itemName} x `;
+    const itemNumSpanElm = document.createElement("span"); itemNumSpanElm.textContent = `${itemNum}`;
+    itemNumElm.appendChild(itemNameSpanElm); itemNumElm.appendChild(itemNumSpanElm);
     
     const priceElm = document.createElement("span"); priceElm.textContent = `per ${price} kWh`;
     
@@ -68,38 +68,61 @@ function createSidePanelPromptElm(): HTMLDivElement {
     return divElm;
 }
 
-function updateItems(event: Event, inputNumElm: HTMLInputElement): void {
-    const sidePanelElm = document.getElementById("side-panel")!;
-    const input_number_div = inputNumElm.parentElement;
-    if (!input_number_div) return;
-    const rowElm = input_number_div.parentElement?.parentElement;
+function inputNumberUpdateItem(_event: Event, inputNumElm: HTMLInputElement) {
+    const rowElm = inputNumElm.parentElement?.parentElement?.parentElement;
     if (!rowElm) return;
-    const itemNum = inputNumElm.value;
+    genericUpdateItem(rowElm);
+}
+
+function selectPriceUpdateItem(event: Event) {
+    const selectOptionElm = event.target as HTMLSelectElement;
+    const rowElm = selectOptionElm.parentElement?.parentElement;
+    if (!rowElm) return;
+    
+    genericUpdateItem(rowElm);
+}
+
+function genericUpdateItem(rowElm: HTMLElement) {
+    const inputNumElm = rowElm.querySelector(".input-number") as HTMLInputElement;
+    if (!inputNumElm) return;
+    const itemNum = parseInt(inputNumElm.value ?? "0");
     const itemName = rowElm.children[1].textContent!;
     const priceElm = rowElm.children[2].children[0];
-    let price: string = "";
+    let price: number = 0;
     if (priceElm.nodeName == "SPAN") {
-        price = priceElm.textContent!;
+        price = parseFloat(priceElm.textContent!);
     } else {
-        price = (priceElm as HTMLSelectElement).value;
+        price = parseFloat((priceElm as HTMLSelectElement).value);
     }
+    
+    updateItem(itemName, itemNum, price);
 
+    updateTotalPriceDisplay()    
+}
+
+function updateItem(itemName: string, itemNum: number, price: number) {
+    // update sum
+    selectedItems.set(itemName, itemNum * price);
+    
+    // update visual layout
+    const sidePanelElm = document.getElementById("side-panel")!;
     const sidePanelItemDivElm = document.querySelector(`[data-item="${itemName}"]`);
     if (sidePanelItemDivElm) {
-        if (itemNum == "0") {
+        if (itemNum == 0) {
             sidePanelElm.removeChild(sidePanelItemDivElm);
         } else {
             const numElm = sidePanelItemDivElm.firstChild?.lastChild;
             if (numElm) {
-                numElm.textContent = itemNum;
+                numElm.textContent = `${itemNum}`;
+            }
+            const priceElm = sidePanelItemDivElm.lastChild;
+            if (priceElm) {
+                priceElm.textContent = `per ${price} kWh`;
             }
         }
-    } else if (itemNum != "0") {
+    } else if (itemNum != 0) {
         sidePanelElm.appendChild(createSidePanelItemCounterElm(itemName, itemNum, price));
     }
-
-    selectedItems.set(itemName, parseInt(itemNum) * parseFloat(price));
-    updateTotalPriceDisplay()
 }
 
 function getTotalHours(): number | null {
@@ -179,6 +202,7 @@ function populateTable() {
             // colPrice.textContent = `${item.consumption} kWh`;
         } else {
             const selectElm = document.createElement("select");
+            selectElm.addEventListener("change", selectPriceUpdateItem);
             selectElm.setAttribute("class", "p-1.5 text-right");
             item.consumption.forEach(price => {
                 const optionElm = document.createElement("option");
@@ -202,12 +226,6 @@ function populateTable() {
 }
 
 function bindEvents(): void {
-    // const input_number_divs = document.querySelectorAll(".input-number-div");
-    // input_number_divs.forEach(divElm => {
-    //     [divElm.firstElementChild, divElm.lastElementChild].forEach(elm => {
-    //         elm?.addEventListener("click", updateItems);
-    //     });
-    // });
     const totalHoursElm = document.getElementById("total-hours") as HTMLInputElement;
     const hoursPerDayElm = document.getElementById("hours-per-day") as HTMLInputElement;
     const weeksElm = document.getElementById("weeks") as HTMLInputElement;
@@ -219,6 +237,6 @@ function bindEvents(): void {
 export default function onLoad() {
     selectedItems.clear();
     populateTable();
-    initInputNumber(".input-number", updateItems);
+    initInputNumber(".input-number", inputNumberUpdateItem);
     bindEvents();
 }
