@@ -29,15 +29,15 @@ def read_solar_json(json_filename: str):
     power = pv_module["peak_power"]
     loss = pv_module["system_loss"]
 
+    eleven_minute = timedelta(minutes=11)
+
     inputs = (lat, lon, tech_code, power, loss)
-
     series_dict = {}
-
     for datapoint in data["outputs"]["hourly"]:
         time, power_out = datapoint["time"], datapoint["P"]
 
         # read only to the hour-time, implicitly normalizing timestamp
-        timestamp = datetime.strptime(time, "%Y%m%d:%H")
+        timestamp = datetime.strptime(time, "%Y%m%d:%H%M") - eleven_minute
         # convert power_out (in watts) to generation (in kilojoules)
         generation = power_out * 3.6
         series_dict.update({timestamp: generation})
@@ -46,4 +46,4 @@ def read_solar_json(json_filename: str):
 
 
 if __name__ == "__main__":
-    read_solar_json("data.json")
+    print(read_solar_json("data.json"))
