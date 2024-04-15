@@ -26,8 +26,8 @@ class Profile(db.Model, SerializerMixin):
     desc: Mapped[Optional[str]]
     usage: Mapped[List["Usage"]] = relationship(back_populates="profile")
 
-    lon: Mapped[float] = mapped_column()
-    lat: Mapped[float] = mapped_column()
-    tech: Mapped[int] = mapped_column()  # use Integer to represent different techs
-    loss: Mapped[float] = mapped_column()
-    power: Mapped[float] = mapped_column()
+    lon: Mapped[Optional[float]] = mapped_column()
+    lat: Mapped[Optional[float]] = mapped_column()
+    tech: Mapped[Optional[int]] = mapped_column()  # use Integer to represent different techs
+    loss: Mapped[Optional[float]] = mapped_column()
+    power: Mapped[Optional[float]] = mapped_column()

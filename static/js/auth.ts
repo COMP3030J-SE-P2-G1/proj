@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(form);
 
         try {
-            const response = await fetch('/change_password', {
+            const response = await fetch('dashboard/update_usage', {
                 method: 'POST',
-                body: formData // FormData object automatically sets the Content-Type to 'multipart/form-data', including the boundary parameter.
+                body: formData
             });
             if (!response.ok) {
                 if (response.status === 400) {

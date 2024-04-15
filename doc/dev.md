@@ -57,6 +57,7 @@
   
   > alpha feature:  
   > run `env POPULATE_DB=true ADMIN=A ADMIN_EMAIL=B just initialize` command
+  > Or  run `set POPULATE_DB=true` if you use Windows
   > to populate database.
   
 ## Command 
