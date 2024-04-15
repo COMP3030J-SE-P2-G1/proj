@@ -13,8 +13,9 @@ def allowed_img(filename):
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'csv', 'xlsx', 'xls'}
+    if '.' in filename and filename.rsplit('.', 1)[1].lower() in {'csv', 'xlsx', 'xls'}:
+        return filename.rsplit('.', 1)[1].lower()
+    return False
 
 
 def save_file(file, path, file_name):
@@ -26,4 +27,3 @@ def delete_file(path, file_name):
         os.remove(os.path.join(app.root_path, path, file_name))
     except FileNotFoundError:
         pass
-

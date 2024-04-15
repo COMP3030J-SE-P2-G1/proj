@@ -1,8 +1,12 @@
-from flask import Blueprint, render_template, request, session, flash
+from flask import Blueprint, render_template, request, session, flash, jsonify
 from flask_login import login_required
-from werkzeug.utils import secure_filename
+
+from comp3030j.db import db
+from comp3030j.db.Profile import Profile
+from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
 from comp3030j.util import allowed_file, _ltr
+from script.parse_csv_data import read_hourly_usage_csv
 
 bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
@@ -21,17 +25,31 @@ def serve_static(path):
 @login_required
 def update_usage():
     if 'file' not in request.files:
-        return render_template(f"page/dashboard/page/usage.j2")
+        flash(_ltr('Upload failed'), 'error')
+        return jsonify({'status': 'error', 'message': 'File upload failure'}), 400
     file = request.files['file']
-    if file and allowed_file(file.filename):
-        # generate the unique filename
-        filename = secure_filename(file.filename)
+    filetype = allowed_file(file.filename)
+    if file and filetype:
         # update the avatar in the database
         user_to_update = User.query.filter_by(id=session['user_id']).first()
         if user_to_update:
-            flash(_ltr('Profile picture uploaded and saved.'), 'success')
+            if filetype == "csv":
+                usages = read_hourly_usage_csv(file)
+            profile = Profile(user_id=session['user_id'], name=str(file.filename.rsplit(".", 1)[0]), desc="Demo Profile")
+            db.session.add(profile)
+            db.session.commit()
+            for timestamp, value in usages.items():
+                if value is None:
+                    flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
+                    return jsonify({'status': 'error', 'message': 'Not allowed data in the file.'}), 400
+                usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
+                db.session.add(usage)
+            db.session.commit()
+            flash(_ltr('Usage data uploaded and saved.'), 'success')
+            return jsonify({'status': 'success', 'message': 'Usage updated successfully'}), 200
         else:
             flash(_ltr('Unavailable Account.'), 'error')
+            return jsonify({'status': 'error', 'message': 'Unavailable Account.'}), 400
     else:
         flash(_ltr('Upload failed'), 'error')
-    return render_template(f"page/dashboard/page/usage.j2")
+        return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': "unsupported file"}), 400
