@@ -11,7 +11,7 @@ from comp3030j.db.User import User
 from comp3030j.extensions import bcrypt
 from comp3030j.util import allowed_img, save_file, delete_file, _ltr
 
-bp = Blueprint("auth", __name__)
+bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 # Registration Form route
@@ -39,11 +39,8 @@ def register():
     return render_template("page/auth/register.j2", title='Register', form=form)
 
 
-@bp.route('/login',
-          # To accept get and post request from register route with the form data
-          methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # check if the user is already login
     if current_user.is_authenticated:
         return redirect(url_for('auth.profile'))
     form = LoginForm()
@@ -58,6 +55,9 @@ def login():
             # Ternary conditional
             session['user_id'] = user.id
             return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
+    else:
+        if 'next' in request.args and request.args.get('next') == url_for('auth.profile'):
+            flash(_ltr('Please login first.'), 'error')
     return render_template("page/auth/login.j2", title='Login', form=form)
 
 
