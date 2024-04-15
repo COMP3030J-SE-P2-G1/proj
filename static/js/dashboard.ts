@@ -65,6 +65,9 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
         case 'electricity_usage_calculator':
             void loadModule("electricity_usage_calculator.ts", () => import("./dashboard/electricity_usage_calculator.ts"));
             break;
+        case 'api_doc/restful':
+            void loadModule("api_doc_restful.ts", () => import("./dashboard/api_doc_restful.ts"));
+            break;
         default:
             break;
     }
@@ -81,6 +84,7 @@ function asyncLoad() {
             () => {}
         );
         import("./dashboard/electricity_usage_calculator.ts");
+        import("./dashboard/api_doc_restful.ts");
     });
 }
 

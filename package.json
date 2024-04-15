@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@types/aos": "^3.0.7",
+    "@types/swagger-ui-dist": "^3.30.4",
     "echarts": "^5.5.0",
-    "htmx.org": "^1.9.11"
+    "htmx.org": "^1.9.11",
+    "swagger-ui-dist": "^5.15.2"
   }
 }
