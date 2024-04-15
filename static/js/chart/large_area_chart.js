@@ -37,15 +37,15 @@ async function updateChart() {
       left: 'center',
       text: 'Irish Electricity Prices'
     },
-    toolbox: {
-      feature: {
-        dataZoom: {
-          yAxisIndex: 'none'
-        },
-        restore: {},
-        saveAsImage: {}
-      }
-    },
+    // toolbox: {
+    //   feature: {
+    //     dataZoom: {
+    //       yAxisIndex: 'none'
+    //     },
+    //     restore: {},
+    //     saveAsImage: {}
+    //   }
+    // },
     xAxis: {
       type: 'category',
       boundaryGap: false,
