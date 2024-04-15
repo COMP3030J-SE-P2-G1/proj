@@ -1,8 +1,10 @@
 from comp3030j.db import db
 from comp3030j.db.Profile import Profile
 from comp3030j.db.Usage import Usage
+from comp3030j.db.Solar import Solar
 from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
+from datetime import datetime, timedelta
 
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
 
@@ -52,13 +54,32 @@ def usage(id):
     return profile.usage.to_dict()
 
 
-@bp.route("/<int:id>/solar")
+@bp.route("/<int:id>/solar", methods=["POST"])
 def solar(id):
+    """
+    request has body as:
+    {
+        start_time: YYYY-MM-DD HH:MM:SS
+        end_time: YYYY-MM-DD HH:MM:SS
+    }
+    """
+    content = request.json  # get POSTed content
+    start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
+    end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
         return response
 
-    if len(profile.solar) == 0:
-        return ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-    return profile.solar.to_dict()
-    # return {"code": 9999, "errorMsg": "Not implemented"}, 400
+    result = db.session.scalars(
+        db.select(Solar).filter_by(
+            lon=profile.lon,
+            lat=profile.lat,
+            tech=profile.tech,
+            loss=profile.loss,
+            power=profile.power,
+        )
+    ).all()
+    return jsonify(
+        [v.to_dict() for v in result if start_dt <= v.time <= end_dt]
+    )  # ensure a valid json is returned
