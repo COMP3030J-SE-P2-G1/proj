@@ -47,8 +47,26 @@
             </div>
         </div>
     </div>
+    <div style="height: 400px;">
+        <select class="select select-bordered w-full max-w-xs" id="yearSelect" onchange="updateChart()">
+            <option disabled selected>Historical Irish Electricity Prices</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+        <div id="ele" style="height: 100%"></div>
+    </div>
+
 
 
     <section id="analysis_panel" class="flex m-1">
     </section>
 </div>
+
+
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+<script type="text/javascript" src="/static/js/chart/large_area_chart.js"></script>
