@@ -49,7 +49,7 @@ def usage(id):
 
     if len(profile.usage) == 0:
         return ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-    return jsonify(profile.usage)
+    return profile.usage.to_dict()
 
 
 @bp.route("/<int:id>/solar")
@@ -60,6 +60,5 @@ def solar(id):
 
     if len(profile.solar) == 0:
         return ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-    return jsonify(profile.solar)
-
+    return profile.solar.to_dict()
     # return {"code": 9999, "errorMsg": "Not implemented"}, 400

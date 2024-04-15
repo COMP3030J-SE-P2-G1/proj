@@ -2,7 +2,7 @@ from . import db
 from .Profile import Profile
 from datetime import datetime
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_serializer import SerializerMixin
 
 
@@ -21,17 +21,11 @@ class Solar(db.Model, SerializerMixin):
         power: float, 装机发电量（瓦特）
     """
 
-    # Exclude ORM relationships
-    serialize_rules = ("-profile",)
-
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
-    profile: Mapped[Profile] = relationship(back_populates="solar")
-    time: Mapped[datetime] = mapped_column()
-    generation: Mapped[float] = mapped_column()
-
     lon: Mapped[float] = mapped_column()
     lat: Mapped[float] = mapped_column()
     tech: Mapped[int] = mapped_column()  # use Integer to represent different techs
     loss: Mapped[float] = mapped_column()
     power: Mapped[float] = mapped_column()
+    time: Mapped[datetime] = mapped_column()
+    generation: Mapped[float] = mapped_column()

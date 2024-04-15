@@ -43,12 +43,18 @@ def init_db():
             solar_input, solar_values = read_solar_json("./script/data.json")
             (lat, lon, tech_code, power, loss) = solar_input
 
+            # initialize default/example series and convert to database
             user = User(
                 username="public_profiles", email="null", password="not_a_password"
             )
             db.session.add(user)
             db.session.flush()
-            demo_profile = Profile(user_id=user.id, name="Demo", desc="Demo Profile")
+            # fmt: off
+            demo_profile = Profile(
+                user_id=user.id, name="Demo", desc="Demo Profile", lat=lat, lon=lon,
+                tech=tech_code, loss=loss, power=power
+            )
+            # fmt: on
             db.session.add(demo_profile)
             db.session.flush()
 
@@ -63,8 +69,8 @@ def init_db():
             for timestamp, value in solar_values.items():
                 # fmt: off
                 solar = Solar(
-                    time=timestamp, generation=value, profile_id=demo_profile.id,
-                    lat=lat, lon=lon, tech=tech_code, loss=loss, power=power
+                    time=timestamp, generation=value, lat=lat, lon=lon, tech=tech_code, 
+                    loss=loss, power=power
                 )
                 # fmt: on
                 db.session.add(solar)
