@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+
 @dataclass
 class Solar(db.Model):
     """
@@ -13,7 +14,7 @@ class Solar(db.Model):
     required attr:
         id: self id
         time: hourly timestamp
-        value: float, power-generated.
+        generation: float, power-generated.
         # parameters the calculation was called with.
         lon: float
         lat: float
@@ -21,16 +22,15 @@ class Solar(db.Model):
         loss: float，内损
         power: float, 装机发电量（瓦特）
     """
+
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
     profile: Mapped[Profile] = relationship(back_populates="solar")
     time: Mapped[datetime] = mapped_column()
-    value: Mapped[float] = mapped_column()
+    generation: Mapped[float] = mapped_column()
 
     lon: Mapped[float] = mapped_column()
     lat: Mapped[float] = mapped_column()
-    amount: Mapped[float] = mapped_column()
-    size: Mapped[int] = mapped_column()
     tech: Mapped[int] = mapped_column()  # use Integer to represent different techs
     loss: Mapped[float] = mapped_column()
     power: Mapped[float] = mapped_column()
