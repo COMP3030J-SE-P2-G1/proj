@@ -1,19 +1,59 @@
 {# This file is used as an component to be replaced with the `#main` element in ../index.j2 file #}
 
 <div class="size-full flex flex-col p-3">
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+                <div class="flash-message">
+                    <ul>
+                        {% for message in messages %}
+                            <li>
+                                <div role="alert" class="alert alert-error h-10 p-2 px-6 bg-red-200 text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6"
+                                         fill="none" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span>{{ message }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+            {% if messages %}
+                <div class="flash-message">
+                    <ul>
+                        {% for message in messages %}
+                            <li>
+                                <div role="alert" class="alert alert-success h-10 p-2 px-6 bg-green-200 text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6"
+                                         fill="none" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span>{{ message }}</span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
     <div class="flex flex-col items-center mt-4">
         <h1 class="text-3xl font-bold text-base-content">Electricity Consumption</h1>
         <span class="text-base-content-shadow mt-2">Visualize electricity consumption patterns across various regions through informative charts.</span>
     </div>
     <div class="flex flex-col w-full h-full lg:flex-row pt-8">
         <div class="grid flex-grow place-items-start">
-            <div style="height: 440px;">
+            <div class="h-full">
                 <select class="select select-bordered border-white" id="consumptionSelect" onchange="updateConsumptionChart()">
                     <option disabled selected>Electricity Consumption</option>
                     <option value="UCD">UCD</option>
                     <option value="usage">Usage</option>
                 </select>
-                <div id="consumptionChart" class="pt-8 place-content-center" style="width: 500%; height: 100%"></div>
+                <div id="consumptionChart" class="pt-8 place-content-center" style="height: 440px;"></div>
             </div>
         </div>
         <div class="grid bg-base-300 h-full card place-items-center">
