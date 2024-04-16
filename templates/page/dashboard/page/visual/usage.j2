@@ -1,0 +1,63 @@
+<div class="size-full flex flex-col p-3">
+    <section>
+        <div class="flex flex-col items-center mt-4">
+            <h1 class="text-3xl font-bold text-base-content">Electricity Consumption</h1>
+            <span class="text-base-content-shadow mt-2">Visualize electricity consumption patterns across various regions through informative charts.</span>
+        </div>
+    </section>
+    <section>
+        <div class="flex flex-col w-full h-full lg:flex-row pt-8">
+        <div class="grid flex-grow place-items-start">
+            <div class="h-full w-full">
+                <select class="select select-bordered border-white" id="consumptionSelect" onchange="updateConsumptionChart()">
+                    <option disabled selected>Electricity Consumption</option>
+                    <option value="UCD">UCD</option>
+                    <option value="usage">Usage</option>
+                </select>
+                <div id="consumptionChart" class="pt-8"></div>
+            </div>
+        </div>
+        <div class="grid h-full card place-items-center">
+            <div class="stats stats-vertical shadow">
+                <div class="stat">
+                    <div class="stat-title">Downloads</div>
+                    <div class="stat-value">31K</div>
+                    <div class="stat-desc">Jan 1st - Feb 1st</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">New Users</div>
+                    <div class="stat-value">4,200</div>
+                    <div class="stat-desc">↗︎ 400 (22%)</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">New Registers</div>
+                    <div class="stat-value">1,200</div>
+                    <div class="stat-desc">↘︎ 90 (14%)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+
+    {# <div style="height: 440px;">
+        <select class="select select-bordered max-w-xs border-white" id="yearSelect" onchange="updatePricesChart()">
+            <option class="text-cyan-500" disabled selected>Historical Irish Electricity Prices</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+        </select>
+        <div class="" id="pricesChart" style="height: 100%"></div>
+    </div> #}
+</div>
+
+
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js"></script>
+<script type="text/javascript" src="/static/js/chart/electricity_consumption.js"></script>
+<script type="text/javascript" src="/static/js/chart/his_irish_ele_prices.js"></script>
