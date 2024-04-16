@@ -20,6 +20,15 @@ def serve_static(path):
     return render_template(f"page/dashboard/page/{path}.j2")
 
 
+@bp.route('/create_profile', methods=['POST'])
+@login_required
+def create_profile():
+    name = request.form.get('name')
+    desc = request.form.get('desc')
+    flash(_ltr('Profile created successfully.'), 'success')
+    return jsonify({'status': 'success', 'message': 'Profile created successfully'}), 200
+
+
 @bp.route('/update_usage', methods=['POST'])
 @login_required
 def update_usage():
