@@ -1,3 +1,4 @@
+from comp3030j import app
 from comp3030j.db import db
 from comp3030j.db.Profile import Profile
 from comp3030j.db.Usage import Usage
@@ -109,42 +110,94 @@ def solar(id):
         )
         .filter(Solar.time.between(start_dt, end_dt))
     )
-    result_list = [v.to_dict() for v in result]
+    result_list = list(result)
+    # app.logger.info("length of result " + str(len(result_list)))
+    stored_years = set(v.time.year for v in result_list)
+    required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
+    query_years = stored_years.symmetric_difference(required_years)
+    # app.logger.info("stored_years " + str(stored_years))
+    # app.logger.info("required_years " + str(required_years))
+    # app.logger.info("query_years " + str(query_years))
+    if len(query_years) == 0:
+        app.logger.info("returning results from DB")
+        return jsonify([v.to_dict() for v in result_list])
+    else:
+        app.logger.info("querying PVGIS")
+        # dispatch query_pvgis_one_year
+        result_list = []
 
-    return jsonify(result_list)
+        for year in query_years:
+            solar_values = query_pvgis_one_year(
+                lat=profile.lat,
+                lon=profile.lon,
+                year=year,
+                power=profile.power,
+                loss=profile.loss,
+                pv_tech_code=profile.tech,
+            )
+
+            for timestamp, value in solar_values.items():
+                solar = Solar(
+                    time=timestamp,
+                    generation=value,
+                    lat=profile.lat,
+                    lon=profile.lon,
+                    tech=profile.tech,
+                    loss=profile.loss,
+                    power=profile.power,
+                )
+                db.session.add(solar)
+                if start_dt <= timestamp <= end_dt:
+                    result_list.append(solar)
+
+        db.session.commit()
+        return jsonify([v.to_dict() for v in result_list])
 
 
-# def query_pvgis(
-#     lat: float,
-#     lon: float,
-#     year: int,
-#     power: float,  # nominal capacity, in watts
-#     pv_tech_code: int,
-#     loss: float,  # system loss
-# ):
-#     pvgis_5_2 = "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?"
+def query_pvgis_one_year(
+    lat: float,
+    lon: float,
+    year: int,
+    power: float,  # nominal capacity, in watts
+    pv_tech_code: int,
+    loss: float,  # system loss
+):
+    queried_year = min(year, (year - 1) % 4 + 2017)
+    pvgis_5_2 = "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?"
 
-#     try:
-#         pv_tech_string = ["crystSi", "CIS", "CdTe"][pv_tech_code]
-#     except KeyError:
-#         raise ValueError("invalid pv_tech_code")
+    try:
+        pv_tech_string = ["crystSi", "CIS", "CdTe"][pv_tech_code]
+    except KeyError:
+        raise ValueError("invalid pv_tech_code")
 
-#     payload = {
-#         "outputformat": "json",
-#         "optimalinclination": 1,
-#         "optimalangles": 1,
-#         "pvcalculation": 1,
-#         "lat": lat,
-#         "lon": lon,
-#         "startyear": year,
-#         "endyear": year,
-#         "peakpower": power,
-#         "pvtechchoice": pv_tech_string,
-#         "loss": loss,
-#     }
-#     response = requests.get(pvgis_5_2, params=payload)
-#     if response.ok:
-#         json_data = json.loads(response.content)
-#         return json_data
-#     else:
-#         response.raise_for_status()
+    payload = {
+        "outputformat": "json",
+        "optimalinclination": 1,
+        "optimalangles": 1,
+        "pvcalculation": 1,
+        "lat": lat,
+        "lon": lon,
+        "startyear": queried_year,
+        "endyear": queried_year,
+        "peakpower": power,
+        "pvtechchoice": pv_tech_string,
+        "loss": loss,
+    }
+    response = requests.get(pvgis_5_2, params=payload)
+    if response.ok:
+        json_data = json.loads(response.content)
+    else:
+        response.raise_for_status()
+
+    series_dict = {}
+    for datapoint in json_data["outputs"]["hourly"]:
+        time, power_out = datapoint["time"], datapoint["P"]
+        # read the complete timestamp but normalize to start of hour.
+        timestamp = datetime.strptime(time, "%Y%m%d:%H%M")  # - eleven_minute
+        # use the actual year when calling this function.
+        timestamp = timestamp.replace(year=year, minute=0)
+        # convert power_out (in watts) to generation (in kilojoules)
+        generation = power_out * 3.6
+        series_dict.update({timestamp: generation})
+
+    return series_dict

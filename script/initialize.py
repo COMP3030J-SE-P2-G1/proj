@@ -69,14 +69,14 @@ def init_db():
                 usage = Usage(time=timestamp, usage=value, profile_id=demo_profile.id)
                 db.session.add(usage)
 
-            for timestamp, value in solar_values.items():
-                # fmt: off
-                solar = Solar(
-                    time=timestamp, generation=value, lat=lat, lon=lon, tech=tech_code, 
-                    loss=loss, power=power
-                )
-                # fmt: on
-                db.session.add(solar)
+            # for timestamp, value in solar_values.items():
+            #     # fmt: off
+            #     solar = Solar(
+            #         time=timestamp, generation=value, lat=lat, lon=lon, tech=tech_code,
+            #         loss=loss, power=power
+            #     )
+            #     # fmt: on
+            #     db.session.add(solar)
 
             db.session.commit()
 
