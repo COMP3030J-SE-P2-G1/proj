@@ -52,11 +52,11 @@ def usage(id):
     content = request.json  # get POSTed content
     try:
         start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError):
+    except (KeyError, ValueError, TypeError):
         start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
     try:
         end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError):
+    except (KeyError, ValueError, TypeError):
         end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
 
     profile, response = get_profile(id)
@@ -84,11 +84,11 @@ def solar(id):
     content = request.json  # get POSTed content
     try:
         start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError):
+    except (KeyError, ValueError, TypeError):
         start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
     try:
         end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError):
+    except (KeyError, ValueError, TypeError):
         end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
 
     profile, response = get_profile(id)
