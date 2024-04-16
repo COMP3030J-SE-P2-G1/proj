@@ -98,6 +98,7 @@ function asyncLoad() {
             ],
             () => {}
         );
+        import("./lib/chart.ts");
         import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/api_doc_restful.ts");
         import("./dashboard/usage_update.ts");

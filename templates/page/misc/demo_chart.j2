@@ -1,0 +1,16 @@
+{% extends 'base.j2' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block links %}
+    {{ super() }}
+    <script type="module" src="/static/js/misc/demo_chart.ts"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="flex flex-col p-3 gap-3">
+        <div id="initDynamicChart" class="w-[40rem] aspect-video bg-base-200"> </div>
+    </div>
+{% endblock %}
+
+

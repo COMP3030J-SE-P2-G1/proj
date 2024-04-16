@@ -72,3 +72,12 @@ export function waitFor(condition: () => boolean, step = 250, timeout = Infinity
     });
 }
 
+
+/**
+ * add dates to a Date object
+ */
+export function dateAdd(date: Date, d: number) {
+    let newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + d);
+    return newDate;
+}

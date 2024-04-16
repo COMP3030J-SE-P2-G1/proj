@@ -88,3 +88,4 @@ async function updateConsumptionChart() {
 }
 
 window.addEventListener('load', updateConsumptionChart);
+window.onload = updateConsumptionChart;
