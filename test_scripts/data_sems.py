@@ -17,3 +17,10 @@ res = requests.post(
 print("response code:", res)
 if res.ok:
     print("response body:", json.dumps(res.json(), indent=4))
+res = requests.post(
+    "http://127.0.0.1:5000/api/data/sems",
+    json={},
+)
+print("response code:", res)
+if res.ok:
+    print("response body:", json.dumps(res.json(), indent=4))

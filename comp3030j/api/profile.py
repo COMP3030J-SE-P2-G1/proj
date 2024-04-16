@@ -4,7 +4,7 @@ from comp3030j.db.Usage import Usage
 from comp3030j.db.Solar import Solar
 from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import requests, json
 
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
@@ -50,8 +50,12 @@ def usage(id):
     }
     """
     content = request.json  # get POSTed content
-    start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
-    end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+    try:
+        start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
+        end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+    except KeyError:
+        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
+        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
 
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
@@ -76,8 +80,12 @@ def solar(id):
     }
     """
     content = request.json  # get POSTed content
-    start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
-    end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+    try:
+        start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
+        end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+    except KeyError:
+        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
+        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
 
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
