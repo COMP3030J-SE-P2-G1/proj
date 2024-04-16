@@ -1,4 +1,5 @@
 {% from '/component/logo.j2' import logo, imageLogo %}
+{% from '/component/theme-controller.j2' import theme_controller %}
 
 <svg style="display: none" version="2.0">
     <defs>
@@ -36,13 +37,12 @@
     <use href="#solar-document-text-linear"/>
 </svg>
 
-
-
 <aside class="fixed inset-y-0 left-0 bg-base-300 w-20 xl:w-60 flex flex-col overflow-x-hidden overflow-auto rounded-2xl m-2 ml-1">
     {# Logo #}
     <div class="shrink-0 p-2">
-        <div class="w-full grid place-content-center">
+        <div class="w-full flex place-content-around">
             {{ logo("", "hidden xl:block", "") }}
+            {{ theme_controller("p-0") }}
         </div>
     </div>
 
