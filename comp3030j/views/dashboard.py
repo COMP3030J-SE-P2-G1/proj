@@ -41,7 +41,7 @@ def update_usage():
             for timestamp, value in usages.items():
                 if value is None:
                     flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
-                    return jsonify({'status': 'error', 'message': 'Not allowed data in the file.'}), 400
+                    return jsonify({'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
                 db.session.add(usage)
             db.session.commit()

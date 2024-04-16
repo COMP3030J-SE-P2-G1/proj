@@ -67,7 +67,7 @@ msgid "Remember Me"
 msgstr "记住我"
 
 #: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
-#: templates/page/auth/login.j2:63 templates/page/auth/login.j2:92
+#: templates/page/auth/login.j2:43 templates/page/auth/login.j2:72
 #: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:18
 #: templates/page/landing/index.j2:40
 msgid "Sign In"
@@ -97,20 +97,15 @@ msgstr "请重新检查输入的密码"
 msgid "Your account has been created! You are now able to log in."
 msgstr "成功注册账号！你现在可以登录了"
 
-#: comp3030j/views/auth.py:60
-msgid "Please login first."
-msgstr "请先登录"
-
-#: comp3030j/views/auth.py:105
+#: comp3030j/views/auth.py:105 comp3030j/views/dashboard.py:32
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:51
+#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:34
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
-#: comp3030j/views/auth.py:109 comp3030j/views/dashboard.py:28
-#: comp3030j/views/dashboard.py:54
+#: comp3030j/views/auth.py:109 comp3030j/views/dashboard.py:36
 msgid "Upload failed"
 msgstr "图像上传失败"
 
@@ -118,16 +113,7 @@ msgstr "图像上传失败"
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
-#: comp3030j/views/dashboard.py:43
-msgid "Not allowed data in:"
-msgstr ""
-
-#: comp3030j/views/dashboard.py:48
-#, fuzzy
-msgid "Usage data uploaded and saved."
-msgstr "头像文件已上传并修改"
-
-#: templates/page/auth/login.j2:94
+#: templates/page/auth/login.j2:74
 msgid "Need An Account? Sign Up"
 msgstr "还没有账户？立即注册"
 
