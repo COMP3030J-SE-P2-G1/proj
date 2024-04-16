@@ -3,28 +3,30 @@ var myChart = echarts.init(dom);
 var option;
 
 async function updateConsumptionChart() {
-    var selectedOption = document.getElementById('consumptionSelect').value;
-    var dataFile = selectedOption === 'UCD' ? '/static/others/UCD_2023_profile.csv' : '/path/to/usage_data.csv';
+    const profileId = 1; // 假设使用固定的profile ID
+    const startTime = '2023-01-01 00:00:00';
+    const endTime = '2023-01-01 23:59:59';
 
-    const response = await fetch(dataFile);
-    const text = await response.text();
-    const lines = text.trim().split('\n');
-    let dateTimes = [];
-    let data = [];
-
-    // Processing each line to create datetime labels and aggregate data
-    lines.slice(1).forEach(line => {
-        const parts = line.split(',');
-        const day = parts[0]; // Date in '1/1/2023' format
-        for (let i = 1; i < parts.length; i++) {
-            let time = i * 15 - 15; // Compute the minute of the hour
-            let hour = Math.floor(time / 60);
-            let minute = time % 60;
-            let dateTime = `${day} ${hour}:${minute === 0 ? '00' : minute}`;
-            dateTimes.push(dateTime);
-            data.push(parseFloat(parts[i]));
-        }
+    const response = await fetch(`/profile/${profileId}/usage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            start_time: startTime,
+            end_time: endTime
+        })
     });
+
+    if (!response.ok) {
+        console.error('Failed to fetch usage data:', response.status);
+        return;
+    }
+
+    const usageData = await response.json();
+    let dateTimes = usageData.map(item => item.time);
+    let data = usageData.map(item => item.value);
+
 
     option = {
         tooltip: {
@@ -86,4 +88,3 @@ async function updateConsumptionChart() {
 }
 
 window.addEventListener('load', updateConsumptionChart);
-window.onload = updateConsumptionChart;
