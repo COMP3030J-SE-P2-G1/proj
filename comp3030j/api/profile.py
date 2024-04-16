@@ -49,19 +49,19 @@ def usage(id):
         end_time: YYYY-MM-DD HH:MM:SS
     }
     """
+    profile, response = get_profile(id)
+    if response:  # for some reason user profile is not available
+        return response
+
     content = request.json  # get POSTed content
     try:
         start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
     except (KeyError, ValueError, TypeError):
-        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
+        start_dt = profile.start_time
     try:
         end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
     except (KeyError, ValueError, TypeError):
-        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
-
-    profile, response = get_profile(id)
-    if response:  # for some reason user profile is not available
-        return response
+        end_dt = profile.end_time
 
     result = db.session.scalars(
         db.select(Usage)
@@ -81,19 +81,22 @@ def solar(id):
         end_time: YYYY-MM-DD HH:MM:SS
     }
     """
-    content = request.json  # get POSTed content
-    try:
-        start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError, TypeError):
-        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
-    try:
-        end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
-    except (KeyError, ValueError, TypeError):
-        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
 
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
         return response
+
+    content = request.json  # get POSTed content
+    try:
+        start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
+    except (KeyError, ValueError, TypeError):
+        start_dt = profile.start_time
+    try:
+        end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
+    except (KeyError, ValueError, TypeError):
+        end_dt = profile.end_time
+
+    # query the database assuming the data is in db.
 
     result = db.session.scalars(
         db.select(Solar)
@@ -106,45 +109,42 @@ def solar(id):
         )
         .filter(Solar.time.between(start_dt, end_dt))
     )
-
     result_list = [v.to_dict() for v in result]
-    # if len(result_list) == 0 and (end_dt - start_dt) > timedelta(hours=1):
-    #     query_pvgis(lon=round(profile.lon, 1), lat=round(profile.lat, 1), power = profile.power, )
-    # else:  # resource is aptly provided by local resources.
+
     return jsonify(result_list)
 
 
-def query_pvgis(
-    lat: float,
-    lon: float,
-    year: int,
-    power: float,  # nominal capacity, in watts
-    pv_tech_code: int,
-    loss: float,  # system loss
-):
-    pvgis_5_2 = "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?"
+# def query_pvgis(
+#     lat: float,
+#     lon: float,
+#     year: int,
+#     power: float,  # nominal capacity, in watts
+#     pv_tech_code: int,
+#     loss: float,  # system loss
+# ):
+#     pvgis_5_2 = "https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?"
 
-    try:
-        pv_tech_string = ["crystSi", "CIS", "CdTe"][pv_tech_code]
-    except KeyError:
-        raise ValueError("invalid pv_tech_code")
+#     try:
+#         pv_tech_string = ["crystSi", "CIS", "CdTe"][pv_tech_code]
+#     except KeyError:
+#         raise ValueError("invalid pv_tech_code")
 
-    payload = {
-        "outputformat": "json",
-        "optimalinclination": 1,
-        "optimalangles": 1,
-        "pvcalculation": 1,
-        "lat": lat,
-        "lon": lon,
-        "startyear": year,
-        "endyear": year,
-        "peakpower": power,
-        "pvtechchoice": pv_tech_string,
-        "loss": loss,
-    }
-    response = requests.get(pvgis_5_2, params=payload)
-    if response.ok:
-        json_data = json.loads(response.content)
-        return json_data
-    else:
-        response.raise_for_status()
+#     payload = {
+#         "outputformat": "json",
+#         "optimalinclination": 1,
+#         "optimalangles": 1,
+#         "pvcalculation": 1,
+#         "lat": lat,
+#         "lon": lon,
+#         "startyear": year,
+#         "endyear": year,
+#         "peakpower": power,
+#         "pvtechchoice": pv_tech_string,
+#         "loss": loss,
+#     }
+#     response = requests.get(pvgis_5_2, params=payload)
+#     if response.ok:
+#         json_data = json.loads(response.content)
+#         return json_data
+#     else:
+#         response.raise_for_status()

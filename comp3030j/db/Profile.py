@@ -3,6 +3,7 @@ from typing import Optional, List
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_serializer import SerializerMixin
+from datetime import datetime
 
 
 class Profile(db.Model, SerializerMixin):
@@ -26,8 +27,12 @@ class Profile(db.Model, SerializerMixin):
     desc: Mapped[Optional[str]]
     usage: Mapped[List["Usage"]] = relationship(back_populates="profile")
 
+    start_time: Mapped[datetime] = mapped_column()
+    end_time: Mapped[datetime] = mapped_column()
+
     lon: Mapped[Optional[float]] = mapped_column()
     lat: Mapped[Optional[float]] = mapped_column()
-    tech: Mapped[Optional[int]] = mapped_column()  # use Integer to represent different techs
+    tech: Mapped[Optional[int]] = mapped_column()
+
     loss: Mapped[Optional[float]] = mapped_column()
     power: Mapped[Optional[float]] = mapped_column()

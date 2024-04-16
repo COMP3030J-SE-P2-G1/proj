@@ -40,6 +40,8 @@ def init_db():
                 "./script/historical-irish-electricity-prices.csv"
             )
             usages = read_quarter_hourly_usage_csv("./script/UCD_2023_profile.csv")
+            timestamps = usages.keys()
+            min_timestamp, max_timestamp = min(timestamps), max(timestamps)
             solar_input, solar_values = read_solar_json("./script/data.json")
             (lat, lon, tech_code, power, loss) = solar_input
 
@@ -52,7 +54,8 @@ def init_db():
             # fmt: off
             demo_profile = Profile(
                 user_id=user.id, name="Demo", desc="Demo Profile", lat=lat, lon=lon,
-                tech=tech_code, loss=loss, power=power
+                tech=tech_code, loss=loss, power=power, start_time=min_timestamp, 
+                end_time=max_timestamp,
             )
             # fmt: on
             db.session.add(demo_profile)

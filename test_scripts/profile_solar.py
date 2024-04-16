@@ -11,7 +11,7 @@ res = requests.post(
     "http://127.0.0.1:5000/api/profile/1/solar",
     json={
         "start_time": None,  # start_time.strftime("%Y-%m-%d %H:%M:%S"),
-        "end_time": end_time.strftime("%Y-%m-%d %H:%M:%S"),
+        "end_time": None,
     },
 )
 print("response code:", res)
@@ -19,7 +19,7 @@ if res.ok:
     print("response body:", json.dumps(res.json(), indent=4))
 
 
-res = requests.post("http://127.0.0.1:5000/api/profile/1/solar", json={})
-print("response code:", res)
-if res.ok:
-    print("response body:", json.dumps(res.json(), indent=4))
+# res = requests.post("http://127.0.0.1:5000/api/profile/1/solar", json={})
+# print("response code:", res)
+# if res.ok:
+#     print("response body:", json.dumps(res.json(), indent=4))
