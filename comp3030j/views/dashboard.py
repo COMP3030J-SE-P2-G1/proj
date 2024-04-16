@@ -5,8 +5,7 @@ from comp3030j.db import db
 from comp3030j.db.Profile import Profile
 from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
-from comp3030j.util import allowed_file, _ltr
-from script.parse_csv_data import read_hourly_usage_csv
+from comp3030j.util import allowed_file, _ltr, read_hourly_usage_csv
 
 bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 

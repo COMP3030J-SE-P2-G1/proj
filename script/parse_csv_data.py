@@ -6,7 +6,6 @@ for filling solarscape database with
 a) UCD utility electricity usage.
 b) SEM market spot data (as basis for the calculation)
 """
-from io import StringIO
 from typing import List, Optional, cast, Dict
 import csv
 from datetime import datetime, timedelta
@@ -113,34 +112,6 @@ def read_quarter_hourly_usage_csv(csv_filename: str):
     hourly_series = [
         sum(v) for v in zip(*[interpolated_series[i::4] for i in range(4)])
     ]
-
-    return dict({t: v for t, v in zip(timestamp_series, hourly_series)})
-
-
-def read_hourly_usage_csv(csv_file):
-    """
-    parameter:
-        name:         string describing the profile.
-        csv_filename: string to the file to be read
-
-    Read a csv-file with power consumption time series for an enterprise
-    """
-    csv_data = csv_file.read().decode('utf-8')
-    csv_file.seek(0)  # Reset file pointer to the beginning for subsequent reads
-    reader = csv.reader(StringIO(csv_data), delimiter=",")
-    header_time = next(reader)[1:]
-    hourly_series = []
-    timestamp_series = []
-    for row in reader:
-        date = row[0]
-        # Iterate through each hourly consumption value in the row
-        for i, consumption in enumerate(row[1:], start=1):
-            # Convert consumption to float or None if it's not numeric
-            consumption_value = float(consumption) if consumption.isnumeric() else None
-            timestamp = datetime.strptime(date + " " + header_time[i - 1], "%d/%m/%Y %H:%M")
-            # Append timestamp and consumption value to respective lists
-            timestamp_series.append(timestamp)
-            hourly_series.append(consumption_value)
 
     return dict({t: v for t, v in zip(timestamp_series, hourly_series)})
 
