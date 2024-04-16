@@ -5,15 +5,18 @@
         <h1 class="text-3xl font-bold text-base-content">Electricity Consumption</h1>
         <span class="text-base-content-shadow mt-2">Visualize electricity consumption patterns across various regions through informative charts.</span>
     </div>
-    <div class="flex flex-col w-full lg:flex-row pt-8">
-        <div class="grid flex-grow bg-base-300 h-full place-items-start">
-            <select class="select select-bordered w-full max-w-xs">
-                <option disabled selected>UCD</option>
-                <option>A1</option>
-                <option>A2</option>
-            </select>
+    <div class="flex flex-col w-full h-full lg:flex-row pt-8">
+        <div class="grid flex-grow bg-base-300 place-items-start">
+            <div style="height: 440px;">
+                <select class="select select-bordered border-white" id="consumptionSelect" onchange="updateConsumptionChart()">
+                    <option disabled selected>Electricity Consumption</option>
+                    <option value="UCD">UCD</option>
+                    <option value="usage">Usage</option>
+                </select>
+                <div id="consumptionChart" class="pt-8 place-content-center" style="width: 500%; height: 100%"></div>
+            </div>
         </div>
-        <div class="grid bg-base-300 w-60 h-full card place-items-center">
+        <div class="grid bg-base-300 h-full card place-items-center">
             <section id="action_panel" class="flex gap-3 m-1">
                 <input type="file" id="fileInput" style="display: none;" accept=".csv, .xlsx, .xls">
                 <div class="indicator-item indicator-bottom">
@@ -44,14 +47,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div style="height: 440px;">
-        <select class="select select-bordered max-w-xs border-white" id="consumptionSelect" onchange="updateConsumptionChart()">
-            <option disabled selected>Electricity Consumption</option>
-            <option value="UCD">UCD</option>
-            <option value="usage">Usage</option>
-        </select>
-        <div id="consumptionChart" style="height: 100%"></div>
     </div>
 
     {# <div style="height: 440px;">
