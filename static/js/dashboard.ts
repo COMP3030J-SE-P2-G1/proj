@@ -74,6 +74,9 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
         case 'usage':
             void loadModule("api_doc_restful.ts", () => import("./dashboard/usage_update.ts"));
             break;
+        case 'profile':
+            void loadModule("api_doc_restful.ts", () => import("./dashboard/create_profile.ts"));
+            break;
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
             break;
@@ -98,6 +101,7 @@ function asyncLoad() {
         import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/api_doc_restful.ts");
         import("./dashboard/usage_update.ts");
+        import("./dashboard/create_profile.ts")
         import("./dashboard/api_doc_graphql_playground.ts");
     });
 }

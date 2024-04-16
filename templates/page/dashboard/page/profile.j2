@@ -5,4 +5,64 @@
             <span class="text-base-content-shadow mt-2">xxxxxxxxxxxxx</span>
         </div>
     </section>
+    <section class="flex flex-col mt-4">
+        <div class="grid flex-grow place-items-start">
+            <div class="h-full w-full">
+                <select class="select select-bordered border-white" id="consumptionSelect"
+                        onchange="updateConsumptionChart()">
+                    <option disabled selected>Electricity Consumption</option>
+                    <option value="UCD">UCD</option>
+                    <option value="usage">Usage</option>
+                </select>
+                <button class="btn btn-circle sm:btn-sm" onclick="profile_modal.showModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10m0-2a8 8 0 1 0 0-16a8 8 0 0 0 0 16"/></svg>
+            </button>
+            <dialog id="profile_modal" class="modal">
+                <div class="modal-box">
+                    <h1 class="font-bold text-lg text-center py-4">{{ _("Create a Profile") }}</h1>
+                    <form action="{{ url_for('dashboard.create_profile') }}" id="profileForm" method="POST"
+                          class="form-control w-full">
+                        {% macro render_field(field) %}
+                            <div class="form-group mb-2">
+                                {{ field.label(class="label text-sm") }}
+                                {% if field.errors %}
+                                    {{ field(class="input input-bordered input-error w-full text-sm") }}
+                                    <div class="alert alert-error shadow-lg mt-1 p-2 text-xs"
+                                         style="background-color: #FECACA; color: #B91C1C;">
+                                        <!-- Custom colors for errors -->
+                                        <div>
+                                            {% for error in field.errors %}
+                                                <span>{{ error }}</span>{% if not loop.last %}<br>{% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {{ field(class="input input-bordered w-full text-sm") }}
+                                {% endif %}
+                            </div>
+                        {% endmacro %}
+
+                        {{ render_field(profileForm.lon) }}
+                        {{ render_field(profileForm.lat) }}
+                        {{ render_field(profileForm.name) }}
+                        {{ render_field(profileForm.desc) }}
+                        {{ render_field(profileForm.start_time) }}
+                        {{ render_field(profileForm.end_time) }}
+                        {{ render_field(profileForm.tech) }}
+                        {{ render_field(profileForm.loss) }}
+                        {{ render_field(profileForm.power) }}
+                        {{ render_field(profileForm.generation) }}
+                        {{ render_field(profileForm.usage_file) }}
+                    </form>
+                    <div class="modal-action justify-center">
+                        <button type="submit" form="profileForm" class="btn">{{ _("Confirm") }}</button>
+                        <form method="dialog">
+                            <button class="btn">{{ _("Close") }}</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+            </div>
+        </div>
+    </section>
 </div>
