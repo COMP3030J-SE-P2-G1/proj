@@ -10,14 +10,14 @@ from comp3030j import app
 
 # __all__=['_tr', '_ntr', '_ltr']
 
+
 def allowed_img(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg'}
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png", "jpg"}
 
 
 def allowed_file(filename):
-    if '.' in filename and filename.rsplit('.', 1)[1].lower() in {'csv', 'xlsx', 'xls'}:
-        return filename.rsplit('.', 1)[1].lower()
+    if "." in filename and filename.rsplit(".", 1)[1].lower() in {"csv", "xlsx", "xls"}:
+        return filename.rsplit(".", 1)[1].lower()
     return False
 
 
@@ -40,7 +40,7 @@ def read_hourly_usage_csv(csv_file):
 
     Read a csv-file with power consumption time series for an enterprise
     """
-    csv_data = csv_file.read().decode('utf-8')
+    csv_data = csv_file.read().decode("utf-8")
     csv_file.seek(0)  # Reset file pointer to the beginning for subsequent reads
     reader = csv.reader(StringIO(csv_data), delimiter=",")
     header_time = next(reader)[1:]
@@ -51,8 +51,13 @@ def read_hourly_usage_csv(csv_file):
         # Iterate through each hourly consumption value in the row
         for i, consumption in enumerate(row[1:], start=1):
             # Convert consumption to float or None if it's not numeric
-            consumption_value = float(consumption) if consumption.isnumeric() else None
-            timestamp = datetime.strptime(date + " " + header_time[i - 1], "%d/%m/%Y %H:%M")
+            try:
+                consumption_value = float(consumption)
+            except ValueError:
+                consumption_value = None
+            timestamp = datetime.strptime(
+                date + " " + header_time[i - 1], "%d/%m/%Y %H:%M"
+            )
             # Append timestamp and consumption value to respective lists
             timestamp_series.append(timestamp)
             hourly_series.append(consumption_value)
