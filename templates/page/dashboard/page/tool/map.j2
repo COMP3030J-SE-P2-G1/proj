@@ -1,31 +1,35 @@
-
 <div class="size-full flex flex-col p-3">
+    <section>
+        <div class="flex flex-col items-center m-4">
+            <h1 class="text-3xl font-bold text-base-content">Get the Latitude and Longitude of a location here!</h1>
+        </div>
+    </section>
     <div id="map"></div>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKcVzcRDywvdqWYnps09kexWfEHQqqyqc&callback=initMap&v=weekly&solution_channel=GMP_CCS_geocodingservice_v1"
-      defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKcVzcRDywvdqWYnps09kexWfEHQqqyqc&callback=initMap&v=weekly&solution_channel=GMP_CCS_geocodingservice_v1"
+        defer
     ></script>
 </div>
 
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script>
-      /**
-       * @license
-       * Copyright 2019 Google LLC. All Rights Reserved.
-       * SPDX-License-Identifier: Apache-2.0
-       */
-      let map;
-      let marker;
-      let geocoder;
-      let responseDiv;
-      let response;
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script>
+    /**
+     * @license
+     * Copyright 2019 Google LLC. All Rights Reserved.
+     * SPDX-License-Identifier: Apache-2.0
+     */
+    let map;
+    let marker;
+    let geocoder;
+    let responseDiv;
+    let response;
 
-      function initMap() {
+    function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 8,
-          center: { lat: -34.397, lng: 150.644 },
-          mapTypeControl: false,
+            zoom: 8,
+            center: {lat: -34.397, lng: 150.644},
+            mapTypeControl: false,
         });
         geocoder = new google.maps.Geocoder();
 
@@ -56,85 +60,83 @@
 
         instructionsElement.id = "instructions";
         instructionsElement.innerHTML =
-          "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
+            "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputText);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitButton);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(clearButton);
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(
-          instructionsElement
+            instructionsElement
         );
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(responseDiv);
         marker = new google.maps.Marker({
-          map,
+            map,
         });
         map.addListener("click", (e) => {
-          geocode({ location: e.latLng });
+            geocode({location: e.latLng});
         });
         submitButton.addEventListener("click", () =>
-          geocode({ address: inputText.value })
+            geocode({address: inputText.value})
         );
         clearButton.addEventListener("click", () => {
-          clear();
+            clear();
         });
         clear();
-      }
+    }
 
-      function clear() {
+    function clear() {
         marker.setMap(null);
-      }
+    }
 
     function geocode(request) {
-    clear();
-    geocoder
-        .geocode(request)
-        .then((result) => {
-        const { results } = result;
-        if (results.length > 0) {
-            const { geometry } = results[0];
-            const { location } = geometry;
-            const lat = location.lat();
-            const lng = location.lng();
-            map.setCenter(location);
-            marker.setPosition(location);
-            marker.setMap(map);
-            response.innerText = `Latitude: ${lat}\nLongitude: ${lng}`;
-        } else {
-            response.innerText = "No results found";
-        }
-        })
-        .catch((e) => {
-        alert("Geocode was not successful for the following reason: " + e);
-        });
+        clear();
+        geocoder
+            .geocode(request)
+            .then((result) => {
+                const {results} = result;
+                if (results.length > 0) {
+                    const {geometry} = results[0];
+                    const {location} = geometry;
+                    const lat = location.lat();
+                    const lng = location.lng();
+                    map.setCenter(location);
+                    marker.setPosition(location);
+                    marker.setMap(map);
+                    response.innerText = `Latitude: ${lat}\nLongitude: ${lng}`;
+                } else {
+                    response.innerText = "No results found";
+                }
+            })
+            .catch((e) => {
+                alert("Geocode was not successful for the following reason: " + e);
+            });
     }
 
 
-
-
-      window.initMap = initMap;
-    </script>
-    <style>
-      /**
-       * @license
-       * Copyright 2019 Google LLC. All Rights Reserved.
-       * SPDX-License-Identifier: Apache-2.0
-       */
-      /**
-       * Always set the map height explicitly to define the size of the div element
-       * that contains the map. 
-       */
-      #map {
+    window.initMap = initMap;
+</script>
+<style>
+    /**
+     * @license
+     * Copyright 2019 Google LLC. All Rights Reserved.
+     * SPDX-License-Identifier: Apache-2.0
+     */
+    /**
+     * Always set the map height explicitly to define the size of the div element
+     * that contains the map.
+     */
+    #map {
         height: 100%;
-      }
+    }
 
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
+    }
 
-      input[type="text"] {
+    input[type="text"] {
         background-color: #fff;
         border: 0;
         border-radius: 2px;
@@ -146,9 +148,9 @@
         line-height: 40px;
         margin-right: 0;
         min-width: 25%;
-      }
+    }
 
-      input[type="button"] {
+    input[type="button"] {
         background-color: #fff;
         border: 0;
         border-radius: 2px;
@@ -160,26 +162,31 @@
         height: 40px;
         cursor: pointer;
         margin-left: 5px;
-      }
-      input[type="button"]:hover {
+    }
+
+    input[type="button"]:hover {
         background: rgb(235, 235, 235);
-      }
-      input[type="button"].button-primary {
+    }
+
+    input[type="button"].button-primary {
         background-color: #1a73e8;
         color: white;
-      }
-      input[type="button"].button-primary:hover {
+    }
+
+    input[type="button"].button-primary:hover {
         background-color: #1765cc;
-      }
-      input[type="button"].button-secondary {
+    }
+
+    input[type="button"].button-secondary {
         background-color: white;
         color: #1a73e8;
-      }
-      input[type="button"].button-secondary:hover {
-        background-color: #d2e3fc;
-      }
+    }
 
-      #response-container {
+    input[type="button"].button-secondary:hover {
+        background-color: #d2e3fc;
+    }
+
+    #response-container {
         background-color: #fff;
         border: 0;
         border-radius: 2px;
@@ -193,9 +200,9 @@
         max-width: 90%;
         background-color: rgba(255, 255, 255, 0.95);
         font-size: small;
-      }
+    }
 
-      #instructions {
+    #instructions {
         background-color: #fff;
         border: 0;
         border-radius: 2px;
@@ -206,5 +213,5 @@
         overflow: hidden;
         padding: 1rem;
         font-size: medium;
-      }
-    </style>
+    }
+</style>
