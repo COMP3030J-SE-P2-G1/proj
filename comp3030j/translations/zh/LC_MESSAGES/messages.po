@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-18 00:45+0800\n"
+"POT-Creation-Date: 2024-04-17 21:31+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -243,12 +243,12 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
-#: templates/page/dashboard/page/profile.j2:80
+#: templates/page/dashboard/page/profile.j2:79
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
-#: templates/page/dashboard/page/profile.j2:82
+#: templates/page/dashboard/page/profile.j2:81
 msgid "Close"
 msgstr "取消"
 

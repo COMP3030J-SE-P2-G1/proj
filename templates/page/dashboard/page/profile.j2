@@ -25,7 +25,6 @@
                         <h1 class="font-bold text-lg text-center py-4">{{ _("Create a Profile") }}</h1>
                         <form action="{{ url_for('dashboard.create_profile') }}" id="profileForm" method="POST"
                               class="form-control w-full">
-                            {{ profileForm.hidden_tag() }}
                             {% macro render_field(field, type) %}
                                 <div class="form-group mb-2">
                                     {% if type == "" %}
@@ -63,7 +62,18 @@
                                     {% endif %}
                                 </div>
                             {% endmacro %}
+                            <div class="flex flex-row items-center mt-4">
+                                <!-- 更新搜索地址输入框和按钮 -->
+                                <label for="address" class="mr-2">Search Address:</label>
+                                <input type="text" id="address" placeholder="Enter an address" class="input input-bordered w-full text-sm mr-2">
+                                <button onclick="geocodeAddress()" class="btn">Search</button>
 
+                            </div>
+                            <div id="map" class="h-96"></div>
+                            <script
+                                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKcVzcRDywvdqWYnps09kexWfEHQqqyqc&callback=initMap&v=weekly&solution_channel=GMP_CCS_geocodingservice_v1"
+                                defer
+                            ></script>
                             {{ render_field(profileForm.lon) }}
                             {{ render_field(profileForm.lat) }}
                             {{ render_field(profileForm.name) }}
@@ -75,8 +85,9 @@
                             {{ render_field(profileForm.power) }}
                             {{ render_field(profileForm.generation) }}
                             {{ render_field(profileForm.usage_file, "") }}
+
                         </form>
-                        <div class="modal-action justify-center">
+                        <div class="modal-action justify-center mt-4">
                             <button type="submit" form="profileForm" class="btn">{{ _("Confirm") }}</button>
                             <form method="dialog">
                                 <button class="btn">{{ _("Close") }}</button>
@@ -88,3 +99,63 @@
         </div>
     </section>
 </div>
+
+
+
+
+
+<script>
+    let map;
+    let marker;
+    let geocoder;
+
+    function initMap() {
+        const lat = parseFloat(document.getElementById('lat').value) || 53.3067;
+        const lon = parseFloat(document.getElementById('lon').value) || -6.2269;
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lon },
+            zoom: 8
+        });
+
+        marker = new google.maps.Marker({
+            map: map,
+            position: map.getCenter()
+        });
+
+        geocoder = new google.maps.Geocoder();
+
+        map.addListener('click', function(event) {
+            updateMarker(event.latLng.lat(), event.latLng.lng());
+        });
+    }
+
+    function updateMarker(lat, lng) {
+        const location = { lat: lat, lng: lng };
+        map.setCenter(location);
+        marker.setPosition(location);
+
+        // 将经纬度填入到 lon 和 lat 输入框中
+        document.getElementById('lon').value = lng;
+        document.getElementById('lat').value = lat;
+    }
+
+    function geocodeAddress() {
+        const address = document.getElementById('address').value;
+
+        geocoder.geocode({ 'address': address }, function(results, status) {
+            if (status === 'OK') {
+                const location = results[0].geometry.location;
+                updateMarker(location.lat(), location.lng());
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initMap();
+    });
+</script>
+
+

@@ -1,3 +1,4 @@
+
 function bindEvents(): void {
     console.log("hello")
     document.getElementById('profileForm').addEventListener('submit', async function (e) {
