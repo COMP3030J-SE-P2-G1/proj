@@ -28,8 +28,7 @@ async function demoInitDynamicChart() {
         },
         profile.start_time,
         async state => {
-            // console.log(profile.start_time, new Date(state.value).toISOString())
-            const startTime = dateAdd(new Date(state.value), 1);
+            const startTime = new Date(state.value);
             const endTime = dateAdd(startTime, 15);
             return PROFILE_API.getSolar(profile.id, startTime, endTime);
         },
@@ -59,7 +58,7 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageChart() {
     const elm = document.getElementById("initElectricityUsageChart");
-    if (elm) initElectricityUsageChart(elm, 1);
+    if (elm) initElectricityUsageChart(elm, 1, null, null, { interval: 300});
 }
 
 function demoInitSolarChart() {
@@ -69,5 +68,5 @@ function demoInitSolarChart() {
 
 ready(() => {
     // demoInitDynamicChart();
-    // demoInitElectricityUsageChart();
+    demoInitElectricityUsageChart();
 })

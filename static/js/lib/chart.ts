@@ -124,30 +124,34 @@ export function initDynamicChart<D, T>(
 }
 
 export type InitChartOptions<D, T> = {
+    title: string,
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
     overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
+    fetchDataInterval: number, // number of dates
     interval: number,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
 
-export async function initElectricityUsageChart(
+
+export async function initBasicLineChart(
     elm: HTMLElement,
-    profileId: number,
+    profile: PROFILE_API.Profile | number,
     startTime: Date | null = null,
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<PROFILE_API.Usage, string>> = {},
 ): Promise<echarts.ECharts>  {
-    let profile = await PROFILE_API.getProfile(profileId);
+    profile = typeof profile === 'string' ? await PROFILE_API.getProfile(profile) : profile as PROFILE_API.Profile;
     let gStartTime = startTime ? startTime : new Date(profile.start_time);
     let gEndTime = endTime ? endTime : new Date(profile.end_time);
     
     const {
+        title = "Line Chart",
         optionTemplate = {
             title: {
-                text: "ElectricityUsageChart"
+                text: title
             },
             xAxis: {
                 data: []
@@ -161,10 +165,11 @@ export async function initElectricityUsageChart(
                 }
             ]
         },
-        initialStateValue = profile.start_time,
+        initialStateValue = gStartTime.toISOString(),
+        fetchDataInterval = 15,
         fetchDataFunc = async state => {
-            const startTime = dateAdd(new Date(state.value), 1); // FIXME
-            const endTime = dateAdd(startTime, 15);
+            const startTime = new Date(state.value);
+            const endTime = dateAdd(startTime, fetchDataInterval);
             return PROFILE_API.getUsage(profile.id, startTime, endTime);
         },
         overrideOption = (data, prevData) => {
@@ -206,3 +211,62 @@ export async function initElectricityUsageChart(
     
     return chart;
 }
+
+export async function initElectricityUsageChart(
+    elm: HTMLElement,
+    profileId: number,
+    startTime: Date | null = null,
+    endTime: Date | null = null,
+    initChartOptions: Partial<InitChartOptions<PROFILE_API.Usage, string>> = {},
+): Promise<echarts.ECharts>  {
+    let profile = await PROFILE_API.getProfile(profileId);
+    let gEndTime = endTime ? endTime : new Date(profile.end_time);
+
+    const {
+        title = "Electricity Usage Chart",
+        optionTemplate,
+        initialStateValue,
+        fetchDataInterval = 15,
+        fetchDataFunc = async state => {
+            const startTime = new Date(state.value);
+            const endTime = dateAdd(startTime, fetchDataInterval);
+            return PROFILE_API.getUsage(profile.id, startTime, endTime);
+        },
+        overrideOption = (data, prevData) => {
+            if (prevData) data = prevData.concat(data);
+            return {
+                xAxis: {
+                    data: data.map(item => item.time)
+                },
+                series: [
+                    {
+                        name: 'demo',
+                        data: data.map(item => item.usage)
+                    }
+                ]
+            }
+        },
+        updateStateFunc,
+        interval,
+        shouldStopFetchingFunc
+    } = initChartOptions;
+    
+    return initBasicLineChart(
+        elm,
+        profile,
+        startTime,
+        endTime,
+        {
+            title: title,
+            optionTemplate: optionTemplate,
+            initialStateValue: initialStateValue,
+            fetchDataInterval: fetchDataInterval,
+            fetchDataFunc: fetchDataFunc,
+            overrideOption: overrideOption,
+            updateStateFunc: updateStateFunc,
+            interval: interval,
+            shouldStopFetchingFunc: shouldStopFetchingFunc
+        }
+    );
+}
+
