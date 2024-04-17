@@ -65,17 +65,17 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
     if (!requestPath.startsWith(DASHBOARD_URL_PREFIX)) return;
     requestPath = requestPath.substring(DASHBOARD_URL_PREFIX.length);
     switch (requestPath) {
-        case 'electricity_usage_calculator':
+        case 'tool/electricity_usage_calculator':
             void loadModule("electricity_usage_calculator.ts", () => import("./dashboard/electricity_usage_calculator.ts"));
             break;
         case 'api_doc/restful':
             void loadModule("api_doc_restful.ts", () => import("./dashboard/api_doc_restful.ts"));
             break;
         case 'usage':
-            void loadModule("api_doc_restful.ts", () => import("./dashboard/usage_update.ts"));
+            void loadModule("usage_update.ts", () => import("./dashboard/usage_update.ts"));
             break;
         case 'profile':
-            void loadModule("api_doc_restful.ts", () => import("./dashboard/create_profile.ts"));
+            void loadModule("create_profile.ts", () => import("./dashboard/create_profile.ts"));
             break;
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
