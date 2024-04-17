@@ -29,7 +29,6 @@ def serve_static(path):
 @login_required
 def create_profile():
     profileForm = ProfileForm()
-    dic = {"A": 1, "B": 2, "C": 3}
     if profileForm.validate_on_submit():
         # Add profile to the database
         user_to_update = User.query.filter_by(id=session['user_id']).first()
@@ -50,7 +49,7 @@ def create_profile():
                 db.session.add(usage)
             db.session.commit()
             # Add solar to the database
-            solar = Solar(lon=profileForm.lon.data, lat=profileForm.lat.data, tech=dic.values(profileForm.tech.data),
+            solar = Solar(lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
                           loss=profileForm.loss.data, power=profileForm.power.data, generation=profileForm.generation.data)
             db.session.add(solar)
             db.session.commit()

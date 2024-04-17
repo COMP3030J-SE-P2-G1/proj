@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, ValidationError, FloatField, DateTimeField, SelectField
+from wtforms import StringField, ValidationError, FloatField, DateField, SelectField
 from flask_wtf.file import MultipleFileField, FileAllowed, FileRequired
 from wtforms.validators import DataRequired, Length
 from comp3030j.util import _ltr
@@ -8,8 +8,8 @@ from comp3030j.util import _ltr
 class ProfileForm(FlaskForm):
     name = StringField(_ltr('Name'), validators=[DataRequired(), Length(min=2, max=20)])
     desc = StringField(_ltr('Description(Optional)'), validators=[Length(max=50)])
-    start_time = DateTimeField(_ltr('Start Time'), validators=[DataRequired()])
-    end_time = DateTimeField(_ltr('End Time'), validators=[DataRequired()])
+    start_time = DateField(_ltr('Start Time'), validators=[DataRequired()])
+    end_time = DateField(_ltr('End Time'), validators=[DataRequired()])
     lon = FloatField(_ltr('Longitude'), validators=[DataRequired()])
     lat = FloatField(_ltr('Latitude'), validators=[DataRequired()])
     tech = SelectField(_ltr('Technology'), choices=[('1', 'A'), ('2', 'B'), ('3', 'C')])
@@ -33,7 +33,7 @@ class ProfileForm(FlaskForm):
     def validate_tech(self, tech):
         if tech.data is None:
             raise ValidationError(_ltr('Please choose a Technology.'))
-        elif tech.data > 2 or tech.data < 0:
+        elif int(tech.data) > 2 or int(tech.data) < 0:
             raise ValidationError(_ltr('Technology should be a positive integer.'))
 
     def validate_loss(self, loss):
