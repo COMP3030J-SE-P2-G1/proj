@@ -37,7 +37,6 @@ def profile(id):
     profile, response = get_profile(id)
     if response:
         return response
-
     return profile.to_dict()
 
 
@@ -110,14 +109,10 @@ def solar(id):
         )
         .filter(Solar.time.between(start_dt, end_dt))
     )
-    result_list = list(result)
-    # app.logger.info("length of result " + str(len(result_list)))
+    result_list = [v for v in result if start_dt <= v.time <= end_dt]
     stored_years = set(v.time.year for v in result_list)
     required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
     query_years = stored_years.symmetric_difference(required_years)
-    # app.logger.info("stored_years " + str(stored_years))
-    # app.logger.info("required_years " + str(required_years))
-    # app.logger.info("query_years " + str(query_years))
     if len(query_years) == 0:
         app.logger.info("returning results from DB")
         return jsonify([v.to_dict() for v in result_list])
@@ -193,10 +188,10 @@ def query_pvgis_one_year(
     for datapoint in json_data["outputs"]["hourly"]:
         time, power_out = datapoint["time"], datapoint["P"]
         # read the complete timestamp but normalize to start of hour.
-        timestamp = datetime.strptime(time, "%Y%m%d:%H%M")  # - eleven_minute
+        timestamp = datetime.strptime(time + " +00:00", "%Y%m%d:%H%M %z")
         # use the actual year when calling this function.
         timestamp = timestamp.replace(year=year, minute=0)
-        # convert power_out (in watts) to generation (in kilojoules)
+        # convert power_out (in watts) to generation (in kilowatt-hour)
         generation = power_out * 3.6
         series_dict.update({timestamp: generation})
 
