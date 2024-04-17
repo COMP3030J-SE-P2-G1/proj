@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(form);
 
         try {
-            const response = await fetch('/change_password', {
+            const response = await fetch('/auth/change_password', {
                 method: 'POST',
                 body: formData
             });

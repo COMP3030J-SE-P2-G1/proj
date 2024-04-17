@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, ValidationError, FloatField, DateTimeField, IntegerField
+from wtforms import StringField, ValidationError, FloatField, DateTimeField, SelectField
 from flask_wtf.file import MultipleFileField, FileAllowed, FileRequired
 from wtforms.validators import DataRequired, Length
 from comp3030j.util import _ltr
@@ -7,12 +7,12 @@ from comp3030j.util import _ltr
 
 class ProfileForm(FlaskForm):
     name = StringField(_ltr('Name'), validators=[DataRequired(), Length(min=2, max=20)])
-    desc = StringField(_ltr('Description'), validators=[Length(max=50)])
+    desc = StringField(_ltr('Description(Optional)'), validators=[Length(max=50)])
     start_time = DateTimeField(_ltr('Start Time'), validators=[DataRequired()])
     end_time = DateTimeField(_ltr('End Time'), validators=[DataRequired()])
     lon = FloatField(_ltr('Longitude'), validators=[DataRequired()])
     lat = FloatField(_ltr('Latitude'), validators=[DataRequired()])
-    tech = IntegerField(_ltr('Technology'), validators=[DataRequired()])
+    tech = SelectField(_ltr('Technology'), choices=[('1', 'A'), ('2', 'B'), ('3', 'C')])
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
     power = FloatField(_ltr('Power'), validators=[DataRequired()])
     generation = FloatField(_ltr('Generation'), validators=[DataRequired()])
