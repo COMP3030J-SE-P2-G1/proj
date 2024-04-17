@@ -4,24 +4,15 @@
  * Pls forgive me.
  */
 
-export type Solar = {
-    generation: number,
-    id: number,
-    lat: number,
-    lon: number,
-    loss: number,
-    power: number,
-    tech: number,
-    time: string
-};
+export type Time = string;
 
 export type Profile = {
     id: number,
     user_ud: number,
     name: string,
     desc: string | null,
-    start_time: string,
-    end_time: string,
+    start_time: Time,
+    end_time: Time,
     lon: number | null,
     lat: number | null,
     tech: number | null,
@@ -29,10 +20,23 @@ export type Profile = {
     power: number | null
 }
 
-export type Usage = {
+export type TimelyData = {
+    time: Time,
+}
+
+export interface Solar extends TimelyData {
+    generation: number,
+    id: number,
+    lat: number,
+    lon: number,
+    loss: number,
+    power: number,
+    tech: number
+};
+
+export interface Usage extends TimelyData {
     id: number,
     user_id: number,
-    time: string,
     usage: number
 }
 

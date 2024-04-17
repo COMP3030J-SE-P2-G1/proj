@@ -1,5 +1,5 @@
 import { ready, dateAdd } from '../lib/utils.ts';
-import { initDynamicChart, StateType, initElectricityUsageChart } from '../lib/chart.ts';
+import * as Chart from '../lib/chart.ts';
 import type { State } from '../lib/chart.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
@@ -7,8 +7,9 @@ import * as PROFILE_API from '../api/profile.ts';
 async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
+    let fetchCounter = 0;
 
-    initDynamicChart<PROFILE_API.Solar, string>(
+    Chart.initDynamicChart<PROFILE_API.Solar, string>(
         elm,
         {
             title: {
@@ -48,8 +49,9 @@ async function demoInitDynamicChart() {
         },
         (state, data) => {
             const newState: State<string> = Object.assign({}, state);
-            if (data[0].id > 1000) newState.state = StateType.stop;
+            if (fetchCounter > 4) newState.state = Chart.StateType.stop;
             newState.value = data[data.length - 1].time;
+            fetchCounter ++;
             return newState;
         },
         300
@@ -58,15 +60,19 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageChart() {
     const elm = document.getElementById("initElectricityUsageChart");
-    if (elm) initElectricityUsageChart(elm, 1, null, null, { interval: 300});
+    if (elm) Chart.initElectricityUsageChart(elm, 1, null, null, { interval: 100});
 }
 
 function demoInitSolarChart() {
-    const elm = document.getElementById("initElectricityUsageChart");
-    if (elm) initElectricityUsageChart(elm, 1);
+    const elm = document.getElementById("initSolarChart");
+    if (elm) Chart.initSolarChart(elm, 1, null, null, {
+        fetchDataStep: 30,
+        interval: 100
+    });
 }
 
 ready(() => {
-    // demoInitDynamicChart();
+    demoInitDynamicChart();
     demoInitElectricityUsageChart();
+    demoInitSolarChart();
 })
