@@ -10,7 +10,7 @@ end_time = start_time + 5 * one_hour
 res = requests.post(
     "http://127.0.0.1:5000/api/profile/1/solar",
     json={
-        "start_time": None,
+        "start_time": start_time.isoformat(),
         "end_time": end_time.isoformat(),
     },
 )

@@ -2,7 +2,7 @@ import os
 
 from io import StringIO
 import csv
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_babel import gettext as _tr, ngettext as _ntr, lazy_gettext as _ltr
 
 from comp3030j import app
@@ -56,7 +56,7 @@ def read_hourly_usage_csv(csv_file):
             except ValueError:
                 consumption_value = None
             timestamp = datetime.strptime(
-                date + " " + header_time[i - 1], "%d/%m/%Y %H:%M"
+                date + " " + header_time[i - 1] + " +01:00", "%d/%m/%Y %H:%M %z"
             )
             # Append timestamp and consumption value to respective lists
             timestamp_series.append(timestamp)

@@ -6,6 +6,7 @@ for filling solarscape database with
 a) UCD utility electricity usage.
 b) SEM market spot data (as basis for the calculation)
 """
+
 from typing import List, Optional, cast, Dict
 import csv
 from datetime import datetime, timedelta
@@ -57,20 +58,21 @@ def read_spot_from_csv(csv_filename: str) -> Dict[datetime, float]:
         price_series = dict()
         for row in reader:
             datetimestr, price = row
-            dt = datetime.strptime(datetimestr, "%Y-%m-%d %H:%M:%S")
-            price_series.update({int(dt.timestamp()): float(price)})
+            dt = datetime.strptime(
+                datetimestr + " +01:00", "%Y-%m-%d %H:%M:%S %z"
+            )  # convert local time to utc time for db storage.
+            price_series.update({dt: float(price)})
 
     timestamps = price_series.keys()
-    min_timestamp, max_timestamp = min(timestamps), max(timestamps)
+    min_time, max_time = min(timestamps), max(timestamps)
     one_hour = timedelta(hours=1)
     filled_timestamps = []
     filled_series: List[Optional[float]] = []
 
-    time = datetime.fromtimestamp(min_timestamp)
-    max_time = datetime.fromtimestamp(max_timestamp)
+    time = min_time
     while time < max_time:
-        if int(time.timestamp()) in price_series:
-            filled_series.append(price_series[int(time.timestamp())])
+        if time in price_series:
+            filled_series.append(price_series[time])
         else:
             filled_series.append(None)
         filled_timestamps.append(time)
@@ -101,7 +103,9 @@ def read_quarter_hourly_usage_csv(csv_filename: str):
             daily_series = [float(v) if v.isnumeric() else None for v in row[1:]]
             timestamp_series.extend(
                 [
-                    datetime.strptime(date + " " + time, "%d/%m/%Y %H:%M")
+                    datetime.strptime(
+                        date + " " + time + " +01:00", "%d/%m/%Y %H:%M %z"
+                    )
                     for time in header_time
                 ]
             )

@@ -147,7 +147,7 @@ def solar(id):
                     power=profile.power,
                 )
                 db.session.add(solar)
-                if start_dt.timestamp() <= timestamp.timestamp() <= end_dt.timestamp():
+                if start_dt <= timestamp <= end_dt:
                     result_list.append(solar)
 
         db.session.commit()
@@ -157,7 +157,7 @@ def solar(id):
 def query_pvgis_one_year(
     lat: float,
     lon: float,
-    year: int,
+    year: int,  # PVGIS returns result in UTC, therefore no further processing is necessary
     power: float,  # nominal capacity, in watts
     pv_tech_code: int,
     loss: float,  # system loss
