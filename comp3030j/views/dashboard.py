@@ -43,7 +43,8 @@ def create_profile():
                     flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
                     return jsonify(
                         {'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
-
+            profileForm.start_time.data = datetime.datetime.strptime(str(profileForm.start_time.data), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+            profileForm.end_time.data = datetime.datetime.strptime(str(profileForm.end_time.data), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
             profile = Profile(user_id=session['user_id'], name=profileForm.name.data, desc=profileForm.desc.data,
                               start_time=profileForm.start_time.data, end_time=profileForm.end_time.data,
                               lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
@@ -52,6 +53,7 @@ def create_profile():
             db.session.commit()
             # Add usage to the database
             for timestamp, value in usages.items():
+                #timestamp = datetime.datetime.strptime(str(timestamp), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
                 db.session.add(usage)
             db.session.commit()

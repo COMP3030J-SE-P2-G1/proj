@@ -16,7 +16,7 @@ class ProfileForm(FlaskForm):
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
     power = FloatField(_ltr('Power'), validators=[DataRequired()])
     generation = FloatField(_ltr('Generation'), validators=[DataRequired()])
-    usage_file = MultipleFileField(_ltr('Usage'), validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
+    usage_file = MultipleFileField(_ltr('Usage - UTC+1(No DST)'), validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
 
     def validate_end_time(self, end_time):
         if end_time.data < self.start_time.data:
