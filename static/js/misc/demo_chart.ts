@@ -2,12 +2,14 @@ import { ready, dateAdd } from '../lib/utils.ts';
 import { initDynamicChart, StateType } from '../lib/chart.ts';
 import type { State } from '../lib/chart.ts';
 import type { Solar } from '../types/api.ts';
+import * as PROFILE_API from '../api/profile.ts';
 
-function demoInitDynamicChart() {
+
+async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
-    let minStartDate: string | null = null;
+    let profile = await PROFILE_API.getProfile(1);
 
-    initDynamicChart<Solar, string | null>(
+    initDynamicChart<Solar, string>(
         elm,
         {
             title: {
@@ -26,28 +28,11 @@ function demoInitDynamicChart() {
                 }
             ]
         },
-        null,
+        profile.start_time,
         async state => {
-            let rawDate = state.value;
-            // NOTE, it's better to get the initial date first and pass it as the initialData parameter
-            if (rawDate == null) rawDate = "2020-01-01";
-            const startDate = new Date(rawDate);
-            const endDate = dateAdd(startDate, 15);
-            if (state.state == StateType.initial) {
-                minStartDate = startDate.toISOString();
-            }
-            
-            const response = await fetch('/api/profile/1/solar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    start_time: startDate.toISOString(),
-                    end_time: endDate.toISOString()
-                })
-            });
-            return await response.json();
+            const startTime = dateAdd(new Date(state.value), 1); // FIXME
+            const endTime = dateAdd(startTime, 15);
+            return PROFILE_API.getSolar(profile.id, startTime, endTime);
         },
         (data, prevData) => {
             if (prevData) data = prevData.concat(data);
@@ -64,7 +49,7 @@ function demoInitDynamicChart() {
             }
         },
         (state, data) => {
-            const newState: State<string | null> = Object.assign({}, state);
+            const newState: State<string> = Object.assign({}, state);
             if (data[0].id > 1000) newState.state = StateType.stop;
             newState.value = data[data.length - 1].time;
             return newState;

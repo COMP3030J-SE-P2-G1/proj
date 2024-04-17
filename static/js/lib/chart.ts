@@ -1,5 +1,8 @@
+import { dateAdd } from '../lib/utils.ts';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import type { Solar } from '../types/api.ts';
+import * as PROFILE_API from '../api/profile.ts';
 
 // chart types
 import {
@@ -73,7 +76,7 @@ export function initDynamicChart<D, T>(
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
-    overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
+    overrideOption: (data: D[], prevData: D[] | null) => any,
     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
     interval: number = 0,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean = (state, _prevState) => {
@@ -121,13 +124,6 @@ export function initDynamicChart<D, T>(
     return chart;
 }
 
-export function initChart(elm: HTMLElement, option: ChartOption | null): echarts.ECharts {
-    const chart = echarts.init(elm);
-    if (option) chart.setOption(option);
-    return chart;
+export function initBasicLineChart(elm: HTMLElement) {
 }
-
-// export function initBasicLineChart(elm: HTMLElement) {
-    
-// }
 

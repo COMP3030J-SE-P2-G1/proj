@@ -147,7 +147,7 @@ def solar(id):
                     power=profile.power,
                 )
                 db.session.add(solar)
-                if start_dt <= timestamp <= end_dt:
+                if start_dt.timestamp() <= timestamp.timestamp() <= end_dt.timestamp():
                     result_list.append(solar)
 
         db.session.commit()

@@ -1,7 +1,7 @@
 import requests, json
 from datetime import datetime, timedelta
 
-start_time = datetime(year=2020, month=4, day=1)
+start_time = datetime(year=2023, month=4, day=1)
 one_hour = timedelta(hours=1)
 end_time = start_time + 5 * one_hour
 
@@ -10,7 +10,7 @@ end_time = start_time + 5 * one_hour
 res = requests.post(
     "http://127.0.0.1:5000/api/profile/1/solar",
     json={
-        "start_time": None,  # start_time.strftime("%Y-%m-%d %H:%M:%S"),
+        "start_time": None,
         "end_time": end_time.isoformat(),
     },
 )
