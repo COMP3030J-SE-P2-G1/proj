@@ -8,4 +8,5 @@ with open("demo_2023.csv", 'rb') as fobj:
     )
 print("response code:", res)
 if res.ok:
+    # TODO: check the response body
     print("response body:", json.dumps(res.json(), indent=3))
