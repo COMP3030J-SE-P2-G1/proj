@@ -4,9 +4,39 @@
  * Pls forgive me.
  */
 
-import * as API from '../types/api.ts';
+export type Solar = {
+    generation: number,
+    id: number,
+    lat: number,
+    lon: number,
+    loss: number,
+    power: number,
+    tech: number,
+    time: string
+};
 
-export async function getProfile(id: number): Promise<API.Profile> {
+export type Profile = {
+    id: number,
+    user_ud: number,
+    name: string,
+    desc: string | null,
+    start_time: string,
+    end_time: string,
+    lon: number | null,
+    lat: number | null,
+    tech: number | null,
+    loss: number | null,
+    power: number | null
+}
+
+export type Usage = {
+    id: number,
+    user_id: number,
+    time: string,
+    usage: number
+}
+
+export async function getProfile(id: number): Promise<Profile> {
     const response = await fetch(`/api/profile/${id}`);
 
     if (!response.ok) {
@@ -20,7 +50,7 @@ export async function getSolar(
     profileId: number,
     startTime: Date | null,
     endTime: Date | null
-): Promise<API.Solar[]> {
+): Promise<Solar[]> {
     const response = await fetch(`/api/profile/${profileId}/solar`, {
         method: 'POST',
         headers: {
@@ -44,7 +74,7 @@ export async function getUsage(
     profileId: number,
     startTime: Date | null,
     endTime: Date | null
-): Promise<API.Usage[]> {
+): Promise<Usage[]> {
     const response = await fetch(`/api/profile/${profileId}/usage`, {
         method: 'POST',
         headers: {

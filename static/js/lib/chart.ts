@@ -1,7 +1,6 @@
 import { dateAdd } from '../lib/utils.ts';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import type { Solar } from '../types/api.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 // chart types
@@ -76,7 +75,7 @@ export function initDynamicChart<D, T>(
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
-    overrideOption: (data: D[], prevData: D[] | null) => any,
+    overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
     interval: number = 0,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean = (state, _prevState) => {
@@ -124,6 +123,38 @@ export function initDynamicChart<D, T>(
     return chart;
 }
 
-export function initBasicLineChart(elm: HTMLElement) {
+// elm: HTMLElement,
+//     optionTemplate: ChartOption,
+//     initialStateValue: T,
+//     fetchDataFunc: (state: State<T>) => Promise<D[]>,
+//     overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
+//     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
+//     interval: number = 0,
+//     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean = (state, _prevState) => {
+//         return state.state == StateType.stop? true : false;
+//     }
+
+
+export type InitChartOptions<D, T> = {
+    elm: HTMLElement,
+    optionTemplate: ChartOption,
+    initialStateValue: T,
+    fetchDataFunc: (state: State<T>) => Promise<D[]>,
+    overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
+    updateStateFunc: (state: State<T>, data: D[]) => State<T>,
+    interval: number,
+    shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
 
+// export function initElectricityPriceChart(
+//     elm: HTMLElement,
+//     initChartOptions: Partial<InitChartOptions<PROFILE_API.Solar, string>> = {},
+// ): echarts.ECharts  {
+//     // const optionTemplate = 
+//     // const chart = initDynamicChart(
+//     //     elm,
+        
+//     // );
+    
+//     return chart;
+// }

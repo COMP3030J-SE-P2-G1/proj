@@ -1,7 +1,6 @@
 import { ready, dateAdd } from '../lib/utils.ts';
 import { initDynamicChart, StateType } from '../lib/chart.ts';
 import type { State } from '../lib/chart.ts';
-import type { Solar } from '../types/api.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 
@@ -9,7 +8,7 @@ async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
 
-    initDynamicChart<Solar, string>(
+    initDynamicChart<PROFILE_API.Solar, string>(
         elm,
         {
             title: {
@@ -19,7 +18,6 @@ async function demoInitDynamicChart() {
                 data: []
             },
             yAxis: {},
-            tooltip: {},
             series: [
                 {
                     name: 'demo',
@@ -58,6 +56,12 @@ async function demoInitDynamicChart() {
     );
 }
 
+function demoInitElectricityPriceChart() {
+    const elm = document.getElementById("#initElectricityPriceChart");
+    console.log(elm);
+}
+
 ready(() => {
     demoInitDynamicChart();
+    demoInitElectricityPriceChart();
 })
