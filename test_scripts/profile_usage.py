@@ -10,16 +10,16 @@ print(start_time, end_time)
 res = requests.post(
     "http://127.0.0.1:5000/api/profile/1/usage",
     json={
-        "start_time": start_time.strftime("%Y-%m-%d %H:%M:%S"),
-        "end_time": end_time.strftime("%Y-%m-%d %H:%M:%S"),
+        "start_time": "2022-12-31T23:00:00Z",
+        "end_time": "2023-01-02T23:00:00Z",
     },
 )
 print("response code:", res)
-if res.ok:
-    print("response body:", json.dumps(res.json(), indent=4))
+
+print("response body:", json.dumps(res.json(), indent=4))
 
 
 res = requests.post("http://127.0.0.1:5000/api/profile/1/usage", json={})
 print("response code:", res)
-if res.ok:
-    print("response body:", json.dumps(res.json(), indent=4))
+
+print("response body:", json.dumps(res.json(), indent=4))

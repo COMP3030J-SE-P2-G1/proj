@@ -55,21 +55,41 @@ def usage(id):
 
     content = request.json  # get POSTed content
     try:
-        start_dt = datetime.fromisoformat(content["start_time"])
-    except (KeyError, ValueError, TypeError):
-        start_dt = profile.start_time
-    try:
-        end_dt = datetime.fromisoformat(content["end_time"])
-    except (KeyError, ValueError, TypeError):
-        end_dt = profile.end_time
+        start_time = content["start_time"]
+        end_time = content["end_time"]
 
-    result = db.session.scalars(
-        db.select(Usage)
-        .filter_by(profile_id=profile.id)
-        .filter(Usage.time.between(start_dt, end_dt))
-    )
+        if start_time:
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S%z")
+        else:
+            start_dt = profile.start_time
 
-    return jsonify([v.to_dict() for v in result])
+        if end_time:
+            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S%z")
+        else:
+            end_dt = profile.end_time
+
+        result = db.session.scalars(
+            db.select(Usage)
+            .filter_by(profile_id=profile.id)
+            .filter(Usage.time.between(start_dt, end_dt))
+        )
+
+        return jsonify([v.to_dict() for v in result])
+
+    except (ValueError, TypeError) as e:
+        return {
+            "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
+        }, 400
+
+    except KeyError as e:
+        return (
+            {
+                "errorMsg": "malformed request, specify either \
+(start_time, end_time) or (start_time, span_hours): "
+                + str(e),
+            },
+            400,
+        )
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
@@ -87,36 +107,41 @@ def solar(id):
         return response
 
     content = request.json  # get POSTed content
-    try:
-        start_dt = datetime.fromisoformat(content["start_time"])
-    except (KeyError, ValueError, TypeError):
-        start_dt = profile.start_time
-    try:
-        end_dt = datetime.fromisoformat(content["end_time"])
-    except (KeyError, ValueError, TypeError):
-        end_dt = profile.end_time
 
-    # query the database assuming the data is in db.
+    try:
+        start_time = content["start_time"]
+        end_time = content["end_time"]
 
-    result = db.session.scalars(
-        db.select(Solar)
-        .filter_by(
-            lon=profile.lon,
-            lat=profile.lat,
-            tech=profile.tech,
-            loss=profile.loss,
-            power=profile.power,
+        if start_time:
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S%z")
+        else:
+            start_dt = profile.start_time
+
+        if end_time:
+            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S%z")
+        else:
+            end_dt = profile.end_time
+
+        result = db.session.scalars(
+            db.select(Solar)
+            .filter_by(
+                lon=profile.lon,
+                lat=profile.lat,
+                tech=profile.tech,
+                loss=profile.loss,
+                power=profile.power,
+            )
+            .filter(Solar.time.between(start_dt, end_dt))
         )
-        .filter(Solar.time.between(start_dt, end_dt))
-    )
-    result_list = [v for v in result if start_dt <= v.time <= end_dt]
-    stored_years = set(v.time.year for v in result_list)
-    required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
-    query_years = stored_years.symmetric_difference(required_years)
-    if len(query_years) == 0:
-        app.logger.info("returning results from DB")
-        return jsonify([v.to_dict() for v in result_list])
-    else:
+        result_list = list(result)
+        stored_years = set(v.time.year for v in result_list)
+        required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
+        query_years = stored_years.symmetric_difference(required_years)
+
+        if len(query_years) == 0:
+            app.logger.info("returning results from DB")
+            return jsonify([v.to_dict() for v in result_list])
+
         app.logger.info("querying PVGIS")
         # dispatch query_pvgis_one_year
         result_list = []
@@ -147,6 +172,23 @@ def solar(id):
 
         db.session.commit()
         return jsonify([v.to_dict() for v in result_list])
+
+    except (ValueError, TypeError) as e:
+        return {
+            "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
+        }, 400
+
+    except KeyError as e:
+        return (
+            {
+                "errorMsg": "malformed request, specify either \
+(start_time, end_time) or (start_time, span_hours): "
+                + str(e),
+            },
+            400,
+        )
+
+    # query the database assuming the data is in db.
 
 
 def query_pvgis_one_year(
