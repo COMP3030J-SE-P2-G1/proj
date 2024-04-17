@@ -38,23 +38,22 @@ def create_profile():
         if user_to_update:
             file = request.files[profileForm.usage_file.name]
             usages = read_hourly_usage_csv(file)
-            profile = Profile(user_id=session['user_id'], name=profileForm.name.data, desc=profileForm.desc.data,
-                              start_time=profileForm.start_time.data, end_time=profileForm.end_time.data)
-            db.session.add(profile)
-            db.session.commit()
-            # Add usage to the database
             for timestamp, value in usages.items():
                 if value is None:
                     flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
                     return jsonify(
                         {'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
+
+            profile = Profile(user_id=session['user_id'], name=profileForm.name.data, desc=profileForm.desc.data,
+                              start_time=profileForm.start_time.data, end_time=profileForm.end_time.data,
+                              lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
+                              loss=profileForm.loss.data, power=profileForm.power.data)
+            db.session.add(profile)
+            db.session.commit()
+            # Add usage to the database
+            for timestamp, value in usages.items():
                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
                 db.session.add(usage)
-            db.session.commit()
-            # Add solar to the database
-            solar = Solar(lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
-                          loss=profileForm.loss.data, power=profileForm.power.data, generation=profileForm.generation.data)
-            db.session.add(solar)
             db.session.commit()
             flash(_ltr('Profile created successfully.'), 'success')
             return jsonify({'status': 'success', 'message': 'Profile created successfully'}), 200
