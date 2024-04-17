@@ -1,7 +1,7 @@
 from comp3030j.db import db
 from comp3030j.db.SEMSpot import SEMSpot
 from flask import Blueprint, current_app, request, jsonify
-from datetime import datetime, timedelta, MINYEAR, MAXYEAR
+from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
 
 bp = Blueprint("api/data", __name__, url_prefix="/data")
 
@@ -12,11 +12,11 @@ def semspot():
     try:
         start_dt = datetime.strptime(content["start_time"], "%Y-%m-%d %H:%M:%S")
     except (KeyError, ValueError, TypeError):
-        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0)
+        start_dt = datetime(MINYEAR, 1, 1, 0, 0, 0, 0, timezone.utc)
     try:
         end_dt = datetime.strptime(content["end_time"], "%Y-%m-%d %H:%M:%S")
     except (KeyError, ValueError, TypeError):
-        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999)
+        end_dt = datetime(MAXYEAR, 12, 31, 23, 59, 59, 999, timezone.utc)
 
     result = db.session.scalars(
         db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
