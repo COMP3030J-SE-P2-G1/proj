@@ -7,9 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-17 00:17+0800\n"
-"POT-Creation-Date: 2024-04-16 17:26+0800\n"
-"POT-Creation-Date: 2024-04-16 15:24+0800\n"
+"POT-Creation-Date: 2024-04-17 18:24+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -95,6 +93,92 @@ msgstr "新密码"
 msgid "Please check your password again!"
 msgstr "请重新检查输入的密码"
 
+#: comp3030j/dashboard/__init__.py:9
+#, fuzzy
+msgid "Name"
+msgstr "用户名"
+
+#: comp3030j/dashboard/__init__.py:10
+msgid "Description(Optional)"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:11
+msgid "Start Time"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:12
+msgid "End Time"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:13
+msgid "Longitude"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:14
+msgid "Latitude"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:15
+msgid "Technology"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:16
+#, fuzzy
+msgid "Loss"
+msgstr "取消"
+
+#: comp3030j/dashboard/__init__.py:17
+msgid "Power"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:18
+msgid "Generation"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:19
+msgid "Usage"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:19
+msgid "csv only!"
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:23
+msgid "End time should be later than start time."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:27
+msgid "Longitude should be between -180 and 180."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:31
+msgid "Latitude should be between -90 and 90."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:35
+msgid "Please choose a Technology."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:37
+msgid "Technology should be a positive integer."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:41
+msgid "Loss should be a positive float."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:43
+msgid "Loss should be less than 1."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:47
+msgid "Power should be a positive float."
+msgstr ""
+
+#: comp3030j/dashboard/__init__.py:51
+msgid "Generation should be a positive float."
+msgstr ""
+
 #: comp3030j/views/auth.py:36
 msgid "Your account has been created! You are now able to log in."
 msgstr "成功注册账号！你现在可以登录了"
@@ -107,12 +191,11 @@ msgstr ""
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:50
+#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:61
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
-#: comp3030j/views/auth.py:109 comp3030j/views/dashboard.py:27
-#: comp3030j/views/dashboard.py:53
+#: comp3030j/views/auth.py:109
 msgid "Upload failed"
 msgstr "图像上传失败"
 
@@ -120,14 +203,14 @@ msgstr "图像上传失败"
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
-#: comp3030j/views/dashboard.py:42
+#: comp3030j/views/dashboard.py:47
 msgid "Not allowed data in:"
 msgstr ""
 
-#: comp3030j/views/dashboard.py:47
+#: comp3030j/views/dashboard.py:58
 #, fuzzy
-msgid "Usage data uploaded and saved."
-msgstr "头像文件已上传并修改"
+msgid "Profile created successfully."
+msgstr "密码修改成功"
 
 #: templates/page/auth/login.j2:94
 msgid "Need An Account? Sign Up"
@@ -160,12 +243,19 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
+#: templates/page/dashboard/page/profile.j2:80
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
+#: templates/page/dashboard/page/profile.j2:82
 msgid "Close"
 msgstr "取消"
+
+#: templates/page/dashboard/page/profile.j2:25
+#, fuzzy
+msgid "Create a Profile"
+msgstr "个人中心"
 
 #: templates/page/landing/header.j2:15
 msgid "Logout"
@@ -177,4 +267,7 @@ msgstr "个人中心"
 
 #~ msgid "El Psy Kongaroo"
 #~ msgstr "Ciallo～(∠・ω< )⌒★"
+
+#~ msgid "Usage data uploaded and saved."
+#~ msgstr "头像文件已上传并修改"
 

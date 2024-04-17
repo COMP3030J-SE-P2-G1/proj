@@ -25,6 +25,7 @@
                         <h1 class="font-bold text-lg text-center py-4">{{ _("Create a Profile") }}</h1>
                         <form action="{{ url_for('dashboard.create_profile') }}" id="profileForm" method="POST"
                               class="form-control w-full">
+                            {{ profileForm.hidden_tag() }}
                             {% macro render_field(field, type) %}
                                 <div class="form-group mb-2">
                                     {% if type == "" %}
