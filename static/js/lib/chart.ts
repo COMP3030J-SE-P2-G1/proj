@@ -123,20 +123,7 @@ export function initDynamicChart<D, T>(
     return chart;
 }
 
-// elm: HTMLElement,
-//     optionTemplate: ChartOption,
-//     initialStateValue: T,
-//     fetchDataFunc: (state: State<T>) => Promise<D[]>,
-//     overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
-//     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
-//     interval: number = 0,
-//     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean = (state, _prevState) => {
-//         return state.state == StateType.stop? true : false;
-//     }
-
-
 export type InitChartOptions<D, T> = {
-    elm: HTMLElement,
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
@@ -146,15 +133,76 @@ export type InitChartOptions<D, T> = {
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
 
-// export function initElectricityPriceChart(
-//     elm: HTMLElement,
-//     initChartOptions: Partial<InitChartOptions<PROFILE_API.Solar, string>> = {},
-// ): echarts.ECharts  {
-//     // const optionTemplate = 
-//     // const chart = initDynamicChart(
-//     //     elm,
-        
-//     // );
+export async function initElectricityUsageChart(
+    elm: HTMLElement,
+    profileId: number,
+    startTime: Date | null = null,
+    endTime: Date | null = null,
+    initChartOptions: Partial<InitChartOptions<PROFILE_API.Usage, string>> = {},
+): Promise<echarts.ECharts>  {
+    let profile = await PROFILE_API.getProfile(profileId);
+    let gStartTime = startTime ? startTime : new Date(profile.start_time);
+    let gEndTime = endTime ? endTime : new Date(profile.end_time);
     
-//     return chart;
-// }
+    const {
+        optionTemplate = {
+            title: {
+                text: "ElectricityUsageChart"
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '',
+                    type: 'line',
+                    data: []
+                }
+            ]
+        },
+        initialStateValue = profile.start_time,
+        fetchDataFunc = async state => {
+            const startTime = dateAdd(new Date(state.value), 1); // FIXME
+            const endTime = dateAdd(startTime, 15);
+            return PROFILE_API.getUsage(profile.id, startTime, endTime);
+        },
+        overrideOption = (data, prevData) => {
+            if (prevData) data = prevData.concat(data);
+            return {
+                xAxis: {
+                    data: data.map(item => item.time)
+                },
+                series: [
+                    {
+                        name: 'demo',
+                        data: data.map(item => item.usage)
+                    }
+                ]
+            }
+        },
+        updateStateFunc = (state, data) => {
+            const newState: State<string> = Object.assign({}, state);
+            const rawEndData = data[data.length - 1]
+            newState.value = rawEndData.time;
+            const endDate = new Date(rawEndData.time);
+            if (endDate >= gEndTime) newState.state = StateType.stop;
+            return newState;
+        },
+        interval = 0,
+        shouldStopFetchingFunc
+    } = initChartOptions;
+    
+    const chart = initDynamicChart<PROFILE_API.Usage, string>(
+        elm,
+        optionTemplate,
+        initialStateValue,
+        fetchDataFunc,
+        overrideOption,
+        updateStateFunc,
+        interval,
+        shouldStopFetchingFunc
+    );
+    
+    return chart;
+}

@@ -1,5 +1,5 @@
 import { ready, dateAdd } from '../lib/utils.ts';
-import { initDynamicChart, StateType } from '../lib/chart.ts';
+import { initDynamicChart, StateType, initElectricityUsageChart } from '../lib/chart.ts';
 import type { State } from '../lib/chart.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
@@ -28,7 +28,8 @@ async function demoInitDynamicChart() {
         },
         profile.start_time,
         async state => {
-            const startTime = dateAdd(new Date(state.value), 1); // FIXME
+            // console.log(profile.start_time, new Date(state.value).toISOString())
+            const startTime = dateAdd(new Date(state.value), 1);
             const endTime = dateAdd(startTime, 15);
             return PROFILE_API.getSolar(profile.id, startTime, endTime);
         },
@@ -56,12 +57,17 @@ async function demoInitDynamicChart() {
     );
 }
 
-function demoInitElectricityPriceChart() {
-    const elm = document.getElementById("#initElectricityPriceChart");
-    console.log(elm);
+function demoInitElectricityUsageChart() {
+    const elm = document.getElementById("initElectricityUsageChart");
+    if (elm) initElectricityUsageChart(elm, 1);
+}
+
+function demoInitSolarChart() {
+    const elm = document.getElementById("initElectricityUsageChart");
+    if (elm) initElectricityUsageChart(elm, 1);
 }
 
 ready(() => {
-    demoInitDynamicChart();
-    demoInitElectricityPriceChart();
+    // demoInitDynamicChart();
+    // demoInitElectricityUsageChart();
 })
