@@ -20,12 +20,12 @@ def dashboard():
 @bp.route('/<path:path>')
 def serve_static(path):
     # Check if the path is for creating a profile
-    if path == "profile":
+    if path == "profile" or path == "visual/usage":
         # Check if the user is logged in
         if not session.get('user_id'):
             flash(_ltr('Please log in to create a profile.'), 'error')
             return redirect(url_for('auth.login'))  # Redirect to the login page if the user is not logged in
-    if path == "profile":
+    if path == "profile" or path == "visual/usage":
         profileForm = ProfileForm()
         profiles = Profile.query.filter_by(user_id=session['user_id']).all()
         profiles_dic = {}
