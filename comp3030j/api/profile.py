@@ -7,6 +7,7 @@ from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import requests, json
+from comp3030j.util import parse_iso_string
 
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
 
@@ -54,19 +55,36 @@ def usage(id):
         return response
 
     content = request.json  # get POSTed content
+    one_hour = timedelta(hours=1)
     try:
         start_time = content["start_time"]
         end_time = content["end_time"]
+        span_hours = content["span_hours"]
 
-        if start_time:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
-        else:
-            start_dt = profile.start_time
+        if start_time and end_time:
+            start_dt = parse_iso_string(start_time)
+            end_dt = parse_iso_string(end_time)
 
-        if end_time:
-            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f%z")
-        else:
+        elif start_time and span_hours:
+            start_dt = parse_iso_string(start_time)
+            delta_hours = abs(int(span_hours))
+            end_dt = start_dt + one_hour * delta_hours
+
+        elif end_time and span_hours:
+            end_dt = parse_iso_string(end_time)
+            delta_hours = abs(int(span_hours))
+            start_dt = end_dt - one_hour * delta_hours
+
+        elif start_time:
+            start_dt = parse_iso_string(start_time)
             end_dt = profile.end_time
+
+        elif end_time:
+            start_dt = profile.start_time
+            end_dt = parse_iso_string(end_time)
+
+        else:
+            raise KeyError()
 
         result = db.session.scalars(
             db.select(Usage)
@@ -84,8 +102,9 @@ def usage(id):
     except KeyError as e:
         return (
             {
-                "errorMsg": "malformed request, specify either \
-(start_time, end_time) or (start_time, span_hours): "
+                "errorMsg": "malformed request, specify either one of \
+(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
+(start_time), (end_time): "
                 + str(e),
             },
             400,
@@ -107,20 +126,36 @@ def solar(id):
         return response
 
     content = request.json  # get POSTed content
-
+    one_hour = timedelta(hours=1)
     try:
         start_time = content["start_time"]
         end_time = content["end_time"]
+        span_hours = content["span_hours"]
 
-        if start_time:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
-        else:
-            start_dt = profile.start_time
+        if start_time and end_time:
+            start_dt = parse_iso_string(start_time)
+            end_dt = parse_iso_string(end_time)
 
-        if end_time:
-            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f%z")
-        else:
+        elif start_time and span_hours:
+            start_dt = parse_iso_string(start_time)
+            delta_hours = abs(int(span_hours))
+            end_dt = start_dt + one_hour * delta_hours
+
+        elif end_time and span_hours:
+            end_dt = parse_iso_string(end_time)
+            delta_hours = abs(int(span_hours))
+            start_dt = end_dt - one_hour * delta_hours
+
+        elif start_time:
+            start_dt = parse_iso_string(start_time)
             end_dt = profile.end_time
+
+        elif end_time:
+            start_dt = profile.start_time
+            end_dt = parse_iso_string(end_time)
+
+        else:
+            raise KeyError()
 
         result = db.session.scalars(
             db.select(Solar)
@@ -181,8 +216,9 @@ def solar(id):
     except KeyError as e:
         return (
             {
-                "errorMsg": "malformed request, specify either \
-(start_time, end_time) or (start_time, span_hours): "
+                "errorMsg": "malformed request, specify either one of \
+(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
+(start_time), (end_time): "
                 + str(e),
             },
             400,
