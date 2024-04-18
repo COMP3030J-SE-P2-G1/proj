@@ -6,6 +6,8 @@ import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd } from '../lib/utils.ts';
 
+const DEFAULT_FETCHDATA_STEP = 30; // 30 days
+
 
 /**
  * if endTime is null, then only request data once
@@ -35,6 +37,7 @@ export async function initDynamicLineChart<D extends TimelyData>(
             ]
         },
         initialStateValue = startTime ? startTime.toISOString() : null,
+        fetchDataStep,
         fetchDataFunc,
         overrideOption,
         updateStateFunc = (state, data) => {
@@ -42,8 +45,13 @@ export async function initDynamicLineChart<D extends TimelyData>(
             const rawEndData = data[data.length - 1]
             newState.value = rawEndData.time;
             const localEndTime = new Date(rawEndData.time);
-            if (endTime == null || localEndTime >= endTime) {
-                newState.state = StateType.stop;
+            if (endTime) {
+                if (localEndTime >= endTime) newState.state = StateType.stop;
+            } else {
+                const localStartTime = new Date(data[0].time);
+                const timeSpan = localEndTime.getTime() - localStartTime.getTime();
+                if (fetchDataStep && timeSpan < fetchDataStep * 24 * 3600)
+                    newState.state = StateType.stop;
             }
             return newState;
         },
@@ -80,7 +88,7 @@ export async function initElectricityUsageLineChart(
         title = "Electricity Usage Chart",
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = 15,
+        fetchDataStep = DEFAULT_FETCHDATA_STEP,
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
@@ -139,7 +147,7 @@ export async function initSolarLineChart(
         title = "Solar Chart",
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = 15,
+        fetchDataStep = DEFAULT_FETCHDATA_STEP,
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
@@ -189,16 +197,16 @@ export async function initElectricityPriceLineChart(
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<ElectricityPrice, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
+    console.log("hi");
     const {
         title = "Electricity Price Chart",
         optionTemplate,
         initialStateValue,
-        fetchDataStep = 15,
+        fetchDataStep = DEFAULT_FETCHDATA_STEP,
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
             const spanHours = endTime ? null : fetchDataStep * 24;
-            console.log(startTime, endTime, spanHours);
             return DATA_API.getElectricityPrice(startTime, endTime, spanHours);
         },
         overrideOption = (data, prevData) => {

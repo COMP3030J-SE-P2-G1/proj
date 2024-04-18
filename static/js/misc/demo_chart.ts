@@ -87,6 +87,6 @@ ready(() => {
     demoInitDynamicChart();
     demoInitElectricityUsageLineChart();
     demoInitSolarLineChart();
-    // demoInitElectricityPriceLineChart();
+    demoInitElectricityPriceLineChart();
     demoInitElectricityUsagePieChart();
 })
