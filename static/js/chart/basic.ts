@@ -16,20 +16,25 @@ import {
     TooltipComponent,
     GridComponent,
     DatasetComponent,
-    TransformComponent
+    TransformComponent,
+    DataZoomComponent
 } from 'echarts/components';
 
 // Types
 import {
     type PieSeriesOption,
     type BarSeriesOption,
-    type LineSeriesOption} from 'echarts/charts';
+    type LineSeriesOption,
+} from 'echarts/charts';
+
 import type {
     TitleComponentOption, 
     TooltipComponentOption,
     GridComponentOption,
-    DatasetComponentOption
+    DatasetComponentOption,
+    DataZoomComponentOption
 } from 'echarts/components';
+
 import type { ComposeOption } from 'echarts/core';
 
 export type ChartOption = ComposeOption<
@@ -40,6 +45,7 @@ export type ChartOption = ComposeOption<
   | TooltipComponentOption
   | GridComponentOption
   | DatasetComponentOption
+  | DataZoomComponentOption
 >;
 
 // Register the required components
@@ -47,6 +53,7 @@ echarts.use([
     LineChart,
     BarChart,
     PieChart,
+    DataZoomComponent,
     TitleComponent,
     TooltipComponent,
     GridComponent,

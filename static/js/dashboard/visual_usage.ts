@@ -12,11 +12,6 @@ function initCharts() {
                     return [pt[0], '10%'];
                 }
             },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
             title: {
                 left: 'center',
                 text: 'Electricity Usage'
@@ -25,14 +20,10 @@ function initCharts() {
                 type: 'category',
                 boundaryGap: false,
                 data: [],
-                max: 100
             },
             yAxis: {
                 type: 'value',
-                boundaryGap: [0, '100%'],
-                max: function (value) {
-                    return value.max + 100;
-                }
+                boundaryGap: [0, '100%']
             },
             dataZoom: [
                 {
@@ -82,10 +73,6 @@ function initCharts() {
             },
             tooltip: {
                 trigger: 'item'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left'
             },
             series: [
                 {
