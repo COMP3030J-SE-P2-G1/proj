@@ -14,7 +14,7 @@ class Usage(db.Model, SerializerMixin):
 
     # Exclude ORM relationships
     serialize_rules = ("-profile",)
-    datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+    datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))

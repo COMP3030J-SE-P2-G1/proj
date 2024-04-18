@@ -21,7 +21,7 @@ class Profile(db.Model, SerializerMixin):
 
     # Exclude ORM relationships
     serialize_rules = ("-user", "-usage", "-solar")
-    datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+    datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))

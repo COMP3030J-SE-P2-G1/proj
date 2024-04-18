@@ -22,7 +22,7 @@ class Solar(db.Model, SerializerMixin):
         power: float, 装机发电量（瓦特）
     """
 
-    datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+    datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     lon: Mapped[float] = mapped_column()

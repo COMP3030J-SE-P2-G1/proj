@@ -14,7 +14,7 @@ class SEMSpot(db.Model, SerializerMixin):
         spot: price in EUR/MWh
     """
 
-    datetime_format = "%Y-%m-%dT%H:%M:%SZ"
+    datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     __tablename__ = "sems"
     time: Mapped[datetime] = mapped_column(UtcDateTime(), primary_key=True)
