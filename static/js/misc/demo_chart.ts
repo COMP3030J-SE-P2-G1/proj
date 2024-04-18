@@ -1,8 +1,8 @@
 import { ready, dateAdd } from '../lib/utils.ts';
-import * as Chart from '../lib/chart.ts';
-import type { State } from '../lib/chart.ts';
+import * as Chart from '../chart/chart.ts';
+import type { State } from '../chart/chart.ts';
+import type { Solar } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
-
 
 
 async function demoInitDynamicChart() {
@@ -10,7 +10,7 @@ async function demoInitDynamicChart() {
     let profile = await PROFILE_API.getProfile(1);
     let fetchCounter = 0;
 
-    Chart.initDynamicChart<PROFILE_API.Solar, string>(
+    Chart.initDynamicChart<Solar, string>(
         elm,
         {
             title: {

@@ -1,4 +1,4 @@
-import { initElectricityUsageChart } from '../lib/chart.ts';
+import { initElectricityUsageChart } from '../chart/chart.ts';
 
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity-usage-chart");
