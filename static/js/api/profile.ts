@@ -20,7 +20,8 @@ export async function getProfile(id: number): Promise<Profile> {
 export async function getSolar(
     profileId: number,
     startTime: Date | null,
-    endTime: Date | null
+    endTime: Date | null,
+    span_hours: number | null = null,
 ): Promise<Solar[]> {
     const response = await fetch(`/api/profile/${profileId}/solar`, {
         method: 'POST',
@@ -29,7 +30,8 @@ export async function getSolar(
         },
         body: JSON.stringify({
             start_time: startTime?.toISOString() ?? null,
-            end_time: endTime?.toISOString() ?? null
+            end_time: span_hours ? null : (endTime?.toISOString() ?? null),
+            span_hours: span_hours
         })
     });
     
@@ -44,7 +46,8 @@ export async function getSolar(
 export async function getUsage(
     profileId: number,
     startTime: Date | null,
-    endTime: Date | null
+    endTime: Date | null,
+    span_hours: number | null = null,
 ): Promise<Usage[]> {
     const response = await fetch(`/api/profile/${profileId}/usage`, {
         method: 'POST',
@@ -53,7 +56,8 @@ export async function getUsage(
         },
         body: JSON.stringify({
             start_time: startTime?.toISOString() ?? null,
-            end_time: endTime?.toISOString() ?? null
+            end_time: span_hours ? null : (endTime?.toISOString() ?? null),
+            span_hours: span_hours
         })
     });
     

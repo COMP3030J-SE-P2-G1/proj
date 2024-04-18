@@ -11,8 +11,8 @@ res = requests.post(
     "http://127.0.0.1:5000/api/profile/1/usage",
     json={
         "start_time": "2023-1-31T23:00:00.000Z",
-        "end_time": None,
-        "span_hours": 2,
+        "end_time": "2023-2-22T23:00:00.000Z",
+        "span_hours": None,
     },
 )
 print("response code:", res)
