@@ -72,9 +72,9 @@ export async function initElectricityUsageLineChart(
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<Usage, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    let profile = await PROFILE_API.getProfile(profileId);
-    let gStartTime = startTime ? startTime : new Date(profile.start_time);
-    let gEndTime = endTime ? endTime : new Date(profile.end_time);
+    const profile = await PROFILE_API.getProfile(profileId);
+    const gStartTime = startTime ? startTime : new Date(profile.start_time);
+    const gEndTime = endTime ? endTime : new Date(profile.end_time);
 
     const {
         title = "Electricity Usage Chart",
@@ -131,9 +131,9 @@ export async function initSolarLineChart(
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<Solar, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    let profile = await PROFILE_API.getProfile(profileId);
-    let gStartTime = startTime ? startTime : new Date(profile.start_time);
-    let gEndTime = endTime ? endTime : new Date(profile.end_time);
+    const profile = await PROFILE_API.getProfile(profileId);
+    const gStartTime = startTime ? startTime : new Date(profile.start_time);
+    const gEndTime = endTime ? endTime : new Date(profile.end_time);
 
     const {
         title = "Solar Chart",

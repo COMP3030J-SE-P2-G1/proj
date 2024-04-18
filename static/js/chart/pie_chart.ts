@@ -71,9 +71,9 @@ export async function initElectricityUsagePieChart(
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<Usage, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    let profile = await PROFILE_API.getProfile(profileId);
-    let gStartTime = startTime ? startTime : new Date(profile.start_time);
-    let gEndTime = endTime ? endTime : new Date(profile.end_time);
+    const profile = await PROFILE_API.getProfile(profileId);
+    const gStartTime = startTime ? startTime : new Date(profile.start_time);
+    const gEndTime = endTime ? endTime : new Date(profile.end_time);
     const monthlyUsageData: StringNumberDict = {};
 
     const {
@@ -88,7 +88,7 @@ export async function initElectricityUsagePieChart(
         },
         overrideOption = (data, prevData) => {
             const newMonthlySumDict = calculateMonthlyUsageSum(data);
-            for (let [key, value] of Object.entries(newMonthlySumDict)) {
+            for (const [key, value] of Object.entries(newMonthlySumDict)) {
                 if (key in monthlyUsageData) {
                     monthlyUsageData[key] += value;
                 } else {
