@@ -1,6 +1,7 @@
 import * as echarts from 'echarts/core';
-import { initDynamicChart, InitChartOptions } from './basic';
-import type { Time, NullableTime, TimelyData, Profile, Solar, Usage, ElectricityPrice } from '../api/types.ts';
+import { initDynamicChart, StateType } from './basic';
+import type { InitChartOptions, State } from './basic';
+import type { NullableTime, TimelyData, Solar, Usage, ElectricityPrice } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd } from '../lib/utils.ts';
@@ -64,7 +65,7 @@ export async function initDynamicLineChart<D extends TimelyData>(
     return chart;
 }
 
-export async function initElectricityUsageChart(
+export async function initElectricityUsageLineChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
@@ -123,7 +124,7 @@ export async function initElectricityUsageChart(
 }
 
 
-export async function initSolarChart(
+export async function initSolarLineChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
@@ -182,7 +183,7 @@ export async function initSolarChart(
 }
 
 
-export async function initElectricityPriceChart(
+export async function initElectricityPriceLineChart(
     elm: HTMLElement,
     startTime: Date | null = null,
     endTime: Date | null = null,

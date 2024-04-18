@@ -4,6 +4,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 // chart types
 import {
     LineChart,
+    PieChart,
     BarChart
 } from 'echarts/charts';
 // features
@@ -18,10 +19,10 @@ import {
 } from 'echarts/components';
 
 // Types
-import type {
-    BarSeriesOption,
-    LineSeriesOption
-} from 'echarts/charts';
+import {
+    type PieSeriesOption,
+    type BarSeriesOption,
+    type LineSeriesOption} from 'echarts/charts';
 import type {
     TitleComponentOption, 
     TooltipComponentOption,
@@ -31,7 +32,8 @@ import type {
 import type { ComposeOption } from 'echarts/core';
 
 export type ChartOption = ComposeOption<
-    BarSeriesOption
+    PieSeriesOption 
+  | BarSeriesOption
   | LineSeriesOption
   | TitleComponentOption
   | TooltipComponentOption
@@ -43,6 +45,7 @@ export type ChartOption = ComposeOption<
 echarts.use([
     LineChart,
     BarChart,
+    PieChart,
     TitleComponent,
     TooltipComponent,
     GridComponent,

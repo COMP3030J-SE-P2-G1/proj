@@ -59,27 +59,34 @@ async function demoInitDynamicChart() {
     );
 }
 
-function demoInitElectricityUsageChart() {
-    const elm = document.getElementById("initElectricityUsageChart");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, null, null, { interval: 100});
+function demoInitElectricityUsageLineChart() {
+    const elm = document.getElementById("initElectricityUsageLineChart");
+    if (elm) Chart.initElectricityUsageLineChart(elm, 1, null, null, { interval: 100});
 }
 
-function demoInitSolarChart() {
-    const elm = document.getElementById("initSolarChart");
-    if (elm) Chart.initSolarChart(elm, 1, null, null, {
+function demoInitSolarLineChart() {
+    const elm = document.getElementById("initSolarLineChart");
+    if (elm) Chart.initSolarLineChart(elm, 1, null, null, {
         fetchDataStep: 30,
         interval: 100
     });
 }
 
-function demoInitElectricityPriceChart() {
-    const elm = document.getElementById("initElectricityPrice");
-    if (elm) Chart.initElectricityPriceChart(elm);
+function demoInitElectricityPriceLineChart() {
+    const elm = document.getElementById("initElectricityPriceLineChart");
+    if (elm) Chart.initElectricityPriceLineChart(elm);
 }
+
+function demoInitElectricityUsagePieChart() {
+    const elm = document.getElementById("initElectricityUsagePieChart");
+    if (elm) Chart.initElectricityUsagePieChart(elm, 1);
+}
+
 
 ready(() => {
     demoInitDynamicChart();
-    demoInitElectricityUsageChart();
-    demoInitSolarChart();
-    // demoInitElectricityPriceChart();
+    demoInitElectricityUsageLineChart();
+    demoInitSolarLineChart();
+    // demoInitElectricityPriceLineChart();
+    demoInitElectricityUsagePieChart();
 })
