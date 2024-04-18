@@ -11,8 +11,9 @@
                 <select class="select select-bordered border-white" id="consumptionSelect"
                         onchange="updateConsumptionChart()">
                     <option disabled selected>Electricity Consumption</option>
-                    <option value="UCD">UCD</option>
-                    <option value="usage">Usage</option>
+                    {% for key, value in profiles.items() %}
+                        <option value="key">{{ value }}</option>
+                    {% endfor %}
                 </select>
                 <button class="btn btn-circle sm:btn-sm" onclick="profile_modal.showModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24">
@@ -25,13 +26,14 @@
                         <form method="dialog">
                           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <h1 class="font-bold text-lg text-center py-4">{{ _("Create a Profile") }}</h1>
+                        <h1 class="font-bold  text-2xl text-center py-4">{{ _("Create a Profile") }}</h1>
                         <form action="{{ url_for('dashboard.create_profile') }}" id="profileForm" method="POST"
                               class="form-control w-full">
+                            {{ profileForm.hidden_tag() }}
                             {% macro render_field(field, type) %}
                                 <div class="form-group mb-2">
                                     {% if type == "" %}
-                                        {{ field.label(class="label text-sm") }}
+                                        {{ field.label(class="label") }}
                                         {% if field.errors %}
                                             {{ field(class="input input-bordered input-error w-full text-sm") }}
                                             <div class="alert alert-error shadow-lg mt-1 p-2 text-xs"
@@ -47,7 +49,7 @@
                                             {{ field(class="input input-bordered w-full text-sm") }}
                                         {% endif %}
                                     {% else %}
-                                        {{ field.label(class="label text-sm") }}
+                                        {{ field.label(class="label") }}
                                         {% if field.errors %}
                                             {{ field(class="input input-bordered input-error w-full text-sm", type=type) }}
                                             <div class="alert alert-error shadow-lg mt-1 p-2 text-xs"
@@ -93,11 +95,15 @@
                                     </div>
                                 </div>
                                 <div class="divider"></div>
-                                <div class="basis-2/3 h-full m-2">
-                                    {{ render_field(profileForm.tech, "select") }}
-                                    {{ render_field(profileForm.loss) }}
-                                    {{ render_field(profileForm.power) }}
-                                    {{ render_field(profileForm.generation) }}
+                                <div class="basis-1/3 h-full flex m-2">
+                                    <div class="basis-1/2 p-4 h-full place-items-center">
+                                        {{ render_field(profileForm.tech, "select") }}
+                                        {{ render_field(profileForm.loss) }}
+                                    </div>
+                                    <div class="basis-1/2 p-4 h-full place-items-center">
+                                        {{ render_field(profileForm.power) }}
+                                        {{ render_field(profileForm.generation) }}
+                                    </div>
                                 </div>
                             </section>
                         </form>
