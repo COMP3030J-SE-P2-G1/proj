@@ -1,13 +1,10 @@
-import datetime
-import logging
-
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, session, flash, jsonify
 from flask_login import login_required
 
 from comp3030j.dashboard import ProfileForm
 from comp3030j.db import db
 from comp3030j.db.Profile import Profile
-from comp3030j.db.Solar import Solar
 from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
 from comp3030j.util import allowed_file, _ltr, read_hourly_usage_csv
@@ -43,8 +40,9 @@ def create_profile():
                     flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
                     return jsonify(
                         {'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
-            profileForm.start_time.data = datetime.datetime.strptime(str(profileForm.start_time.data), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
-            profileForm.end_time.data = datetime.datetime.strptime(str(profileForm.end_time.data), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+            profileForm.start_time.data = datetime.strptime(str(profileForm.start_time.data) + " +01:00", "%Y-%m-%d %z")
+            profileForm.end_time.data = datetime.strptime(str(profileForm.end_time.data) + " +01:00", "%Y-%m-%d %z")
+            print(profileForm.end_time.data)
             profile = Profile(user_id=session['user_id'], name=profileForm.name.data, desc=profileForm.desc.data,
                               start_time=profileForm.start_time.data, end_time=profileForm.end_time.data,
                               lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
@@ -53,7 +51,6 @@ def create_profile():
             db.session.commit()
             # Add usage to the database
             for timestamp, value in usages.items():
-                #timestamp = datetime.datetime.strptime(str(timestamp), "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
                 db.session.add(usage)
             db.session.commit()
