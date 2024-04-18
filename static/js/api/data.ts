@@ -5,14 +5,14 @@ export async function getElectricityPrice(
     endTime: Date | null,
     span_hours: number | null,
 ): Promise<ElectricityPrice[]> {
-    const response = await fetch(`/data/sems`, {
+    const response = await fetch(`/api/data/sems`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             start_time: startTime?.toISOString() ?? null,
-            end_time: span_hours ? null : endTime?.toISOString() ?? null,
+            end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours
         })
     });

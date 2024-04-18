@@ -314,62 +314,59 @@ export async function initSolarChart(
 }
 
 
-// export async function initElectricityPriceChart(
-//     elm: HTMLElement,
-//     profileId: number,
-//     startTime: Date | null = null,
-//     endTime: Date | null = null,
-//     initChartOptions: Partial<InitChartOptions<ElectricityPrice, string>> = {},
-// ): Promise<echarts.ECharts>  {
-
-//     const {
-//         title = "Electricity Price Chart",
-//         optionTemplate,
-//         initialStateValue,
-//         fetchDataStep = 15,
-//         fetchDataFunc = async state => {
-//             const startTime = new Date(state.value);
-//             return DATA_API.getElectricityPrice(startTime, null, fetchDataStep * 24);
-//         },
-//         overrideOption = (data, prevData) => {
-//             if (prevData) data = prevData.concat(data);
-//             return {
-//                 xAxis: {
-//                     data: data.map(item => item.time)
-//                 },
-//                 series: [
-//                     {
-//                         name: 'demo',
-//                         data: data.map(item => item.spot)
-//                     }
-//                 ]
-//             }
-//         },
-//         updateStateFunc,
-//         interval,
-//         shouldStopFetchingFunc
-//     } = initChartOptions;
+export async function initElectricityPriceChart(
+    elm: HTMLElement,
+    startTime: Date | null = null,
+    endTime: Date | null = null,
+    initChartOptions: Partial<InitChartOptions<ElectricityPrice, NullableTime>> = {},
+): Promise<echarts.ECharts>  {
+    const {
+        title = "Electricity Price Chart",
+        optionTemplate,
+        initialStateValue,
+        fetchDataStep = 15,
+        fetchDataFunc = async state => {
+            const startTime = state.value ? new Date(state.value) : null;
+            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
+            const spanHours = endTime ? null : fetchDataStep * 24;
+            console.log(startTime, endTime, spanHours);
+            return DATA_API.getElectricityPrice(startTime, endTime, spanHours);
+        },
+        overrideOption = (data, prevData) => {
+            if (prevData) data = prevData.concat(data);
+            return {
+                xAxis: {
+                    data: data.map(item => item.time)
+                },
+                series: [
+                    {
+                        name: 'demo',
+                        data: data.map(item => item.spot)
+                    }
+                ]
+            }
+        },
+        updateStateFunc,
+        interval,
+        shouldStopFetchingFunc
+    } = initChartOptions;
     
-//     return initDynamicLineChart<ElectricityPrice>(
-//         elm,
-//         startTime,
-//         endTime,
-//         {
-//             title: title,
-//             optionTemplate: optionTemplate,
-//             initialStateValue: initialStateValue,
-//             fetchDataStep: fetchDataStep,
-//             fetchDataFunc: fetchDataFunc,
-//             overrideOption: overrideOption,
-//             updateStateFunc: updateStateFunc,
-//             interval: interval,
-//             shouldStopFetchingFunc: shouldStopFetchingFunc
-//         }
-//     );
-// }
-
-
-
-
+    return initDynamicLineChart<ElectricityPrice>(
+        elm,
+        startTime,
+        endTime,
+        {
+            title: title,
+            optionTemplate: optionTemplate,
+            initialStateValue: initialStateValue,
+            fetchDataStep: fetchDataStep,
+            fetchDataFunc: fetchDataFunc,
+            overrideOption: overrideOption,
+            updateStateFunc: updateStateFunc,
+            interval: interval,
+            shouldStopFetchingFunc: shouldStopFetchingFunc
+        }
+    );
+}
 
 

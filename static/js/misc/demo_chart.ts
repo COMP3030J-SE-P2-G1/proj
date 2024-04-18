@@ -74,11 +74,12 @@ function demoInitSolarChart() {
 
 function demoInitElectricityPriceChart() {
     const elm = document.getElementById("initElectricityPrice");
-    if (elm) Chart.initSolarChart(elm, 1);
+    if (elm) Chart.initElectricityPriceChart(elm);
 }
 
 ready(() => {
     demoInitDynamicChart();
     demoInitElectricityUsageChart();
     demoInitSolarChart();
+    // demoInitElectricityPriceChart();
 })
