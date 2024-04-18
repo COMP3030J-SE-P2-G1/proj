@@ -1,5 +1,6 @@
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import type { NullableTime, TimelyData } from '../api/types.ts';
 
 // chart types
 import {
@@ -67,6 +68,8 @@ export type State<T> = {
     value: T
 };
 
+export type SupportedChartType = "bar" | "line" | "pie";
+
 /**
  * Asynchronous Loading + Dynamic Update
  * interval: Interval in milliseconds to fetch data, default is 0ms
@@ -127,6 +130,7 @@ export function initDynamicChart<D, T>(
 
 export type InitChartOptions<D, T> = {
     title: string,
+    type: SupportedChartType,
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
@@ -135,4 +139,70 @@ export type InitChartOptions<D, T> = {
     fetchDataStep: number, // number of dates
     interval: number,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
+}
+
+
+/**
+ * if endTime is null, then only request data once
+ */
+export async function initDynamicTimelyChart<D extends TimelyData>(
+    elm: HTMLElement,
+    startTime: Date | null,
+    endTime: Date | null,
+    initChartOptions: Partial<InitChartOptions<D, NullableTime>> = {},
+): Promise<echarts.ECharts>  {
+    const {
+        title = "Line Chart",
+        type = "line",
+        optionTemplate = {
+            title: {
+                text: title
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'line0',
+                    type: type,
+                    data: []
+                }
+            ]
+        },
+        initialStateValue = startTime ? startTime.toISOString() : null,
+        fetchDataStep,
+        fetchDataFunc,
+        overrideOption,
+        updateStateFunc = (state, data) => {
+            const newState: State<NullableTime> = Object.assign({}, state);
+            const rawEndData = data[data.length - 1]
+            newState.value = rawEndData.time;
+            const localEndTime = new Date(rawEndData.time);
+            if (endTime) {
+                if (localEndTime >= endTime) newState.state = StateType.stop;
+            } else {
+                const localStartTime = new Date(data[0].time);
+                const timeSpan = localEndTime.getTime() - localStartTime.getTime();
+                if (fetchDataStep && timeSpan < fetchDataStep * 24 * 3600)
+                    newState.state = StateType.stop;
+            }
+            return newState;
+        },
+        interval = 0,
+        shouldStopFetchingFunc
+    } = initChartOptions;
+    
+    const chart = initDynamicChart<D, NullableTime>(
+        elm,
+        optionTemplate,
+        initialStateValue,
+        fetchDataFunc!,
+        overrideOption!,
+        updateStateFunc,
+        interval,
+        shouldStopFetchingFunc
+    );
+    
+    return chart;
 }

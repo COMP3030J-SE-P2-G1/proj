@@ -1,10 +1,10 @@
-import { initElectricityPriceLineChart } from '../chart/chart.ts';
+import { initElectricityPriceChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity_price");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceLineChart(electricityUsageChartElm, null, null, {
+    initElectricityPriceChart(electricityUsageChartElm, null, null, {
         optionTemplate: {
             tooltip: {
                 trigger: 'axis',

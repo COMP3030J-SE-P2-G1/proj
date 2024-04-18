@@ -61,12 +61,13 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageLineChart() {
     const elm = document.getElementById("initElectricityUsageLineChart");
-    if (elm) Chart.initElectricityUsageLineChart(elm, 1, null, null, { interval: 100});
+    if (elm) Chart.initElectricityUsageChart(elm, 1, null, null, { interval: 100});
 }
 
 function demoInitSolarLineChart() {
     const elm = document.getElementById("initSolarLineChart");
-    if (elm) Chart.initSolarLineChart(elm, 1, null, null, {
+    if (elm) Chart.initSolarChart(elm, 1, null, null, {
+        type: "bar",
         fetchDataStep: 30,
         interval: 100
     });
@@ -74,7 +75,7 @@ function demoInitSolarLineChart() {
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceLineChart(elm);
+    if (elm) Chart.initElectricityPriceChart(elm, null, null, { type: "line" });
 }
 
 function demoInitElectricityUsagePieChart() {

@@ -1,79 +1,14 @@
 import * as echarts from 'echarts/core';
-import { initDynamicChart, StateType } from './basic';
-import type { InitChartOptions, State } from './basic';
-import type { NullableTime, TimelyData, Solar, Usage, ElectricityPrice } from '../api/types.ts';
+import { initDynamicTimelyChart, StateType } from './basic';
+import type { InitChartOptions, State, SupportedChartType } from './basic';
+import type { NullableTime, Solar, Usage, ElectricityPrice } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd } from '../lib/utils.ts';
 
 const DEFAULT_FETCHDATA_STEP = 30; // 30 days
 
-
-/**
- * if endTime is null, then only request data once
- */
-export async function initDynamicLineChart<D extends TimelyData>(
-    elm: HTMLElement,
-    startTime: Date | null,
-    endTime: Date | null,
-    initChartOptions: Partial<InitChartOptions<D, NullableTime>> = {},
-): Promise<echarts.ECharts>  {
-    const {
-        title = "Line Chart",
-        optionTemplate = {
-            title: {
-                text: title
-            },
-            xAxis: {
-                data: []
-            },
-            yAxis: {},
-            series: [
-                {
-                    name: 'line0',
-                    type: 'line',
-                    data: []
-                }
-            ]
-        },
-        initialStateValue = startTime ? startTime.toISOString() : null,
-        fetchDataStep,
-        fetchDataFunc,
-        overrideOption,
-        updateStateFunc = (state, data) => {
-            const newState: State<NullableTime> = Object.assign({}, state);
-            const rawEndData = data[data.length - 1]
-            newState.value = rawEndData.time;
-            const localEndTime = new Date(rawEndData.time);
-            if (endTime) {
-                if (localEndTime >= endTime) newState.state = StateType.stop;
-            } else {
-                const localStartTime = new Date(data[0].time);
-                const timeSpan = localEndTime.getTime() - localStartTime.getTime();
-                if (fetchDataStep && timeSpan < fetchDataStep * 24 * 3600)
-                    newState.state = StateType.stop;
-            }
-            return newState;
-        },
-        interval = 0,
-        shouldStopFetchingFunc
-    } = initChartOptions;
-    
-    const chart = initDynamicChart<D, NullableTime>(
-        elm,
-        optionTemplate,
-        initialStateValue,
-        fetchDataFunc!,
-        overrideOption!,
-        updateStateFunc,
-        interval,
-        shouldStopFetchingFunc
-    );
-    
-    return chart;
-}
-
-export async function initElectricityUsageLineChart(
+export async function initElectricityUsageChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
@@ -86,6 +21,7 @@ export async function initElectricityUsageLineChart(
 
     const {
         title = "Electricity Usage Chart",
+        type,
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -113,12 +49,13 @@ export async function initElectricityUsageLineChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicLineChart<Usage>(
+    return initDynamicTimelyChart<Usage>(
         elm,
         gStartTime,
         gEndTime,
         {
             title: title,
+            type: type,
             optionTemplate: optionTemplate,
             initialStateValue: initialStateValue,
             fetchDataStep: fetchDataStep,
@@ -132,7 +69,7 @@ export async function initElectricityUsageLineChart(
 }
 
 
-export async function initSolarLineChart(
+export async function initSolarChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
@@ -145,6 +82,7 @@ export async function initSolarLineChart(
 
     const {
         title = "Solar Chart",
+        type,
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -172,12 +110,13 @@ export async function initSolarLineChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicLineChart<Solar>(
+    return initDynamicTimelyChart<Solar>(
         elm,
         gStartTime,
         gEndTime,
         {
             title: title,
+            type: type,
             optionTemplate: optionTemplate,
             initialStateValue: initialStateValue,
             fetchDataStep: fetchDataStep,
@@ -191,15 +130,15 @@ export async function initSolarLineChart(
 }
 
 
-export async function initElectricityPriceLineChart(
+export async function initElectricityPriceChart(
     elm: HTMLElement,
     startTime: Date | null = null,
     endTime: Date | null = null,
     initChartOptions: Partial<InitChartOptions<ElectricityPrice, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    console.log("hi");
     const {
         title = "Electricity Price Chart",
+        type,
         optionTemplate,
         initialStateValue,
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -228,12 +167,13 @@ export async function initElectricityPriceLineChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicLineChart<ElectricityPrice>(
+    return initDynamicTimelyChart<ElectricityPrice>(
         elm,
         startTime,
         endTime,
         {
             title: title,
+            type: type,
             optionTemplate: optionTemplate,
             initialStateValue: initialStateValue,
             fetchDataStep: fetchDataStep,

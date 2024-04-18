@@ -1,107 +1,108 @@
-import { initElectricityUsageLineChart, initElectricityUsagePieChart } from '../chart/chart.ts';
+import { initElectricityUsageChart, initElectricityUsagePieChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity-usage-chart");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityUsageLineChart(electricityUsageChartElm, 1, null, null, {
+    initElectricityUsageChart(electricityUsageChartElm, 1, null, null, {
         optionTemplate: {
             tooltip: {
                 trigger: 'axis',
                 position: function (pt) {
-                  return [pt[0], '10%'];
+                    return [pt[0], '10%'];
                 }
-              },
-              toolbox: {
+            },
+            toolbox: {
                 feature: {
-                  saveAsImage: {}
+                    saveAsImage: {}
                 }
-              },
-              title: {
+            },
+            title: {
                 left: 'center',
                 text: 'Electricity Usage'
-              },
-              xAxis: {
+            },
+            xAxis: {
                 type: 'category',
                 boundaryGap: false,
                 data: [],
                 max: 100
-              },
-              yAxis: {
+            },
+            yAxis: {
                 type: 'value',
                 boundaryGap: [0, '100%'],
                 max: function (value) {
-                  return value.max + 100;
-              }
-              },
-              dataZoom: [
+                    return value.max + 100;
+                }
+            },
+            dataZoom: [
                 {
-                  type: 'inside',
-                  start: 0,
-                  end: 10
+                    type: 'inside',
+                    start: 0,
+                    end: 10
                 },
                 {
-                  start: 0,
-                  end: 10
+                    start: 0,
+                    end: 10
                 }
-              ],
-              series: [
+            ],
+            series: [
                 {
-                  name: 'line0',
-                  type: 'line',
-                  symbol: 'none',
-                  sampling: 'lttb',
-                  itemStyle: {
-                    color: 'rgba(58,77,233,0.8)'
-                  },
-                  areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                      {
-                        offset: 0,
+                    name: 'line0',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'lttb',
+                    itemStyle: {
                         color: 'rgba(58,77,233,0.8)'
-                      },
-                      {
-                        offset: 1,
-                        color: 'rgba(58,77,233,0.3)'
-                      }
-                    ])
-                  },
-                  data: []
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgba(58,77,233,0.8)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgba(58,77,233,0.3)'
+                            }
+                        ])
+                    },
+                    data: []
                 }
-              ]
+            ]
         }
     });
 
     const electricityPieChartElm = document.getElementById("electricity-pie-chart");
     if (!electricityPieChartElm) { console.error("Cannot find HTML element #electricity-pie-chart."); return;}
     initElectricityUsagePieChart(electricityPieChartElm, 1, null, null, {
-      optionTemplate: {
-        title: {
-          text: 'Electricity Usage',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'item'
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left'
-        },
-        series: [
-          {
-            type: 'pie',
-            radius: '50%',
-            data: [],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      }
+        optionTemplate: {
+            title: {
+                text: 'Electricity Usage',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '50%',
+                    data: [],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ],
+            animation: false,
+        }
     });
 }
 
