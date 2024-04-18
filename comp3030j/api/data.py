@@ -16,15 +16,15 @@ def semspot():
         span_hours = content["span_hours"]
 
         if start_time and end_time:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
+            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f%z")
             result = db.session.scalars(
                 db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
             )
             return jsonify([v.to_dict() for v in result])
 
         elif start_time and span_hours:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
             delta_hours = int(span_hours)
             one_hour = timedelta(hours=1)
             end_dt = start_dt + one_hour * delta_hours

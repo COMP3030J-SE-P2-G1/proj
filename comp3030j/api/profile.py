@@ -59,12 +59,12 @@ def usage(id):
         end_time = content["end_time"]
 
         if start_time:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
         else:
             start_dt = profile.start_time
 
         if end_time:
-            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f%z")
         else:
             end_dt = profile.end_time
 
@@ -113,12 +113,12 @@ def solar(id):
         end_time = content["end_time"]
 
         if start_time:
-            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            start_dt = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S.%f%z")
         else:
             start_dt = profile.start_time
 
         if end_time:
-            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%fZ")
+            end_dt = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S.%f%z")
         else:
             end_dt = profile.end_time
 
