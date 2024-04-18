@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-18 15:18+0800\n"
+"POT-Creation-Date: 2024-04-18 17:30+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:60
+#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:64
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
@@ -203,11 +203,11 @@ msgstr "图像上传失败"
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
-#: comp3030j/views/dashboard.py:40
+#: comp3030j/views/dashboard.py:44
 msgid "Not allowed data in:"
 msgstr ""
 
-#: comp3030j/views/dashboard.py:57
+#: comp3030j/views/dashboard.py:61
 #, fuzzy
 msgid "Profile created successfully."
 msgstr "密码修改成功"
@@ -243,16 +243,16 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
-#: templates/page/dashboard/page/profile.j2:105
+#: templates/page/dashboard/page/profile.j2:111
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
-#: templates/page/dashboard/page/profile.j2:107
+#: templates/page/dashboard/page/profile.j2:113
 msgid "Close"
 msgstr "取消"
 
-#: templates/page/dashboard/page/profile.j2:28
+#: templates/page/dashboard/page/profile.j2:29
 #, fuzzy
 msgid "Create a Profile"
 msgstr "个人中心"
