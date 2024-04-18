@@ -14,6 +14,9 @@
                     </div>
                     <select class="select select-bordered">
                         <option disabled selected>Pick one</option>
+                        {% for key, value in profiles.items() %}
+                            <option value="key">{{ value }}</option>
+                        {% endfor %}
                     </select>
                 </label>
                 <div class="flex justify-center items-center h-full">
