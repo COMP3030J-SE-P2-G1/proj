@@ -21,7 +21,11 @@ def dashboard():
 def serve_static(path):
     if path == "profile":
         profileForm = ProfileForm()
-        return render_template(f"page/dashboard/page/{path}.j2", profileForm=profileForm)
+        profiles = Profile.query.filter_by(user_id=session['user_id']).all()
+        profiles_dic = {}
+        for profile in profiles:
+            profiles_dic[profile.id] = profile.name
+        return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm)
     return render_template(f"page/dashboard/page/{path}.j2")
 
 
