@@ -40,3 +40,15 @@ res = requests.post(
 print("response code:", res)
 
 print("response body:", json.dumps(res.json(), indent=4))
+# single ended loading
+res = requests.post(
+    "http://127.0.0.1:5000/api/data/sems",
+    json={
+        "start_time": None,
+        "end_time": None,
+        "span_hours": "5",
+    },
+)
+print("response code:", res)
+
+print("response body:", json.dumps(res.json(), indent=4))

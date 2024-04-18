@@ -31,6 +31,13 @@ def semspot():
             delta_hours = abs(int(span_hours))
             start_dt = end_dt - one_hour * delta_hours
 
+        elif span_hours:  # default to first
+            start_dt = db.session.scalar(
+                db.select(SEMSpot).order_by(SEMSpot.time.asc())
+            ).time
+            delta_hours = abs(int(span_hours))
+            end_dt = start_dt + one_hour * delta_hours
+
         else:
             raise KeyError()
 
@@ -48,7 +55,7 @@ def semspot():
         return (
             {
                 "errorMsg": "malformed request, specify either \
-(start_time, end_time), (start_time, span_hours) or (end_time, span_hours): "
+(start_time, end_time), (start_time, span_hours), (end_time, span_hours) or (span_hours): "
                 + str(e),
             },
             400,
