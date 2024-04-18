@@ -5,6 +5,10 @@ import type { NullableTime, TimelyData, Solar, Usage, ElectricityPrice } from '.
 import * as PROFILE_API from '../api/profile.ts';
 import { dateAdd } from '../lib/utils.ts';
 
+type StringNumberDict = { [key: string]: number };
+type PieSeriesData = { name: string, value: number };
+
+
 /**
  * if endTime is null, then only request data once
  */
@@ -70,6 +74,7 @@ export async function initElectricityUsagePieChart(
     let profile = await PROFILE_API.getProfile(profileId);
     let gStartTime = startTime ? startTime : new Date(profile.start_time);
     let gEndTime = endTime ? endTime : new Date(profile.end_time);
+    const monthlyUsageData: StringNumberDict = {};
 
     const {
         title = "Electricity Usage Chart",
@@ -82,13 +87,20 @@ export async function initElectricityUsagePieChart(
             return PROFILE_API.getUsage(profile.id, startTime, endTime);
         },
         overrideOption = (data, prevData) => {
-            if (prevData) data = prevData.concat(data);
-            const monthlySum = calculateMonthlyUsageSum(data);
+            const newMonthlySumDict = calculateMonthlyUsageSum(data);
+            for (let [key, value] of Object.entries(newMonthlySumDict)) {
+                if (key in monthlyUsageData) {
+                    monthlyUsageData[key] += value;
+                } else {
+                    monthlyUsageData[key] = value;
+                }
+            }
+            
             return {
                 series: [
                     {
                         name: 'pie0',
-                        data: monthlySum
+                        data: convertMonthlyUsageSum(monthlyUsageData)
                     }
                 ]
             }
@@ -116,8 +128,9 @@ export async function initElectricityUsagePieChart(
     );
 }
 
-function calculateMonthlyUsageSum(data: Usage[]): { name: string, value: number }[] {
-    const monthlyUsage: { [key: string]: number } = {};
+
+function calculateMonthlyUsageSum(data: Usage[]): StringNumberDict {
+    const monthlyUsage: StringNumberDict = {};
 
     data.forEach(item => {
         const date = new Date(item.time);
@@ -129,12 +142,16 @@ function calculateMonthlyUsageSum(data: Usage[]): { name: string, value: number 
         }
         monthlyUsage[monthYearKey] += item.usage;
     });
+    
+    return monthlyUsage;
+}
 
-    const result = Object.keys(monthlyUsage).map(key => {
+function convertMonthlyUsageSum(dict: StringNumberDict): PieSeriesData[] {
+    const result = Object.keys(dict).map(key => {
         const [year, month] = key.split('-');
         const date = new Date(parseInt(year), parseInt(month) - 1); // Adjust month back to 0-index for Date object
         const monthName = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-        return { name: monthName, value: monthlyUsage[key] };
+        return { name: monthName, value: dict[key] };
     });
 
     return result;
