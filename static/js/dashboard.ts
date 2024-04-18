@@ -77,6 +77,9 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
         case 'profile':
             void loadModule("create_profile.ts", () => import("./dashboard/create_profile.ts"));
             break;
+        case 'visual/usage':
+            void loadModule("visual", () => import("./dashboard/visual_usage.ts"));
+            break;
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
             break;

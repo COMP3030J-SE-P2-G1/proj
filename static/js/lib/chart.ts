@@ -1,7 +1,9 @@
 import { dateAdd } from '../lib/utils.ts';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
+import type { Time, NullableTime, TimelyData, Profile, Solar, Usage, ElectricityPrice } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
+import * as DATA_API from '../api/data.ts';
 
 // chart types
 import {
@@ -104,11 +106,12 @@ export function initDynamicChart<D, T>(
                 data = fetchedData;
                 prevState = curState;
                 curState = updateStateFunc(curState, data);
+                
+                chart.setOption(overrideOption(data, prevData));
+
                 if (shouldStopFetchingFunc(curState, prevState)) {
                     return;
                 }
-                
-                chart.setOption(overrideOption(data, prevData));
                 
                 setTimeout(updateData, interval);
             })
@@ -135,17 +138,15 @@ export type InitChartOptions<D, T> = {
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
 
-export async function initDynamicLineChart<D extends PROFILE_API.TimelyData>(
+/**
+ * if endTime is null, then only request data oncekj
+ */
+export async function initDynamicLineChart<D extends TimelyData>(
     elm: HTMLElement,
-    profile: PROFILE_API.Profile | number,
-    startTime: Date | null = null,
-    endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<D, PROFILE_API.Time>> = {},
+    startTime: Date | null,
+    endTime: Date | null,
+    initChartOptions: Partial<InitChartOptions<D, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    profile = typeof profile === 'string' ? await PROFILE_API.getProfile(profile) : profile as PROFILE_API.Profile;
-    let gStartTime = startTime ? startTime : new Date(profile.start_time);
-    let gEndTime = endTime ? endTime : new Date(profile.end_time);
-    
     const {
         title = "Line Chart",
         optionTemplate = {
@@ -164,22 +165,24 @@ export async function initDynamicLineChart<D extends PROFILE_API.TimelyData>(
                 }
             ]
         },
-        initialStateValue = gStartTime.toISOString(),
+        initialStateValue = startTime ? startTime.toISOString() : null,
         fetchDataFunc,
         overrideOption,
         updateStateFunc = (state, data) => {
-            const newState: State<PROFILE_API.Time> = Object.assign({}, state);
+            const newState: State<NullableTime> = Object.assign({}, state);
             const rawEndData = data[data.length - 1]
             newState.value = rawEndData.time;
-            const endDate = new Date(rawEndData.time);
-            if (endDate >= gEndTime) newState.state = StateType.stop;
+            const localEndTime = new Date(rawEndData.time);
+            if (endTime == null || localEndTime >= endTime) {
+                newState.state = StateType.stop;
+            }
             return newState;
         },
         interval = 0,
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    const chart = initDynamicChart<D, PROFILE_API.Time>(
+    const chart = initDynamicChart<D, NullableTime>(
         elm,
         optionTemplate,
         initialStateValue,
@@ -198,18 +201,20 @@ export async function initElectricityUsageChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<PROFILE_API.Usage, PROFILE_API.Time>> = {},
+    initChartOptions: Partial<InitChartOptions<Usage, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     let profile = await PROFILE_API.getProfile(profileId);
+    let gStartTime = startTime ? startTime : new Date(profile.start_time);
+    let gEndTime = endTime ? endTime : new Date(profile.end_time);
 
     const {
         title = "Electricity Usage Chart",
         optionTemplate,
-        initialStateValue,
+        initialStateValue = gStartTime.toISOString(),
         fetchDataStep = 15,
         fetchDataFunc = async state => {
-            const startTime = new Date(state.value);
-            const endTime = dateAdd(startTime, fetchDataStep);
+            const startTime = state.value ? new Date(state.value) : null;
+            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
             return PROFILE_API.getUsage(profile.id, startTime, endTime);
         },
         overrideOption = (data, prevData) => {
@@ -231,11 +236,10 @@ export async function initElectricityUsageChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicLineChart<PROFILE_API.Usage>(
+    return initDynamicLineChart<Usage>(
         elm,
-        profile,
-        startTime,
-        endTime,
+        gStartTime,
+        gEndTime,
         {
             title: title,
             optionTemplate: optionTemplate,
@@ -256,18 +260,20 @@ export async function initSolarChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<PROFILE_API.Solar, string>> = {},
+    initChartOptions: Partial<InitChartOptions<Solar, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     let profile = await PROFILE_API.getProfile(profileId);
+    let gStartTime = startTime ? startTime : new Date(profile.start_time);
+    let gEndTime = endTime ? endTime : new Date(profile.end_time);
 
     const {
         title = "Solar Chart",
         optionTemplate,
-        initialStateValue,
+        initialStateValue = gStartTime.toISOString(),
         fetchDataStep = 15,
         fetchDataFunc = async state => {
-            const startTime = new Date(state.value);
-            const endTime = dateAdd(startTime, fetchDataStep);
+            const startTime = state.value ? new Date(state.value) : null;
+            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
             return PROFILE_API.getSolar(profile.id, startTime, endTime);
         },
         overrideOption = (data, prevData) => {
@@ -289,11 +295,10 @@ export async function initSolarChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicLineChart<PROFILE_API.Solar>(
+    return initDynamicLineChart<Solar>(
         elm,
-        profile,
-        startTime,
-        endTime,
+        gStartTime,
+        gEndTime,
         {
             title: title,
             optionTemplate: optionTemplate,
@@ -307,5 +312,64 @@ export async function initSolarChart(
         }
     );
 }
+
+
+// export async function initElectricityPriceChart(
+//     elm: HTMLElement,
+//     profileId: number,
+//     startTime: Date | null = null,
+//     endTime: Date | null = null,
+//     initChartOptions: Partial<InitChartOptions<ElectricityPrice, string>> = {},
+// ): Promise<echarts.ECharts>  {
+
+//     const {
+//         title = "Electricity Price Chart",
+//         optionTemplate,
+//         initialStateValue,
+//         fetchDataStep = 15,
+//         fetchDataFunc = async state => {
+//             const startTime = new Date(state.value);
+//             return DATA_API.getElectricityPrice(startTime, null, fetchDataStep * 24);
+//         },
+//         overrideOption = (data, prevData) => {
+//             if (prevData) data = prevData.concat(data);
+//             return {
+//                 xAxis: {
+//                     data: data.map(item => item.time)
+//                 },
+//                 series: [
+//                     {
+//                         name: 'demo',
+//                         data: data.map(item => item.spot)
+//                     }
+//                 ]
+//             }
+//         },
+//         updateStateFunc,
+//         interval,
+//         shouldStopFetchingFunc
+//     } = initChartOptions;
+    
+//     return initDynamicLineChart<ElectricityPrice>(
+//         elm,
+//         startTime,
+//         endTime,
+//         {
+//             title: title,
+//             optionTemplate: optionTemplate,
+//             initialStateValue: initialStateValue,
+//             fetchDataStep: fetchDataStep,
+//             fetchDataFunc: fetchDataFunc,
+//             overrideOption: overrideOption,
+//             updateStateFunc: updateStateFunc,
+//             interval: interval,
+//             shouldStopFetchingFunc: shouldStopFetchingFunc
+//         }
+//     );
+// }
+
+
+
+
 
 

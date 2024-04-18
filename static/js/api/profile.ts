@@ -4,41 +4,8 @@
  * Pls forgive me.
  */
 
-export type Time = string;
+import type { Profile, Solar, Usage } from './types.ts';
 
-export type Profile = {
-    id: number,
-    user_ud: number,
-    name: string,
-    desc: string | null,
-    start_time: Time,
-    end_time: Time,
-    lon: number | null,
-    lat: number | null,
-    tech: number | null,
-    loss: number | null,
-    power: number | null
-}
-
-export type TimelyData = {
-    time: Time,
-}
-
-export interface Solar extends TimelyData {
-    generation: number,
-    id: number,
-    lat: number,
-    lon: number,
-    loss: number,
-    power: number,
-    tech: number
-};
-
-export interface Usage extends TimelyData {
-    id: number,
-    user_id: number,
-    usage: number
-}
 
 export async function getProfile(id: number): Promise<Profile> {
     const response = await fetch(`/api/profile/${id}`);

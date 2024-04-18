@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 res = requests.post(
     "http://127.0.0.1:5000/api/data/sems",
     json={
-        "start_time": "2022-12-31T23:00:00Z",
-        "end_time": "2023-12-31T22:00:00Z",
+        "start_time": "2022-12-31T23:00:00.000Z",
+        "end_time": "2023-12-31T22:00:00.000Z",
         "span_hours": None,
     },
 )
@@ -18,9 +18,9 @@ print("response body:", json.dumps(res.json(), indent=4))
 res = requests.post(
     "http://127.0.0.1:5000/api/data/sems",
     json={
-        "start_time": "2022-12-31T23:00:00Z",
+        "start_time": "2022-12-31T23:00:00.000Z",
         "end_time": None,
-        "span_hours": "24",
+        "span_hours": 24,
     },
 )
 print("response code:", res)

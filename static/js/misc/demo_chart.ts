@@ -4,6 +4,7 @@ import type { State } from '../lib/chart.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 
+
 async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
@@ -69,6 +70,11 @@ function demoInitSolarChart() {
         fetchDataStep: 30,
         interval: 100
     });
+}
+
+function demoInitElectricityPriceChart() {
+    const elm = document.getElementById("initElectricityPrice");
+    if (elm) Chart.initSolarChart(elm, 1);
 }
 
 ready(() => {
