@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import Blueprint, render_template, request, session, flash, jsonify
+from flask import Blueprint, redirect, render_template, request, session, flash, jsonify, url_for
 from flask_login import login_required
 
 from comp3030j.dashboard import ProfileForm
@@ -19,6 +19,12 @@ def dashboard():
 
 @bp.route('/<path:path>')
 def serve_static(path):
+    # Check if the path is for creating a profile
+    if path == "profile":
+        # Check if the user is logged in
+        if not session.get('user_id'):
+            flash(_ltr('Please log in to create a profile.'), 'error')
+            return redirect(url_for('auth.login'))  # Redirect to the login page if the user is not logged in
     if path == "profile":
         profileForm = ProfileForm()
         profiles = Profile.query.filter_by(user_id=session['user_id']).all()
