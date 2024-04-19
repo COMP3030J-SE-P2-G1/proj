@@ -76,6 +76,7 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             break;
         case 'profile':
             void loadModule("create_profile.ts", () => import("./dashboard/create_profile.ts"));
+            void loadModule("usage_update.ts", () => import("./dashboard/data_calculation.ts"));
             break;
         case 'visual/usage':
             void loadModule("visual/usage", () => import("./dashboard/visual_usage.ts"));
@@ -109,6 +110,7 @@ function asyncLoad() {
         import("./dashboard/api_doc_restful.ts");
         import("./dashboard/usage_update.ts");
         import("./dashboard/create_profile.ts")
+        import("./dashboard/data_calculation.ts");
         import("./dashboard/api_doc_graphql_playground.ts");
     });
 }
