@@ -4,14 +4,6 @@ import type { NullableTime, TimelyData } from '../api/types.ts';
 
 import { format } from 'date-fns';
 
-// temporary workaround for parcel tree-shaking error for date-fns
-// see: https://github.com/date-fns/date-fns/issues/3744
-import { formatters as _formatters } from 'date-fns';
-import { longFormatters as _longFormatters } from 'date-fns';
-export const formatters = _formatters;
-export const longFormatter = _longFormatters;
-
-
 // chart types
 import {
     LineChart,
