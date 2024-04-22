@@ -38,7 +38,7 @@ function initCharts() {
             ],
             series: [
                 {
-                    name: 'line0',
+                    name: 'id0',
                     type: 'line',
                     symbol: 'none',
                     sampling: 'lttb',

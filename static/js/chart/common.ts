@@ -1,6 +1,6 @@
 import * as echarts from 'echarts/core';
-import { initDynamicTimelyChart, StateType } from './basic';
-import type { InitChartOptions, State, SupportedChartType } from './basic';
+import { initDynamicTimelyChart } from './basic';
+import type { InitChartOptions } from './basic';
 import type { NullableTime, Solar, Usage, ElectricityPrice } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
@@ -21,7 +21,11 @@ export async function initElectricityUsageChart(
 
     const {
         title = "Electricity Usage Chart",
-        type,
+        type = {
+            type: 'line',
+            xFieldName: 'time',
+            yFieldName: 'usage'
+        },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -30,20 +34,7 @@ export async function initElectricityUsageChart(
             const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
             return PROFILE_API.getUsage(profile.id, startTime, endTime);
         },
-        overrideOption = (data, prevData) => {
-            if (prevData) data = prevData.concat(data);
-            return {
-                xAxis: {
-                    data: data.map(item => item.time)
-                },
-                series: [
-                    {
-                        name: 'line0',
-                        data: data.map(item => item.usage)
-                    }
-                ]
-            }
-        },
+        overrideOption,
         updateStateFunc,
         interval,
         shouldStopFetchingFunc
@@ -82,7 +73,11 @@ export async function initSolarChart(
 
     const {
         title = "Solar Chart",
-        type,
+        type = {
+            type: 'line',
+            xFieldName: 'time',
+            yFieldName: 'generation'
+        },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -91,20 +86,7 @@ export async function initSolarChart(
             const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
             return PROFILE_API.getSolar(profile.id, startTime, endTime);
         },
-        overrideOption = (data, prevData) => {
-            if (prevData) data = prevData.concat(data);
-            return {
-                xAxis: {
-                    data: data.map(item => item.time)
-                },
-                series: [
-                    {
-                        name: 'line0',
-                        data: data.map(item => item.generation)
-                    }
-                ]
-            }
-        },
+        overrideOption,
         updateStateFunc,
         interval,
         shouldStopFetchingFunc
@@ -138,7 +120,11 @@ export async function initElectricityPriceChart(
 ): Promise<echarts.ECharts>  {
     const {
         title = "Electricity Price Chart",
-        type,
+        type = {
+            type: 'line',
+            xFieldName: 'time',
+            yFieldName: 'spot'
+        },
         optionTemplate,
         initialStateValue,
         fetchDataStep = DEFAULT_FETCHDATA_STEP,
@@ -148,20 +134,7 @@ export async function initElectricityPriceChart(
             const spanHours = endTime ? null : fetchDataStep * 24;
             return DATA_API.getElectricityPrice(startTime, endTime, spanHours);
         },
-        overrideOption = (data, prevData) => {
-            if (prevData) data = prevData.concat(data);
-            return {
-                xAxis: {
-                    data: data.map(item => item.time)
-                },
-                series: [
-                    {
-                        name: 'line0',
-                        data: data.map(item => item.spot)
-                    }
-                ]
-            }
-        },
+        overrideOption,
         updateStateFunc,
         interval,
         shouldStopFetchingFunc

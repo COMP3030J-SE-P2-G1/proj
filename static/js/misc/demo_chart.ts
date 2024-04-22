@@ -4,7 +4,6 @@ import type { State } from '../chart/chart.ts';
 import type { Solar } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
-
 async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
@@ -67,7 +66,11 @@ function demoInitElectricityUsageLineChart() {
 function demoInitSolarLineChart() {
     const elm = document.getElementById("initSolarLineChart");
     if (elm) Chart.initSolarChart(elm, 1, null, null, {
-        type: "bar",
+        type: {
+            type: "bar",
+            xFieldName: "time",
+            yFieldName: "generation"
+        },
         fetchDataStep: 30,
         interval: 100
     });
@@ -75,7 +78,7 @@ function demoInitSolarLineChart() {
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceChart(elm, null, null, { type: "line" });
+    if (elm) Chart.initElectricityPriceChart(elm);
 }
 
 function demoInitElectricityUsagePieChart() {

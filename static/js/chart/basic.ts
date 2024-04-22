@@ -75,7 +75,25 @@ export type State<T> = {
     value: T
 };
 
-export type SupportedChartType = "bar" | "line" | "pie";
+export type PieChartInterval = 'day' | 'month' | 'year';
+export type StringNumberDict = { [key: string]: number };
+export type PieSeriesData = { name: string, value: number };
+
+
+export type ChartTypeOption = {
+    type: "line" | "bar",
+    xFieldName: string,
+    yFieldName: string,
+} | {
+    type: "pie",
+    interval: PieChartInterval
+}
+
+const DEFAULT_CHART_TYPE_OPTION: ChartTypeOption = {
+    type: 'line',
+    xFieldName: 'time',
+    yFieldName: 'usage'
+};
 
 /**
  * Asynchronous Loading + Dynamic Update
@@ -137,7 +155,7 @@ export function initDynamicChart<D, T>(
 
 export type InitChartOptions<D, T> = {
     title: string,
-    type: SupportedChartType,
+    type: ChartTypeOption,
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
@@ -147,6 +165,74 @@ export type InitChartOptions<D, T> = {
     interval: number,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
+
+function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<D, NullableTime>>): ChartOption {
+    const title = initChartOptions.title ?? 'Demo Chart';
+    const type = initChartOptions.type ?? DEFAULT_CHART_TYPE_OPTION;
+    
+    if (type.type == 'line' || type.type == 'bar') {
+        return {
+            title: {
+                text: title
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'default',
+                    type: type.type,
+                    data: []
+                }
+            ]
+        };
+    } else { // pie chart
+        return {
+            title: {
+                text: title
+            },
+            series: [
+                {
+                    name: 'default',
+                    type: type.type,
+                    data: []
+                }
+            ],
+            animation: false // pie chart dynamic updating animation is ugly
+        };
+    }
+}
+
+// TODO
+function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOptions: Partial<InitChartOptions<D, NullableTime>>):  (data: D[], prevData: D[] | null) => ChartOption {
+    const type = initChartOptions.type ?? DEFAULT_CHART_TYPE_OPTION;
+    if (type.type == 'line' || type.type == 'bar') {
+        return (data, prevData) => {
+            if (prevData) data = prevData.concat(data);
+            return {
+                xAxis: {
+                    data: data.map(item => item[type.xFieldName])
+                },
+                series: [
+                    {
+                        name: 'default',
+                        data: data.map(item => item[type.yFieldName])
+                    }
+                ]
+            };
+        };
+    } else { // pie chart
+        return (data, prevData) => {
+            return {
+                series: [
+                    
+                ]
+            };
+        };
+    }
+}
+
 
 
 /**
@@ -159,28 +245,11 @@ export async function initDynamicTimelyChart<D extends TimelyData>(
     initChartOptions: Partial<InitChartOptions<D, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const {
-        title = "Line Chart",
-        type = "line",
-        optionTemplate = {
-            title: {
-                text: title
-            },
-            xAxis: {
-                data: []
-            },
-            yAxis: {},
-            series: [
-                {
-                    name: 'line0',
-                    type: type,
-                    data: []
-                }
-            ]
-        },
+        optionTemplate = getDefaultOptionTemplate<D>(initChartOptions),
         initialStateValue = startTime ? startTime.toISOString() : null,
         fetchDataStep,
         fetchDataFunc,
-        overrideOption,
+        overrideOption = getDefaultOverrideOption<D>(initChartOptions),
         updateStateFunc = (state, data) => {
             const newState: State<NullableTime> = Object.assign({}, state);
             const rawEndData = data[data.length - 1]
@@ -213,3 +282,33 @@ export async function initDynamicTimelyChart<D extends TimelyData>(
     
     return chart;
 }
+
+
+// function calculateMonthlyUsageSum(data: TimelyData[]): StringNumberDict {
+//     const monthlyUsage: StringNumberDict = {};
+
+//     data.forEach(item => {
+//         const date = new Date(item.time);
+//         const monthYearKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Month is 0-indexed, add 1 for human-readable format
+//         const monthName = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+//         if (!monthlyUsage[monthYearKey]) {
+//             monthlyUsage[monthYearKey] = 0;
+//         }
+//         monthlyUsage[monthYearKey] += item.usage;
+//     });
+    
+//     return monthlyUsage;
+// }
+
+// function convertMonthlyUsageSum(dict: StringNumberDict): PieSeriesData[] {
+//     const result = Object.keys(dict).map(key => {
+//         const [year, month] = key.split('-');
+//         const date = new Date(parseInt(year), parseInt(month) - 1); // Adjust month back to 0-index for Date object
+//         const monthName = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+//         return { name: monthName, value: dict[key] };
+//     });
+
+//     return result;
+// }
+
