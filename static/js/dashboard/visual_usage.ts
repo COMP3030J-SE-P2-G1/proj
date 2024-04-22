@@ -70,7 +70,6 @@ function initCharts() {
             type: "pie",
             xFieldName: "time",
             yFieldName: "usage",
-            interval: "month",
             format: "yyyy-MMMM"
         },
         optionTemplate: {

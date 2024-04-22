@@ -105,7 +105,6 @@ export interface BarChartType extends Chart2D {
 
 export interface PieChartType extends Chart2D {
     type: "pie",
-    interval: PieChartInterval,
     /** format should be in date-fns format. See https://date-fns.org/v3.6.0/docs/format */
     format: string
 }
@@ -338,7 +337,6 @@ function calculateUsageSum(data: { [key: string]: any }[], config: PieChartType)
 
 function convertUsageSum(dict: StringNumberDict, _config: PieChartType): PieSeriesData[] {
     const result = Object.keys(dict).map(key => {
-        // The key is already formatted according to the interval, so we use it directly.
         const name = key;
         return { name, value: dict[key] };
     });

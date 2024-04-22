@@ -91,7 +91,6 @@ function demoInitElectricityUsagePieChart() {
             type: "pie",
             xFieldName: "time",
             yFieldName: "usage",
-            interval: "month",
             format: "MMMM"
         }
     });

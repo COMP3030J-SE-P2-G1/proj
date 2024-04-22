@@ -99,12 +99,11 @@ function initCharts() {
 
     const electricityUsagePieChartElm = document.getElementById("p_chart");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityUsageChart(electricityUsagePieChartElm,1,  null, null, {
+    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, {
         type: {
             type: "pie",
             xFieldName: "time",
             yFieldName: "usage",
-            interval: "month",
             format: "yyyy-MMMM"
         },
         optionTemplate: {
