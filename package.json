@@ -18,6 +18,7 @@
   "dependencies": {
     "@types/aos": "^3.0.7",
     "@types/swagger-ui-dist": "^3.30.4",
+    "date-fns": "^3.6.0",
     "echarts": "^5.5.0",
     "graphiql": "^3.2.0",
     "graphql": "^16.8.1",

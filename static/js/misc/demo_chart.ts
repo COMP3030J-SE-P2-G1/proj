@@ -4,6 +4,9 @@ import type { State } from '../chart/chart.ts';
 import type { Solar } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
+const gStartTime = new Date("2023-01-01T15:00:00.000000Z");
+const gEndTime = new Date("2023-03-03T15:00:00.000000Z");
+
 async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
@@ -60,12 +63,12 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageLineChart() {
     const elm = document.getElementById("initElectricityUsageLineChart");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, null, null, { interval: 100});
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, { interval: 100});
 }
 
 function demoInitSolarLineChart() {
     const elm = document.getElementById("initSolarLineChart");
-    if (elm) Chart.initSolarChart(elm, 1, null, null, {
+    if (elm) Chart.initSolarChart(elm, 1, gStartTime, gEndTime, {
         type: {
             type: "bar",
             xFieldName: "time",
@@ -78,12 +81,20 @@ function demoInitSolarLineChart() {
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceChart(elm);
+    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime);
 }
 
 function demoInitElectricityUsagePieChart() {
-    const elm = document.getElementById("initElectricityUsagePieChart");
-    if (elm) Chart.initElectricityUsagePieChart(elm, 1);
+    const elm = document.getElementById("initElectricityUsageChart-PieChart");
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, {
+        type: {
+            type: "pie",
+            xFieldName: "time",
+            yFieldName: "usage",
+            interval: "month",
+            format: "MMMM"
+        }
+    });
 }
 
 

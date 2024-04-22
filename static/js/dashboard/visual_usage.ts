@@ -1,4 +1,4 @@
-import { initElectricityUsageChart, initElectricityUsagePieChart } from '../chart/chart.ts';
+import { initElectricityUsageChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
 function initCharts() {
@@ -65,7 +65,14 @@ function initCharts() {
 
     const electricityPieChartElm = document.getElementById("electricity-pie-chart");
     if (!electricityPieChartElm) { console.error("Cannot find HTML element #electricity-pie-chart."); return;}
-    initElectricityUsagePieChart(electricityPieChartElm, 1, null, null, {
+    initElectricityUsageChart(electricityPieChartElm, 1, null, null, {
+        type: {
+            type: "pie",
+            xFieldName: "time",
+            yFieldName: "usage",
+            interval: "month",
+            format: "yyyy-MMMM"
+        },
         optionTemplate: {
             title: {
                 text: 'Electricity Usage',

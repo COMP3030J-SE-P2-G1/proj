@@ -1,6 +1,5 @@
 import { BarChart } from 'echarts/charts';
-import { initElectricityPriceChart } from '../chart/chart.ts';
-import { initElectricityUsagePieChart } from '../chart/chart.ts';
+import { initElectricityPriceChart, initElectricityUsageChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
 function bindEvents(): void {
@@ -100,7 +99,14 @@ function initCharts() {
 
     const electricityUsagePieChartElm = document.getElementById("p_chart");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityUsagePieChart(electricityUsagePieChartElm,1,  null, null, {
+    initElectricityUsageChart(electricityUsagePieChartElm,1,  null, null, {
+        type: {
+            type: "pie",
+            xFieldName: "time",
+            yFieldName: "usage",
+            interval: "month",
+            format: "yyyy-MMMM"
+        },
         optionTemplate: {
             title: {
                 text: 'Electricity Usage',

@@ -2,6 +2,16 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { NullableTime, TimelyData } from '../api/types.ts';
 
+import { format } from 'date-fns';
+
+// temporary workaround for parcel tree-shaking error for date-fns
+// see: https://github.com/date-fns/date-fns/issues/3744
+import { formatters as _formatters } from 'date-fns';
+import { longFormatters as _longFormatters } from 'date-fns';
+export const formatters = _formatters;
+export const longFormatter = _longFormatters;
+
+
 // chart types
 import {
     LineChart,
@@ -75,19 +85,32 @@ export type State<T> = {
     value: T
 };
 
-export type PieChartInterval = 'day' | 'month' | 'year';
+export type PieChartInterval = 'day' | 'week' | 'month' | 'year';
 export type StringNumberDict = { [key: string]: number };
 export type PieSeriesData = { name: string, value: number };
 
-
-export type ChartTypeOption = {
-    type: "line" | "bar",
+export type Chart2D = {
+    type: string,
     xFieldName: string,
     yFieldName: string,
-} | {
-    type: "pie",
-    interval: PieChartInterval
 }
+
+export interface LineChartType extends Chart2D {
+    type: "line"
+}
+
+export interface BarChartType extends Chart2D {
+    type: "bar"
+}
+
+export interface PieChartType extends Chart2D {
+    type: "pie",
+    interval: PieChartInterval,
+    /** format should be in date-fns format. See https://date-fns.org/v3.6.0/docs/format */
+    format: string
+}
+
+export type ChartTypeOption =  LineChartType | BarChartType | PieChartType;
 
 const DEFAULT_CHART_TYPE_OPTION: ChartTypeOption = {
     type: 'line',
@@ -223,12 +246,25 @@ function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOpt
             };
         };
     } else { // pie chart
-        return (data, prevData) => {
+        const monthlyUsageData: StringNumberDict = {};
+        return (data, _prevData) => {
+            const newMonthlySumDict = calculateUsageSum(data, type);
+            for (const [key, value] of Object.entries(newMonthlySumDict)) {
+                if (key in monthlyUsageData) {
+                    monthlyUsageData[key] += value;
+                } else {
+                    monthlyUsageData[key] = value;
+                }
+            }
+            
             return {
                 series: [
-                    
+                    {
+                        name: 'default',
+                        data: convertUsageSum(monthlyUsageData, type)
+                    }
                 ]
-            };
+            }
         };
     }
 }
@@ -284,31 +320,28 @@ export async function initDynamicTimelyChart<D extends TimelyData>(
 }
 
 
-// function calculateMonthlyUsageSum(data: TimelyData[]): StringNumberDict {
-//     const monthlyUsage: StringNumberDict = {};
+function calculateUsageSum(data: { [key: string]: any }[], config: PieChartType): StringNumberDict {
+    const monthlyUsage: StringNumberDict = {};
 
-//     data.forEach(item => {
-//         const date = new Date(item.time);
-//         const monthYearKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // Month is 0-indexed, add 1 for human-readable format
-//         const monthName = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+    data.forEach(item => {
+        const date = new Date(item[config.xFieldName]);
+        const key = format(date, config.format);
 
-//         if (!monthlyUsage[monthYearKey]) {
-//             monthlyUsage[monthYearKey] = 0;
-//         }
-//         monthlyUsage[monthYearKey] += item.usage;
-//     });
+        if (!monthlyUsage[key]) {
+            monthlyUsage[key] = 0;
+        }
+        monthlyUsage[key] += item[config.yFieldName];
+    });
     
-//     return monthlyUsage;
-// }
+    return monthlyUsage;
+}
 
-// function convertMonthlyUsageSum(dict: StringNumberDict): PieSeriesData[] {
-//     const result = Object.keys(dict).map(key => {
-//         const [year, month] = key.split('-');
-//         const date = new Date(parseInt(year), parseInt(month) - 1); // Adjust month back to 0-index for Date object
-//         const monthName = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-//         return { name: monthName, value: dict[key] };
-//     });
+function convertUsageSum(dict: StringNumberDict, _config: PieChartType): PieSeriesData[] {
+    const result = Object.keys(dict).map(key => {
+        // The key is already formatted according to the interval, so we use it directly.
+        const name = key;
+        return { name, value: dict[key] };
+    });
 
-//     return result;
-// }
-
+    return result;
+}
