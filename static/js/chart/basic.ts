@@ -274,7 +274,7 @@ export async function initDynamicTimelyChart<D extends TimelyData>(
     const {
         optionTemplate = getDefaultOptionTemplate<D>(initChartOptions),
         initialStateValue = startTime ? startTime.toISOString() : null,
-        fetchDataStep,
+        fetchDataStep = 30,
         fetchDataFunc,
         overrideOption = getDefaultOverrideOption<D>(initChartOptions),
         updateStateFunc = (state, data) => {
