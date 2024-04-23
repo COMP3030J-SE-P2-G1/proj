@@ -1,35 +1,18 @@
 <div class="drawer lg:drawer-open">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle"/>
-    <div class="drawer-content flex flex-col items-center">
+    <div class="drawer-content flex m-1 flex-col items-center">
         <!-- Page content here -->
-        <div class="collapse collapse-arrow bg-base-200">
-            <input type="radio" name="my-accordion-2" checked="checked"/>
-            <div class="collapse-title text-xl font-medium">
-                Click to open this one and close others
+        {% for profile in profiles %}
+            <div class="collapse collapse-arrow m-1 bg-base-200">
+                <input type="radio" name="my-accordion-2" checked="checked"/>
+                <div class="collapse-title text-xl font-medium">
+                    {{ profile.name }}
+                </div>
+                <div class="collapse-content">
+                    <p>{{ profile.desc }}</p>
+                </div>
             </div>
-            <div class="collapse-content">
-                <p>hello</p>
-            </div>
-        </div>
-        <div class="collapse collapse-arrow bg-base-200">
-            <input type="radio" name="my-accordion-2"/>
-            <div class="collapse-title text-xl font-medium">
-                Click to open this one and close others
-            </div>
-            <div class="collapse-content">
-                <p>hello</p>
-            </div>
-        </div>
-        <div class="collapse collapse-arrow bg-base-200">
-            <input type="radio" name="my-accordion-2"/>
-            <div class="collapse-title text-xl font-medium">
-                Click to open this one and close others
-            </div>
-            <div class="collapse-content">
-                <p>hello</p>
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
     <div class="drawer-side">
         <label for="my-drawer-2" aria-label="sidebar" class="drawer-overlay"></label>

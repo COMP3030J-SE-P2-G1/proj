@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from comp3030j.auth import RegistrationForm, LoginForm, ChangePassForm
 from comp3030j.db import db
 from comp3030j.db.User import User
+from comp3030j.db.Profile import Profile
 from comp3030j.extensions import bcrypt
 from comp3030j.util import allowed_img, save_file, delete_file, _ltr
 
@@ -128,4 +129,5 @@ def change_pass():
 
 @bp.route('/history')
 def history():
-    return render_template("page/auth/history/index.j2")
+    profiles = Profile.query.filter_by(user_id=session['user_id']).all()
+    return render_template("page/auth/history/index.j2", profiles=profiles, form=User.query.filter_by(id=session['user_id']).first())
