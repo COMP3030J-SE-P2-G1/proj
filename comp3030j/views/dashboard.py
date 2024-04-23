@@ -7,24 +7,20 @@ from comp3030j.db import db
 from comp3030j.db.Profile import Profile
 from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
-from comp3030j.util import allowed_file, _ltr, read_hourly_usage_csv
+from comp3030j.util import _ltr, read_hourly_usage_csv
 
 bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 
 @bp.route('/')
+@login_required
 def dashboard():
     return render_template("page/dashboard/layout1/index.j2")
 
 
 @bp.route('/<path:path>')
+@login_required
 def serve_static(path):
-    # Check if the path is for creating a profile
-    if path == "profile" or path == "visual/usage":
-        # Check if the user is logged in
-        if not session.get('user_id'):
-            flash(_ltr('Please log in to create a profile.'), 'error')
-            return redirect(url_for('auth.login'))  # Redirect to the login page if the user is not logged in
     if path == "profile" or path == "visual/usage":
         profileForm = ProfileForm()
         profiles = Profile.query.filter_by(user_id=session['user_id']).all()
