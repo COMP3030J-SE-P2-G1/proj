@@ -12,7 +12,7 @@
                     {{ theme_controller("p-0") }}
                 </li>
                 {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('auth.logout') }}" class="btn btn-neutral">{{ _("Logout") }}</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">{{ _("Logout") }}</a></li>
                 <li><a href="{{ url_for('auth.profile') }}" class="btn btn-neutral">{{ _("Profile") }}</a></li>
                 {% else %}
                 <li class="hidden lg:block"><a href="{{ url_for('auth.login') }}">{{ _("Sign In") }}</a></li>
