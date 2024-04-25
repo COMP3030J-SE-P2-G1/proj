@@ -79,7 +79,6 @@ export type State<T> = {
 
 export type PieChartInterval = 'day' | 'week' | 'month' | 'year';
 export type StringNumberDict = { [key: string]: number };
-export type PieSeriesData = { name: string, value: number };
 
 export type Chart2D = {
     type: string,
@@ -186,31 +185,39 @@ function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<
     
     if (type.type == 'line' || type.type == 'bar') {
         return {
+            dateset: {
+                source: []
+            },
             title: {
                 text: title
             },
             xAxis: {
-                data: []
+                type: 'time'
             },
             yAxis: {},
             series: [
                 {
-                    name: 'default',
+                    encode: { x: 0, y: 1 },
                     type: type.type,
-                    data: []
                 }
             ]
         };
     } else { // pie chart
         return {
+            dateset: {
+                source: []
+            },
             title: {
                 text: title
             },
             series: [
+                
                 {
-                    name: 'default',
                     type: type.type,
-                    data: []
+                    encode: {
+                        itemName: 0,
+                        value: 1
+                    }
                 }
             ],
             animation: false // pie chart dynamic updating animation is ugly
@@ -225,42 +232,36 @@ function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOpt
         return (data, prevData) => {
             if (prevData) data = prevData.concat(data);
             return {
-                xAxis: {
-                    data: data.map(item => item[type.xFieldName])
-                },
-                series: [
-                    {
-                        name: 'default',
-                        data: data.map(item => item[type.yFieldName])
-                    }
-                ]
+                dataset: {
+                    source: data.map(
+                        item => [
+                            item[type.xFieldName],
+                            item[type.yFieldName]
+                        ]
+                    )
+                }
             };
         };
     } else { // pie chart
-        const monthlyUsageData: StringNumberDict = {};
+        const usageData: StringNumberDict = {};
         return (data, _prevData) => {
-            const newMonthlySumDict = calculateUsageSum(data, type);
-            for (const [key, value] of Object.entries(newMonthlySumDict)) {
-                if (key in monthlyUsageData) {
-                    monthlyUsageData[key] += value;
+            const newUsageSumDict = calculateUsageSum(data, type);
+            for (const [key, value] of Object.entries(newUsageSumDict)) {
+                if (key in usageData) {
+                    usageData[key] += value;
                 } else {
-                    monthlyUsageData[key] = value;
+                    usageData[key] = value;
                 }
             }
-            
+
             return {
-                series: [
-                    {
-                        name: 'default',
-                        data: convertUsageSum(monthlyUsageData, type)
-                    }
-                ]
+                dataset: {
+                    source: Object.entries(usageData)
+                }
             }
         };
     }
 }
-
-
 
 /**
  * if endTime is null, then only request data once
@@ -327,11 +328,3 @@ function calculateUsageSum(data: { [key: string]: any }[], config: PieChartType)
     return monthlyUsage;
 }
 
-function convertUsageSum(dict: StringNumberDict, _config: PieChartType): PieSeriesData[] {
-    const result = Object.keys(dict).map(key => {
-        const name = key;
-        return { name, value: dict[key] };
-    });
-
-    return result;
-}

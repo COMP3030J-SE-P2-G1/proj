@@ -93,7 +93,9 @@ function demoInitElectricityUsagePieChart() {
             yFieldName: "usage",
             format: "MMMM"
         }
-    });
+    }).then(
+        chart => console.log(chart.getOption())
+    );
 }
 
 

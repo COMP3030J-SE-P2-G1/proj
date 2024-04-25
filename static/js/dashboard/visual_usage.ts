@@ -6,6 +6,9 @@ function initCharts() {
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
     initElectricityUsageChart(electricityUsageChartElm, 1, null, null, {
         optionTemplate: {
+            dateset: {
+                source: []
+            },
             tooltip: {
                 trigger: 'axis',
                 position: function (pt) {
@@ -18,8 +21,7 @@ function initCharts() {
             },
             xAxis: {
                 type: 'category',
-                boundaryGap: false,
-                data: [],
+                boundaryGap: false
             },
             yAxis: {
                 type: 'value',
@@ -57,7 +59,7 @@ function initCharts() {
                             }
                         ])
                     },
-                    data: []
+                    encode: { x: 0, y: 1 }
                 }
             ]
         }
@@ -73,6 +75,9 @@ function initCharts() {
             format: "yyyy-MMMM"
         },
         optionTemplate: {
+            dateset: {
+                source: []
+            },
             title: {
                 text: 'Electricity Usage',
                 left: 'center'
@@ -84,7 +89,10 @@ function initCharts() {
                 {
                     type: 'pie',
                     radius: '50%',
-                    data: [],
+                    encode: {
+                        itemName: 0,
+                        value: 1
+                    },
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,

@@ -6,69 +6,71 @@ function initCharts() {
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
     initElectricityPriceChart(electricityUsageChartElm, null, null, {
         optionTemplate: {
+            dateset: {
+                source: []
+            },
             tooltip: {
                 trigger: 'axis',
                 position: function (pt) {
-                  return [pt[0], '10%'];
+                    return [pt[0], '10%'];
                 }
-              },
-              toolbox: {
+            },
+            toolbox: {
                 feature: {
-                  saveAsImage: {}
+                    saveAsImage: {}
                 }
-              },
-              title: {
+            },
+            title: {
                 left: 'center',
                 text: 'Electricity Usage'
-              },
-              xAxis: {
+            },
+            xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: [],
                 max: 1000
-              },
-              yAxis: {
+            },
+            yAxis: {
                 type: 'value',
                 boundaryGap: [0, '100%'],
                 max: function (value) {
-                  return value.max + 100;
-              }
-              },
-              dataZoom: [
+                    return value.max + 100;
+                }
+            },
+            dataZoom: [
                 {
-                  type: 'inside',
-                  start: 0,
-                  end: 10
+                    type: 'inside',
+                    start: 0,
+                    end: 10
                 },
                 {
-                  start: 0,
-                  end: 10
+                    start: 0,
+                    end: 10
                 }
-              ],
-              series: [
+            ],
+            series: [
                 {
-                  name: 'id0',
-                  type: 'line',
-                  symbol: 'none',
-                  sampling: 'lttb',
-                  itemStyle: {
-                    color: 'rgb(255, 70, 131)'
-                  },
-                  areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                      {
-                        offset: 0,
-                        color: 'rgb(255, 158, 68)'
-                      },
-                      {
-                        offset: 1,
+                    name: 'id0',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'lttb',
+                    itemStyle: {
                         color: 'rgb(255, 70, 131)'
-                      }
-                    ])
-                  },
-                  data: []
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: 'rgb(255, 158, 68)'
+                            },
+                            {
+                                offset: 1,
+                                color: 'rgb(255, 70, 131)'
+                            }
+                        ])
+                    },
+                    encode: { x: 0, y: 1 },
                 }
-              ]
+            ]
         }
     });
 }

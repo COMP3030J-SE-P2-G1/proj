@@ -58,42 +58,33 @@ function initCharts() {
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
     initElectricityPriceChart(electricityUsageChartElm, null, null, {
         optionTemplate: {
-            visualMap: [
-                {
-                  show: false,
-                  type: 'continuous',
-                  seriesIndex: 0,
-                  min: 0,
-                },
-              ],
-              title: [
-                {
-                  left: 'center',
-                  text: 'Gradient along the y axis'
-                },
-              ],
-              tooltip: {
+            dateset: {
+                source: []
+            },
+            visualMap: {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+            },
+            title: {
+                left: 'center',
+                text: 'Gradient along the y axis'
+            },
+            tooltip: {
                 trigger: 'axis'
-              },
-              xAxis: [
+            },
+            xAxis: {
+                type: 'time'
+            },
+            yAxis: {},
+            grid: {},
+            series: [
                 {
-                  data: []
-                },
-              ],
-              yAxis: [
-                {},
-              ],
-              grid: [
-                {
-                },
-              ],
-              series: [
-                {
-                  type: 'line',
-                  showSymbol: false,
-                  data: []
-                },
-              ]
+                    encode: { x: 0, y: 1 },
+                    type: "line",
+                }
+            ]
         }
     })
 
@@ -107,6 +98,9 @@ function initCharts() {
             format: "yyyy-MMMM"
         },
         optionTemplate: {
+            dateset: {
+                source: []
+            },
             title: {
                 text: 'Electricity Usage',
                 left: 'center'
@@ -118,7 +112,10 @@ function initCharts() {
                 {
                     type: 'pie',
                     radius: '50%',
-                    data: [],
+                    encode: {
+                        itemName: 0,
+                        value: 1
+                    },
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
