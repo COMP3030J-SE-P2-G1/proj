@@ -6,11 +6,11 @@
 {%- endmacro %}
 
 {% macro textLogo(ad_classes = "") %}
-    <a class="cursor-pointer text-xl font-bold p-2 {{ ad_classes }}">SolarScape</a>
+    <a href="/" class="cursor-pointer text-xl font-bold p-2 {{ ad_classes }}">SolarScape</a>
 {%- endmacro %}
 
 {% macro imageLogo(ad_classes = "") %}
-    <a>
+    <a href="/">
         <img class="w-14 cursor-pointer {{ ad_classes }}" src="/static/image/logo.webp" alt="logo">
     </a>
 {%- endmacro %}
