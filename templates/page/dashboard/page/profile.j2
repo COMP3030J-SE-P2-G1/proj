@@ -52,7 +52,11 @@
                                     {% else %}
                                         {{ field.label(class="label") }}
                                         {% if field.errors %}
-                                            {{ field(class="input input-bordered input-error w-full text-sm", type=type) }}
+                                            {% if type=="file" %}
+                                                {{ field(class="file-input input-error file-input-bordered w-full max-w-xs", type=type) }}
+                                            {% else %}
+                                                {{ field(class="input input-bordered input-error w-full text-sm", type=type) }}
+                                            {% endif %}
                                             <div class="alert alert-error shadow-lg mt-1 p-2 text-xs"
                                                  style="background-color: #FECACA; color: #B91C1C;">
                                                 <!-- Custom colors for errors -->
@@ -63,7 +67,11 @@
                                                 </div>
                                             </div>
                                         {% else %}
-                                            {{ field(class="input input-bordered w-full text-sm", type=type) }}
+                                            {% if type=="file" %}
+                                                {{ field(class="file-input file-input-bordered w-full max-w-xs", type=type) }}
+                                            {% else %}
+                                                {{ field(class="input input-bordered  w-full text-sm", type=type) }}
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </div>
@@ -76,7 +84,8 @@
                                         {{ render_field(profileForm.desc) }}
                                         {{ render_field(profileForm.start_time, "date") }}
                                         {{ render_field(profileForm.end_time, "date") }}
-                                        {{ render_field(profileForm.usage_file, "") }}
+{#                                        <input type="file" class="file-input file-input-bordered w-full max-w-xs" />#}
+                                        {{ render_field(profileForm.usage_file, "file") }}
                                     </div>
                                     <div class="basis-1/2 h-full">
                                         <div class="flex flex-row items-center mt-4">

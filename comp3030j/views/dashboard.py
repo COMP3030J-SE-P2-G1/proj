@@ -15,7 +15,7 @@ bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 @bp.route('/')
 @login_required
 def dashboard():
-    return render_template("page/dashboard/layout1/index.j2")
+    return render_template("page/dashboard/layout1/index.j2", form=User.query.filter_by(id=session['user_id']).first())
 
 
 @bp.route('/<path:path>')
@@ -27,8 +27,8 @@ def serve_static(path):
         profiles_dic = {}
         for profile in profiles:
             profiles_dic[profile.id] = profile.name
-        return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm)
-    return render_template(f"page/dashboard/page/{path}.j2")
+        return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=User.query.filter_by(id=session['user_id']).first())
+    return render_template(f"page/dashboard/page/{path}.j2", form=User.query.filter_by(id=session['user_id']).first())
 
 
 @bp.route('/create_profile', methods=['POST'])
