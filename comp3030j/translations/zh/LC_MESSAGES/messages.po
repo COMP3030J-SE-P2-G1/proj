@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-22 23:29+0800\n"
+"POT-Creation-Date: 2024-04-28 09:47+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -179,40 +179,35 @@ msgstr ""
 msgid "Generation should be a positive float."
 msgstr ""
 
-#: comp3030j/views/auth.py:36
+#: comp3030j/views/auth.py:37
 msgid "Your account has been created! You are now able to log in."
 msgstr "成功注册账号！你现在可以登录了"
 
-#: comp3030j/views/auth.py:60
+#: comp3030j/views/auth.py:61
 msgid "Please login first."
 msgstr ""
 
-#: comp3030j/views/auth.py:105
+#: comp3030j/views/auth.py:106
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:107 comp3030j/views/dashboard.py:70
+#: comp3030j/views/auth.py:108 comp3030j/views/dashboard.py:66
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
-#: comp3030j/views/auth.py:109
+#: comp3030j/views/auth.py:110
 msgid "Upload failed"
 msgstr "图像上传失败"
 
-#: comp3030j/views/auth.py:123
+#: comp3030j/views/auth.py:124
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
-#: comp3030j/views/dashboard.py:26
-#, fuzzy
-msgid "Please log in to create a profile."
-msgstr "个人中心"
-
-#: comp3030j/views/dashboard.py:50
+#: comp3030j/views/dashboard.py:46
 msgid "Not allowed data in:"
 msgstr ""
 
-#: comp3030j/views/dashboard.py:67
+#: comp3030j/views/dashboard.py:63
 #, fuzzy
 msgid "Profile created successfully."
 msgstr "密码修改成功"
@@ -225,12 +220,12 @@ msgstr "还没有账户？立即注册"
 msgid "Already Have An Account? Login"
 msgstr "已有账户？立即登录"
 
-#: templates/page/auth/history/history.j2:40
+#: templates/page/auth/history/history.j2:23
 #: templates/page/auth/profile/profile.j2:157
 msgid "Your info"
 msgstr "个人信息"
 
-#: templates/page/auth/history/history.j2:44
+#: templates/page/auth/history/history.j2:27
 #: templates/page/auth/profile/profile.j2:161
 msgid "History"
 msgstr "历史记录"
@@ -248,12 +243,12 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
-#: templates/page/dashboard/page/profile.j2:113
+#: templates/page/dashboard/page/profile.j2:122
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
-#: templates/page/dashboard/page/profile.j2:115
+#: templates/page/dashboard/page/profile.j2:124
 msgid "Close"
 msgstr "取消"
 
@@ -278,4 +273,7 @@ msgstr "个人中心"
 
 #~ msgid "Usage"
 #~ msgstr ""
+
+#~ msgid "Please log in to create a profile."
+#~ msgstr "个人中心"
 
