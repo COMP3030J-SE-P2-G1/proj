@@ -1,5 +1,6 @@
 from . import db
 from .Profile import Profile
+from .apikey import ApiKey
 from typing import List
 from comp3030j.extensions import login_manager
 from flask_login import UserMixin
@@ -26,3 +27,4 @@ class User(db.Model, UserMixin, SerializerMixin):
     password: Mapped[str] = mapped_column()
     avatar_file: Mapped[str] = mapped_column(default="default.jpg")
     profiles: Mapped[List[Profile]] = relationship(back_populates="user")
+    apikeys: Mapped[List[ApiKey]] = relationship(back_populates="user")

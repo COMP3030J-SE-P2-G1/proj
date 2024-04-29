@@ -1,3 +1,4 @@
+import { API_PREFIX } from './constants.ts';
 import type { ElectricityPrice } from './types.ts';
 
 export async function getElectricityPrice(
@@ -5,7 +6,7 @@ export async function getElectricityPrice(
     endTime: Date | null,
     span_hours: number | null,
 ): Promise<ElectricityPrice[]> {
-    const response = await fetch(`/api/data/sems`, {
+    const response = await fetch(`${API_PREFIX}/data/sems`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

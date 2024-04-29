@@ -8,9 +8,9 @@ from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import requests, json
 from comp3030j.util import parse_iso_string, to_iso_string
+from .security import auth_guard
 
-bp = Blueprint("api/profile", __name__, url_prefix="/profile")
-
+bp = Blueprint("api/v1/profile", __name__, url_prefix="/profile")
 
 def get_profile(id):
     """
@@ -34,6 +34,7 @@ def get_profile(id):
 
 
 @bp.route("/<int:id>")
+@auth_guard
 def profile(id):
     profile, response = get_profile(id)
     if response:
@@ -42,6 +43,7 @@ def profile(id):
 
 
 @bp.route("/<int:id>/usage", methods=["POST"])
+@auth_guard
 def usage(id):
     """
     request has body as:
@@ -117,6 +119,7 @@ def usage(id):
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
+@auth_guard
 def solar(id):
     """
     request has body as:

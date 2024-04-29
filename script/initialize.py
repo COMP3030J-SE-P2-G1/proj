@@ -30,6 +30,7 @@ def init_db():
     from comp3030j.db.SEMSpot import SEMSpot
     from comp3030j.db.Solar import Solar
     from comp3030j.db.Usage import Usage
+    from comp3030j.db.apikey import ApiKey
 
     from script.parse_csv_data import read_spot_from_csv, read_quarter_hourly_usage_csv
     from script.parse_json_data import read_solar_json
@@ -47,7 +48,10 @@ def init_db():
 
             # initialize default/example series and convert to database
             user = User(
-                username="public_profiles", email="null", password="not_a_password"
+                username="demo_user",
+                email="example@example.com",
+                # password: password
+                password="$2b$12$x3ekrHN8Yca0edT6SV6IfelItLY/5JVo3piH3aZbmBu.G53yVpce."
             )
             db.session.add(user)
             db.session.flush()
@@ -60,6 +64,9 @@ def init_db():
             # fmt: on
             db.session.add(demo_profile)
             db.session.flush()
+
+            demo_api_key = ApiKey(user.id, token="dac6164cd0cf4ea6b539aa2a6a1f457d", desc="Demo Api Key.")
+            db.session.add(demo_api_key)
 
             for timestamp, value in spots.items():
                 spot = SEMSpot(time=timestamp, spot=value)

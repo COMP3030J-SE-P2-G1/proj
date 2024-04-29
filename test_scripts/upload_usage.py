@@ -1,6 +1,8 @@
 import requests, json
 from datetime import datetime, timedelta
-
+HEADERS = {
+    "Authorization": "Bearer dac6164cd0cf4ea6b539aa2a6a1f457d"
+}
 
 with open("demo_2023.csv", 'rb') as fobj:
     res = requests.post(

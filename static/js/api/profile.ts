@@ -5,10 +5,10 @@
  */
 
 import type { Profile, Solar, Usage } from './types.ts';
-
+import { API_PREFIX } from './constants.ts';
 
 export async function getProfile(id: number): Promise<Profile> {
-    const response = await fetch(`/api/profile/${id}`);
+    const response = await fetch(`${API_PREFIX}/profile/${id}`);
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
@@ -23,7 +23,7 @@ export async function getSolar(
     endTime: Date | null,
     span_hours: number | null = null,
 ): Promise<Solar[]> {
-    const response = await fetch(`/api/profile/${profileId}/solar`, {
+    const response = await fetch(`${API_PREFIX}/profile/${profileId}/solar`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export async function getUsage(
     endTime: Date | null,
     span_hours: number | null = null,
 ): Promise<Usage[]> {
-    const response = await fetch(`/api/profile/${profileId}/usage`, {
+    const response = await fetch(`${API_PREFIX}/profile/${profileId}/usage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
