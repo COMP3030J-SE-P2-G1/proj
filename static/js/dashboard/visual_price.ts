@@ -3,7 +3,7 @@ import * as echarts from 'echarts/core';
 
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity_price");
-    if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+    if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity_price."); return;}
     initElectricityPriceChart(electricityUsageChartElm, null, null, {
         optionTemplate: {
             dateset: {
@@ -22,7 +22,7 @@ function initCharts() {
             },
             title: {
                 left: 'center',
-                text: 'Electricity Usage'
+                text: 'Electricity Price'
             },
             xAxis: {
                 type: 'category',
