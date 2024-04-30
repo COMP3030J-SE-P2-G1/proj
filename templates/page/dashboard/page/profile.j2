@@ -1,10 +1,8 @@
 <div class="size-full flex flex-col p-3">
-    <section>
-        <div class="flex flex-col items-center mt-4">
-            <h1 class="text-3xl font-bold text-base-content">Profiles</h1>
-            <span class="text-base-content-shadow mt-2">Create, Edit and View your on-premise solar panel installations: and see your savings & contributions to the environment!</span>
-        </div>
-    </section>
+    <header class="flex flex-col items-center mt-4">
+        <h1 class="text-3xl font-bold text-base-content">Profiles</h1>
+        <span class="text-base-content-shadow m-2">Create, Edit and View your on-premise solar panel installations: and see your savings & contributions to the environment!</span>
+    </header>
     <section class="flex flex-col mt-4 h-full">
         <div class="flex justify-between mr-2 ml-2">
             <div class="flex items-center justify-center h-full">
@@ -84,7 +82,7 @@
                                         {{ render_field(profileForm.desc) }}
                                         {{ render_field(profileForm.start_time, "date") }}
                                         {{ render_field(profileForm.end_time, "date") }}
-{#                                        <input type="file" class="file-input file-input-bordered w-full max-w-xs" />#}
+                                        {#                                        <input type="file" class="file-input file-input-bordered w-full max-w-xs" />#}
                                         {{ render_field(profileForm.usage_file, "file") }}
                                     </div>
                                     <div class="basis-1/2 h-full">

@@ -1,10 +1,9 @@
 <div class="size-full flex flex-col p-3">
-    <section>
-        <div class="flex flex-col items-center m-4">
-            <h1 class="text-3xl font-bold text-base-content">Get the Latitude and Longitude of a location here!</h1>
-        </div>
-    </section>
-    <div id="map"></div>
+    <header class="flex flex-col items-center mt-4">
+        <h1 class="text-3xl font-bold text-base-content">Map</h1>
+        <span class="text-base-content-shadow m-2">Get the Latitude and Longitude of a location here!</span>
+    </header>
+    <div id="map" class="m-2"></div>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKcVzcRDywvdqWYnps09kexWfEHQqqyqc&callback=initMap&v=weekly&solution_channel=GMP_CCS_geocodingservice_v1"
         defer
