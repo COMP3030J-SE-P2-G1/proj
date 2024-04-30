@@ -83,8 +83,6 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             break;
         case 'index':
             void loadModule("index.ts", () => import("./dashboard/visual_price.ts"));
-            break;
-        case 'visual/usage':
             void loadModule("visual/usage", () => import("./dashboard/visual_usage.ts"));
             break;
         case 'api_doc/graphql_playground':
