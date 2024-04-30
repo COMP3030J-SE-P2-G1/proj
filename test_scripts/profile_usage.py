@@ -13,10 +13,9 @@ res = requests.post(
         "start_time": "2023-1-31T23:00:00.000Z",
         "end_time": "2023-2-22T23:00:00.000Z",
         "span_hours": None,
+        "api": 1,
     },
 )
 print("response code:", res)
 
 print("response body:", json.dumps(res.json(), indent=4))
-
-

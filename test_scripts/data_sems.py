@@ -21,6 +21,7 @@ res = requests.post(
         "start_time": "2022-12-31T23:00:00.000Z",
         "end_time": None,
         "span_hours": "25",
+        "api": "2",
     },
 )
 print("response code:", res)

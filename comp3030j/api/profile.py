@@ -7,7 +7,7 @@ from flask_login import current_user
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import requests, json
-from comp3030j.util import parse_iso_string
+from comp3030j.util import parse_iso_string, to_iso_string
 
 bp = Blueprint("api/profile", __name__, url_prefix="/profile")
 
@@ -57,9 +57,10 @@ def usage(id):
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
     try:
-        start_time = content["start_time"]
-        end_time = content["end_time"]
-        span_hours = content["span_hours"]
+        start_time = "start_time" in content and content["start_time"]
+        end_time = "end_time" in content and content["end_time"]
+        span_hours = "span_hours" in content and content["span_hours"]
+        api_new = "api" in content and content["api"]
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -92,7 +93,11 @@ def usage(id):
             .filter(Usage.time.between(start_dt, end_dt))
         )
 
-        return jsonify([v.to_dict() for v in result])
+        if not api_new:
+            return jsonify([v.to_dict() for v in result])
+        else:
+            # List[List[time: str, usage: float]]
+            return jsonify([[to_iso_string(v.time), v.usage] for v in result])
 
     except (ValueError, TypeError) as e:
         return {
@@ -128,9 +133,10 @@ def solar(id):
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
     try:
-        start_time = content["start_time"]
-        end_time = content["end_time"]
-        span_hours = content["span_hours"]
+        start_time = "start_time" in content and content["start_time"]
+        end_time = "end_time" in content and content["end_time"]
+        span_hours = "span_hours" in content and content["span_hours"]
+        api_new = "api" in content and content["api"]
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -175,7 +181,12 @@ def solar(id):
 
         if len(query_years) == 0:
             app.logger.info("returning results from DB")
-            return jsonify([v.to_dict() for v in result_list])
+            if not api_new:
+                return jsonify([v.to_dict() for v in result_list])
+            else:
+                return jsonify(
+                    [[to_iso_string(v.time), v.generation] for v in result_list]
+                )
 
         app.logger.info("querying PVGIS")
         # dispatch query_pvgis_one_year
@@ -206,7 +217,12 @@ def solar(id):
                     result_list.append(solar)
 
         db.session.commit()
-        return jsonify([v.to_dict() for v in result_list])
+
+        if not api_new:
+            return jsonify([v.to_dict() for v in result_list])
+        else:
+            # List[List[time: str, generation: float]]
+            return jsonify([[to_iso_string(v.time), v.generation] for v in result_list])
 
     except (ValueError, TypeError) as e:
         return {

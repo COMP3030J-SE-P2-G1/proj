@@ -21,4 +21,3 @@ class Usage(db.Model, SerializerMixin):
     profile: Mapped[Profile] = relationship(back_populates="usage")
     time: Mapped[datetime] = mapped_column(UtcDateTime())
     usage: Mapped[float] = mapped_column()
-    publicize: Mapped[bool] = mapped_column(default=False)

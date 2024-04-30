@@ -36,6 +36,10 @@ def parse_iso_string(iso_8601_string: str) -> datetime:
     return datetime.strptime(iso_8601_string, "%Y-%m-%dT%H:%M:%S.%f%z")
 
 
+def to_iso_string(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+
 def read_hourly_usage_csv(csv_file):
     """
     parameter:

@@ -3,7 +3,7 @@ from comp3030j.db import db
 from comp3030j.db.SEMSpot import SEMSpot
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
-from comp3030j.util import parse_iso_string
+from comp3030j.util import parse_iso_string, to_iso_string
 
 bp = Blueprint("api/data", __name__, url_prefix="/data")
 
@@ -13,9 +13,10 @@ def semspot():
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
     try:
-        start_time = content["start_time"]
-        end_time = content["end_time"]
-        span_hours = content["span_hours"]
+        start_time = "start_time" in content and content["start_time"]
+        end_time = "end_time" in content and content["end_time"]
+        span_hours = "span_hours" in content and content["span_hours"]
+        api_new = "api" in content and content["api"]
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -44,7 +45,12 @@ def semspot():
         result = db.session.scalars(
             db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
         )
-        return jsonify([v.to_dict() for v in result])
+
+        if not api_new:
+            return jsonify([v.to_dict() for v in result])
+        else:
+            # List[List[time: str, spot: float]]
+            return jsonify([[to_iso_string(v.time), v.spot] for v in result])
 
     except (ValueError, TypeError) as e:
         return {
