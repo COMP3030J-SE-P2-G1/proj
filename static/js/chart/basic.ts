@@ -274,7 +274,14 @@ export function getDefaultFetchDataStep(
     end: Date | null,
     defaultDays: number = 180
 ) {
-    return (start && end) ? Math.ceil(daysBetween(start, end) / 4) : defaultDays;
+    const minDays = Math.ceil(defaultDays / 4);
+    
+    if (start && end) {
+        const days = Math.ceil(daysBetween(start, end) / 4);
+        return days > minDays ? days : minDays;
+    }
+    
+    return defaultDays;
 }
 
 /**

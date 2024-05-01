@@ -1,6 +1,7 @@
 import { ready, dateAdd } from '../lib/utils.ts';
 import * as Chart from '../chart/chart.ts';
 import type { State } from '../chart/chart.ts';
+import type { TimelyArrayData } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 const gStartTime = new Date("2023-01-01T15:00:00.000000Z");
@@ -11,7 +12,7 @@ async function demoInitDynamicChart() {
     let profile = await PROFILE_API.getProfile(1);
     let fetchCounter = 0;
 
-    Chart.initDynamicChart<any[], string>(
+    Chart.initDynamicChart<TimelyArrayData, string>(
         elm,
         {
             title: {
@@ -33,7 +34,7 @@ async function demoInitDynamicChart() {
         async state => {
             const startTime = new Date(state.value);
             const endTime = dateAdd(startTime, 15);
-            return PROFILE_API.getSolar(profile.id, startTime, endTime);
+            return PROFILE_API.getSolar(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
         },
         (data, prevData) => {
             if (prevData) data = prevData.concat(data);
@@ -52,7 +53,7 @@ async function demoInitDynamicChart() {
         (state, data) => {
             const newState: State<string> = Object.assign({}, state);
             if (fetchCounter > 4) newState.state = Chart.StateType.stop;
-            newState.value = data[data.length - 1].time;
+            newState.value = data[data.length - 1][0] as string;
             fetchCounter ++;
             return newState;
         },
