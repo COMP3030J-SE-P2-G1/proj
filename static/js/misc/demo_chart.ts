@@ -1,7 +1,6 @@
 import { ready, dateAdd } from '../lib/utils.ts';
 import * as Chart from '../chart/chart.ts';
 import type { State } from '../chart/chart.ts';
-import type { Solar } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 const gStartTime = new Date("2023-01-01T15:00:00.000000Z");
@@ -12,7 +11,7 @@ async function demoInitDynamicChart() {
     let profile = await PROFILE_API.getProfile(1);
     let fetchCounter = 0;
 
-    Chart.initDynamicChart<Solar, string>(
+    Chart.initDynamicChart<any[], string>(
         elm,
         {
             title: {
@@ -40,12 +39,12 @@ async function demoInitDynamicChart() {
             if (prevData) data = prevData.concat(data);
             return {
                 xAxis: {
-                    data: data.map(item => item.time)
+                    data: data.map(item => item[0])
                 },
                 series: [
                     {
                         name: 'demo',
-                        data: data.map(item => item.generation)
+                        data: data.map(item => item[1])
                     }
                 ]
             }
@@ -71,8 +70,8 @@ function demoInitSolarLineChart() {
     if (elm) Chart.initSolarChart(elm, 1, gStartTime, gEndTime, {
         type: {
             type: "bar",
-            xFieldName: "time",
-            yFieldName: "generation"
+            xField: 0,
+            yField: 1
         },
         fetchDataStep: 30,
         interval: 100
@@ -89,13 +88,11 @@ function demoInitElectricityUsagePieChart() {
     if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, {
         type: {
             type: "pie",
-            xFieldName: "time",
-            yFieldName: "usage",
+            xField: 0,
+            yField: 1,
             format: "MMMM"
         }
-    }).then(
-        chart => console.log(chart.getOption())
-    );
+    })
 }
 
 

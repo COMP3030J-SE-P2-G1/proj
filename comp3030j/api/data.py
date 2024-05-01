@@ -4,11 +4,13 @@ from comp3030j.db.SEMSpot import SEMSpot
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
 from comp3030j.util import parse_iso_string, to_iso_string
+from .security import auth_guard
 
 bp = Blueprint("api/data", __name__, url_prefix="/data")
 
 
 @bp.route("/sems", methods=["POST"])
+@auth_guard
 def semspot():
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)

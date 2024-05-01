@@ -4,7 +4,7 @@
  * Pls forgive me.
  */
 
-import type { Profile, Solar, Usage } from './types.ts';
+import type { Profile, Solar, Usage, TimelyArrayData } from './types.ts';
 import { API_PREFIX } from './constants.ts';
 
 export async function getProfile(id: number): Promise<Profile> {
@@ -14,7 +14,7 @@ export async function getProfile(id: number): Promise<Profile> {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
 
-    return await response.json();
+    return response.json();
 }
 
 export async function getSolar(
@@ -22,7 +22,8 @@ export async function getSolar(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null = null,
-): Promise<Solar[]> {
+    compact: boolean = true,
+): Promise<Solar[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/profile/${profileId}/solar`, {
         method: 'POST',
         headers: {
@@ -31,7 +32,8 @@ export async function getSolar(
         body: JSON.stringify({
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
-            span_hours: span_hours
+            span_hours: span_hours,
+            api: compact ? "compact" : null
         })
     });
     
@@ -39,8 +41,7 @@ export async function getSolar(
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
 
-
-    return await response.json();
+    return response.json();
 }
 
 export async function getUsage(
@@ -48,7 +49,8 @@ export async function getUsage(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null = null,
-): Promise<Usage[]> {
+    compact: boolean = true,
+): Promise<Usage[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/profile/${profileId}/usage`, {
         method: 'POST',
         headers: {
@@ -57,7 +59,8 @@ export async function getUsage(
         body: JSON.stringify({
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
-            span_hours: span_hours
+            span_hours: span_hours,
+            api: compact ? "compact" : null
         })
     });
     
@@ -65,6 +68,6 @@ export async function getUsage(
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
             
-    return await response.json();
+    return response.json();
 }
 

@@ -81,3 +81,12 @@ export function dateAdd(date: Date, d: number) {
     newDate.setDate(newDate.getDate() + d);
     return newDate;
 }
+
+/**
+ * Days between two dates
+ */
+export function daysBetween(start: Date, end: Date) {
+    const oneDay = 86400000; // in milliseconds
+    return Math.round(Math.abs((start.valueOf() - end.valueOf()) / oneDay));
+}
+

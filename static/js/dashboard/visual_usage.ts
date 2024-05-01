@@ -70,8 +70,8 @@ function initCharts() {
     initElectricityUsageChart(electricityPieChartElm, 1, null, null, {
         type: {
             type: "pie",
-            xFieldName: "time",
-            yFieldName: "usage",
+            xField: 0,
+            yField: 1,
             format: "yyyy-MMMM"
         },
         optionTemplate: {

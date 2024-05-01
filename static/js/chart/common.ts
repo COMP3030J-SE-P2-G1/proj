@@ -1,19 +1,17 @@
 import * as echarts from 'echarts/core';
-import { initDynamicTimelyChart } from './basic';
+import { initDynamicTimelyChart, getDefaultFetchDataStep } from './basic';
 import type { InitChartOptions } from './basic';
-import type { NullableTime, Solar, Usage, ElectricityPrice } from '../api/types.ts';
+import type { NullableTime, Solar, Usage, ElectricityPrice, TimelyArrayData } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd } from '../lib/utils.ts';
-
-const DEFAULT_FETCHDATA_STEP = 30; // 30 days
 
 export async function initElectricityUsageChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<Usage, NullableTime>> = {},
+    initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
     const gStartTime = startTime ? startTime : new Date(profile.start_time);
@@ -23,16 +21,20 @@ export async function initElectricityUsageChart(
         title = "Electricity Usage Chart",
         type = {
             type: 'line',
-            xFieldName: 'time',
-            yFieldName: 'usage'
+            xField: 0,
+            yField: 1
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = DEFAULT_FETCHDATA_STEP,
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
-            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
-            return PROFILE_API.getUsage(profile.id, startTime, endTime);
+            let endTime = null;
+            if (startTime) {
+                const ed = dateAdd(startTime, fetchDataStep);
+                endTime = gEndTime > ed ? ed : gEndTime;
+            }
+            return PROFILE_API.getUsage(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -40,7 +42,7 @@ export async function initElectricityUsageChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicTimelyChart<Usage>(
+    return initDynamicTimelyChart<TimelyArrayData>(
         elm,
         gStartTime,
         gEndTime,
@@ -65,7 +67,7 @@ export async function initSolarChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<Solar, NullableTime>> = {},
+    initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
     const gStartTime = startTime ? startTime : new Date(profile.start_time);
@@ -75,16 +77,20 @@ export async function initSolarChart(
         title = "Solar Chart",
         type = {
             type: 'line',
-            xFieldName: 'time',
-            yFieldName: 'generation'
+            xField: 0,
+            yField: 1
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = DEFAULT_FETCHDATA_STEP,
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
-            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
-            return PROFILE_API.getSolar(profile.id, startTime, endTime);
+            let endTime = null;
+            if (startTime) {
+                const ed = dateAdd(startTime, fetchDataStep);
+                endTime = gEndTime > ed ? ed : gEndTime;
+            }
+            return PROFILE_API.getSolar(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -92,7 +98,7 @@ export async function initSolarChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicTimelyChart<Solar>(
+    return initDynamicTimelyChart<TimelyArrayData>(
         elm,
         gStartTime,
         gEndTime,
@@ -116,23 +122,30 @@ export async function initElectricityPriceChart(
     elm: HTMLElement,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    initChartOptions: Partial<InitChartOptions<ElectricityPrice, NullableTime>> = {},
+    initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
+    const gStartTime = startTime;
+    const gEndTime = endTime;
+    
     const {
         title = "Electricity Price Chart",
         type = {
             type: 'line',
-            xFieldName: 'time',
-            yFieldName: 'spot'
+            xField: 0,
+            yField: 1
         },
         optionTemplate,
         initialStateValue,
-        fetchDataStep = DEFAULT_FETCHDATA_STEP,
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
-            const endTime = startTime ? dateAdd(startTime, fetchDataStep) : null;
+            let endTime = null;
+            if (startTime) {
+                const ed = dateAdd(startTime, fetchDataStep);
+                endTime = (!gEndTime || gEndTime < ed) ? gEndTime : ed;
+            }
             const spanHours = endTime ? null : fetchDataStep * 24;
-            return DATA_API.getElectricityPrice(startTime, endTime, spanHours);
+            return DATA_API.getElectricityPrice(startTime, endTime, spanHours) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -140,7 +153,7 @@ export async function initElectricityPriceChart(
         shouldStopFetchingFunc
     } = initChartOptions;
     
-    return initDynamicTimelyChart<ElectricityPrice>(
+    return initDynamicTimelyChart<TimelyArrayData>(
         elm,
         startTime,
         endTime,

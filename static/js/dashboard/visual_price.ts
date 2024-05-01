@@ -70,7 +70,8 @@ function initCharts() {
                     },
                     encode: { x: 0, y: 1 },
                 }
-            ]
+            ],
+            animation: false, // disable animation to achieve the best performance
         }
     });
 }

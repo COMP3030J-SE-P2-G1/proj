@@ -57,6 +57,7 @@ function initCharts() {
     const electricityUsageChartElm = document.getElementById("cock_chart");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
     initElectricityPriceChart(electricityUsageChartElm, null, null, {
+        fetchDataStep: 360,
         optionTemplate: {
             dateset: {
                 source: []
@@ -84,7 +85,8 @@ function initCharts() {
                     encode: { x: 0, y: 1 },
                     type: "line",
                 }
-            ]
+            ],
+            animation: false,
         }
     })
 
@@ -93,8 +95,8 @@ function initCharts() {
     initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, {
         type: {
             type: "pie",
-            xFieldName: "time",
-            yFieldName: "usage",
+            xField: 0,
+            yField: 1,
             format: "yyyy-MMMM"
         },
         optionTemplate: {

@@ -2,6 +2,8 @@ export type Time = string;
 
 export type NullableTime = Time | null;
 
+export type TimelyArrayData = Array<string | number>;
+
 export type TimelyData = {
     time: Time,
 }

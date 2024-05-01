@@ -1,6 +1,7 @@
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import type { NullableTime, TimelyData } from '../api/types.ts';
+import type { NullableTime, TimelyArrayData } from '../api/types.ts';
+import { daysBetween } from '../lib/utils.ts';
 
 import { format } from 'date-fns';
 
@@ -82,8 +83,8 @@ export type StringNumberDict = { [key: string]: number };
 
 export type Chart2D = {
     type: string,
-    xFieldName: string,
-    yFieldName: string,
+    xField: string | number,
+    yField: string | number,
 }
 
 export interface LineChartType extends Chart2D {
@@ -104,8 +105,8 @@ export type ChartTypeOption =  LineChartType | BarChartType | PieChartType;
 
 const DEFAULT_CHART_TYPE_OPTION: ChartTypeOption = {
     type: 'line',
-    xFieldName: 'time',
-    yFieldName: 'usage'
+    xField: 0,
+    yField: 1
 };
 
 /**
@@ -200,7 +201,8 @@ function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<
                     encode: { x: 0, y: 1 },
                     type: type.type,
                 }
-            ]
+            ],
+            animation: false // disable animation to get the best performance for large data
         };
     } else { // pie chart
         return {
@@ -235,8 +237,8 @@ function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOpt
                 dataset: {
                     source: data.map(
                         item => [
-                            item[type.xFieldName],
-                            item[type.yFieldName]
+                            item[type.xField],
+                            item[type.yField]
                         ]
                     )
                 }
@@ -264,9 +266,21 @@ function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOpt
 }
 
 /**
+ * Get default fetchDataStep(in day), by default it's 180 if at least one of its
+ * parameters is null
+ */
+export function getDefaultFetchDataStep(
+    start: Date | null,
+    end: Date | null,
+    defaultDays: number = 180
+) {
+    return (start && end) ? Math.ceil(daysBetween(start, end) / 4) : defaultDays;
+}
+
+/**
  * if endTime is null, then only request data once
  */
-export async function initDynamicTimelyChart<D extends TimelyData>(
+export async function initDynamicTimelyChart<D extends TimelyArrayData>(
     elm: HTMLElement,
     startTime: Date | null,
     endTime: Date | null,
@@ -275,18 +289,18 @@ export async function initDynamicTimelyChart<D extends TimelyData>(
     const {
         optionTemplate = getDefaultOptionTemplate<D>(initChartOptions),
         initialStateValue = startTime ? startTime.toISOString() : null,
-        fetchDataStep = 30,
+        fetchDataStep = getDefaultFetchDataStep(startTime, endTime),
         fetchDataFunc,
         overrideOption = getDefaultOverrideOption<D>(initChartOptions),
         updateStateFunc = (state, data) => {
             const newState: State<NullableTime> = Object.assign({}, state);
             const rawEndData = data[data.length - 1]
-            newState.value = rawEndData.time;
-            const localEndTime = new Date(rawEndData.time);
+            newState.value = rawEndData[0] as string;
+            const localEndTime = new Date(rawEndData[0]);
             if (endTime) {
                 if (localEndTime >= endTime) newState.state = StateType.stop;
             } else {
-                const localStartTime = new Date(data[0].time);
+                const localStartTime = new Date(data[0][0]);
                 const timeSpan = localEndTime.getTime() - localStartTime.getTime();
                 if (fetchDataStep && timeSpan < fetchDataStep * 24 * 3600)
                     newState.state = StateType.stop;
@@ -316,15 +330,14 @@ function calculateUsageSum(data: { [key: string]: any }[], config: PieChartType)
     const monthlyUsage: StringNumberDict = {};
 
     data.forEach(item => {
-        const date = new Date(item[config.xFieldName]);
+        const date = new Date(item[config.xField]);
         const key = format(date, config.format);
 
         if (!monthlyUsage[key]) {
             monthlyUsage[key] = 0;
         }
-        monthlyUsage[key] += item[config.yFieldName];
+        monthlyUsage[key] += item[config.yField];
     });
     
     return monthlyUsage;
 }
-
