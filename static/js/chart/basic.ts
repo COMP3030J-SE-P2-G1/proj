@@ -109,6 +109,8 @@ const DEFAULT_CHART_TYPE_OPTION: ChartTypeOption = {
     yField: 1
 };
 
+export type OverrideOptionReturnType<D> = (data: D[], prevData: D[] | null, prevOption: ChartOption) => ChartOption;
+
 /**
  * Asynchronous Loading + Dynamic Update
  * interval: Interval in milliseconds to fetch data, default is 0ms
@@ -118,7 +120,7 @@ export function initDynamicChart<D, T>(
     optionTemplate: ChartOption,
     initialStateValue: T,
     fetchDataFunc: (state: State<T>) => Promise<D[]>,
-    overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
+    overrideOption: OverrideOptionReturnType<D>,
     updateStateFunc: (state: State<T>, data: D[]) => State<T>,
     interval: number = 0,
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean = (state, _prevState) => {
@@ -148,7 +150,7 @@ export function initDynamicChart<D, T>(
                 prevState = curState;
                 curState = updateStateFunc(curState, data);
                 
-                chart.setOption(overrideOption(data, prevData));
+                chart.setOption(overrideOption(data, prevData, chart.getOption()));
 
                 if (shouldStopFetchingFunc(curState, prevState)) {
                     return;
@@ -167,16 +169,27 @@ export function initDynamicChart<D, T>(
     return chart;
 }
 
+/* See initDynamicChart function to get a better understanding of it. */
 export type InitChartOptions<D, T> = {
+    /* It doesn't make sense on its alone. It is used by other options. */
     title: string,
+    /* It doesn't make sense on its alone. It is used by other options.*/
     type: ChartTypeOption,
+    /* Chart option, used by `chart.setOption`. Docs: https://echarts.apache.org/en/option.html */
     optionTemplate: ChartOption,
+    /* Initial State Value. State is used for determining things like whether data fetching should stop. */
     initialStateValue: T,
-    fetchDataFunc: (state: State<T>) => Promise<D[]>,
-    overrideOption: (data: D[], prevData: D[] | null) => ChartOption,
-    updateStateFunc: (state: State<T>, data: D[]) => State<T>,
+    /* It doesn't make sense on its alone. It is used by other options.*/
     fetchDataStep: number, // number of dates
+    /* Fetch Data. Data is passed to Override Option. */
+    fetchDataFunc: (state: State<T>) => Promise<D[]>,
+    /* Update State after getting data */
+    updateStateFunc: (state: State<T>, data: D[]) => State<T>,
+    /* Override Option defined in optionTemplate. Basically we override it by doing `chart.setOption` again. */
+    overrideOption: (data: D[], prevData: D[] | null, prevOption: ChartOption) => ChartOption,
+    /* Time of milliseconds between two consequent requests */
     interval: number,
+    /* Whether we should stop fetching data. */
     shouldStopFetchingFunc: (state: State<T>, prevState: State<T> | null) => boolean
 }
 
@@ -186,7 +199,7 @@ function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<
     
     if (type.type == 'line' || type.type == 'bar') {
         return {
-            dateset: {
+            dataset: {
                 source: []
             },
             title: {
@@ -227,26 +240,45 @@ function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<
     }
 }
 
+function getOverrideDataSetOption(
+    prevDataset: DatasetComponentOption | Array<DatasetComponentOption> | undefined,
+    overrideDatasetOption: DatasetComponentOption
+): ChartOption {
+    let newDataset = prevDataset ?? overrideDatasetOption;
+    if (prevDataset) {
+        if (newDataset instanceof Array) {
+            newDataset[0] = overrideDatasetOption;
+        } else {
+            newDataset = overrideDatasetOption;
+        }
+    }
+            
+    return {
+        dataset: newDataset
+    };
+}
+
 // TODO
-function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOptions: Partial<InitChartOptions<D, NullableTime>>):  (data: D[], prevData: D[] | null) => ChartOption {
+function getDefaultOverrideOption<D extends { [key: string ]: any }>(initChartOptions: Partial<InitChartOptions<D, NullableTime>>): OverrideOptionReturnType<D> {
     const type = initChartOptions.type ?? DEFAULT_CHART_TYPE_OPTION;
     if (type.type == 'line' || type.type == 'bar') {
-        return (data, prevData) => {
+        return (data, prevData, prevOption) => {
             if (prevData) data = prevData.concat(data);
-            return {
-                dataset: {
-                    source: data.map(
-                        item => [
-                            item[type.xField],
-                            item[type.yField]
-                        ]
-                    )
-                }
+            const overrideDatasetOption: DatasetComponentOption = {
+                source: data.map(
+                    item => [
+                        item[type.xField],
+                        item[type.yField]
+                    ]
+                )
             };
+
+            const prevDataset = prevOption.dataset;
+            return getOverrideDataSetOption(prevDataset, overrideDatasetOption);
         };
     } else { // pie chart
         const usageData: StringNumberDict = {};
-        return (data, _prevData) => {
+        return (data, _prevData, prevOption) => {
             const newUsageSumDict = calculateUsageSum(data, type);
             for (const [key, value] of Object.entries(newUsageSumDict)) {
                 if (key in usageData) {
@@ -256,11 +288,12 @@ function getDefaultOverrideOption<D extends { [key: string]: any }>(initChartOpt
                 }
             }
 
-            return {
-                dataset: {
-                    source: Object.entries(usageData)
-                }
-            }
+            const overrideDatasetOption: DatasetComponentOption = {
+                source: Object.entries(usageData)
+            };
+
+            const prevDataset = prevOption.dataset;
+            return getOverrideDataSetOption(prevDataset, overrideDatasetOption);
         };
     }
 }

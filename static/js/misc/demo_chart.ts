@@ -7,6 +7,7 @@ import * as PROFILE_API from '../api/profile.ts';
 const gStartTime = new Date("2023-01-01T15:00:00.000000Z");
 const gEndTime = new Date("2023-03-03T15:00:00.000000Z");
 
+// The lowest API. You probably don't need it.
 async function demoInitDynamicChart() {
     const elm = document.getElementById("initDynamicChart")!;
     let profile = await PROFILE_API.getProfile(1);
@@ -36,7 +37,7 @@ async function demoInitDynamicChart() {
             const endTime = dateAdd(startTime, 15);
             return PROFILE_API.getSolar(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
         },
-        (data, prevData) => {
+        (data, prevData, _prevOption) => {
             if (prevData) data = prevData.concat(data);
             return {
                 xAxis: {
@@ -63,30 +64,29 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageLineChart() {
     const elm = document.getElementById("initElectricityUsageLineChart");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, { interval: 100});
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, {
+        title: "initElectricityUsageLineChart",
+    });
 }
 
 function demoInitSolarLineChart() {
     const elm = document.getElementById("initSolarLineChart");
     if (elm) Chart.initSolarChart(elm, 1, gStartTime, gEndTime, {
-        type: {
-            type: "bar",
-            xField: 0,
-            yField: 1
-        },
-        fetchDataStep: 30,
-        interval: 100
+        title: "initSolarLineChart"
     });
 }
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime);
+    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime, {
+        title: "initElectricityPriceLineChart",
+    });
 }
 
 function demoInitElectricityUsagePieChart() {
     const elm = document.getElementById("initElectricityUsageChart-PieChart");
     if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, {
+        title: "initElectricityUsageChart-PieChart",
         type: {
             type: "pie",
             xField: 0,
@@ -96,6 +96,50 @@ function demoInitElectricityUsagePieChart() {
     })
 }
 
+function demoInitElectricityPriceHypridChart() {
+    const elm = document.getElementById("initElectricityUsageChart-hybrid");
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, {
+        optionTemplate: {
+            dataset: [
+                {
+                    // fake data so that `dimension: 1` below don't produce an
+                    // error at chart initialization
+                    source: [[1, 2]]
+                },
+                {
+                    transform: {
+                        type: 'filter',
+                        config: {
+                            dimension: 1,
+                            '<': 2000
+                        }
+                    }
+                },
+            ],
+            title: {
+                text: "Usage hybrid chart (bar & line whose value is lower than 2000)"
+            },
+            xAxis: {
+                type: 'time'
+            },
+            yAxis: {},
+            series: [
+                {
+                    encode: { x: 0, y: 1 },
+                    type: "bar",
+                    // use 0st dataset
+                },
+                {
+                    encode: { x: 0, y: 1 },
+                    type: "line",
+                    datasetIndex: 1, // use the 1st (begins with 0) dataset
+                }
+            ],
+            animation: false
+        }
+    });
+}
+
 
 ready(() => {
     demoInitDynamicChart();
@@ -103,4 +147,5 @@ ready(() => {
     demoInitSolarLineChart();
     demoInitElectricityPriceLineChart();
     demoInitElectricityUsagePieChart();
+    demoInitElectricityPriceHypridChart();
 })

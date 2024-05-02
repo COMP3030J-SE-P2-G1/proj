@@ -189,6 +189,9 @@ Assuming you have started the development through the command `just` or `just ru
 
 The browser will automatically update since we have configured `browser-sync` to watch `.mo` file changes.  
 
+## Chart API
+
+[chart api](./chart.md)
 
 ### Additional Notes
 
@@ -201,3 +204,4 @@ It is defined in file [./api.yaml](./api.yaml) in OpenAPI format, which can be v
 ### Common Pitfalls
 
 1. JavaScript generated tailwindcss class names cannot work -> add the class to the `safelist` in `tailwind.config.js` file.
+
