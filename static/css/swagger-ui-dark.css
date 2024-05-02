@@ -1,0 +1,9 @@
+/* https://github.com/swagger-api/swagger-ui/issues/5327#issuecomment-742375520 */
+[data-theme="dim"], :root:has(input.theme-controller[value="dim"]:checked)  {
+    .swagger-ui {
+        filter: invert(88%) hue-rotate(180deg);
+    }
+    .swagger-ui .microlight {
+        filter: invert(100%) hue-rotate(180deg);
+    }
+}
