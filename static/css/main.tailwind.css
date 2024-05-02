@@ -1,7 +1,9 @@
 @import './aos.css';
 @import './scrollbar.css';
 @import './input-number.css';
+
 @import './swagger-ui-dark.css';
+@import './graphiql.css';
 
 @tailwind base;
 @tailwind components;

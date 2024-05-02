@@ -18,7 +18,7 @@ module.exports = {
     },
     daisyui: {
         // NOTE: If `dim` is not used as dark theme anymore, we also need to change the
-        // theme name in ./static/css/swagger-ui-dark.css
+        // theme name in some CSS files inside ./static/css/ directory
         themes: ["light", "dim"],
     },
     plugins: [require("daisyui")],
