@@ -54,10 +54,9 @@ function bindEvents(): void {
 }
 
 function initCharts() {
-    const electricityUsageChartElm = document.getElementById("cock_chart");
-    if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceChart(electricityUsageChartElm, null, null, 24, {
-        fetchDataStep: 360,
+    const electricityPriceChartElm = document.getElementById("chart1");
+    if (!electricityPriceChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+    initElectricityPriceChart(electricityPriceChartElm, null, null, null, 24, {
         optionTemplate: {
             dateset: {
                 source: []
@@ -90,8 +89,8 @@ function initCharts() {
         }
     })
 
-    const electricityUsagePieChartElm = document.getElementById("p_chart");
-    if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+    const electricityUsagePieChartElm = document.getElementById("chart0");
+    if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #chart0"); return;}
     initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, 24, {
         type: {
             type: "pie",

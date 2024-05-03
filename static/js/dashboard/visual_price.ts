@@ -4,7 +4,7 @@ import * as echarts from 'echarts/core';
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity_price");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity_price."); return;}
-    initElectricityPriceChart(electricityUsageChartElm, null, null, 24, {
+    initElectricityPriceChart(electricityUsageChartElm, null, null, null, 24, {
         optionTemplate: {
             dateset: {
                 source: []
@@ -27,13 +27,12 @@ function initCharts() {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                max: 1000
             },
             yAxis: {
                 type: 'value',
                 boundaryGap: [0, '100%'],
                 max: function (value) {
-                    return value.max + 100;
+                    return value.max * 2;
                 }
             },
             dataZoom: [

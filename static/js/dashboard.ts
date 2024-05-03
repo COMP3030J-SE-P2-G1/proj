@@ -78,12 +78,11 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             void loadModule("usage_update.ts", () => import("./dashboard/usage_update.ts"));
             break;
         case 'profile':
-            void loadModule("create_profile.ts", () => import("./dashboard/profile.ts"));
-            void loadModule("usage_update.ts", () => import("./dashboard/data_calculation.ts"));
+            void loadModule("profile.ts", () => import("./dashboard/profile.ts"));
+            void loadModule("data_calculation.ts", () => import("./dashboard/data_calculation.ts"));
             break;
         case 'index':
-            void loadModule("index.ts", () => import("./dashboard/visual_price.ts"));
-            void loadModule("visual/usage", () => import("./dashboard/visual_usage.ts"));
+            void loadModule("visual_price.ts", () => import("./dashboard/visual_price.ts"));
             break;
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));

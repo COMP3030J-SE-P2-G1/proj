@@ -90,3 +90,18 @@ export function daysBetween(start: Date, end: Date) {
     return Math.round(Math.abs((start.valueOf() - end.valueOf()) / oneDay));
 }
 
+export function daysBetweenNull(start: Date | null, end: Date | null): number | null {
+    if (!(start && end)) return null;
+    return daysBetween(start, end);
+}
+
+export function hoursBetween(start: Date, end: Date) {
+    const oneHour = 3600000; // in milliseconds
+    return Math.round(Math.abs((start.valueOf() - end.valueOf()) / oneHour));
+}
+
+export function hoursBetweenNull(start: Date | null, end: Date | null): number | null {
+    if (!(start && end)) return null;
+    return hoursBetween(start, end);
+}
+

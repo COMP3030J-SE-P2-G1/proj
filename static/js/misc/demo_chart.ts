@@ -78,7 +78,7 @@ function demoInitSolarLineChart() {
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime, 24, {
+    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime, null, 24, {
         title: "initElectricityPriceLineChart",
     });
 }

@@ -1,7 +1,7 @@
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { NullableTime, TimelyArrayData } from '../api/types.ts';
-import { daysBetween } from '../lib/utils.ts';
+import { daysBetweenNull } from '../lib/utils.ts';
 
 import { format } from 'date-fns';
 
@@ -301,17 +301,18 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(initChartOp
 /**
  * Get default fetchDataStep(in day), by default it's 180 if at least one of its
  * parameters is null
+ * @param days: You can use `daysBetween` function to get the days between start date
+ * and end date
  */
 export function getDefaultFetchDataStep(
-    start: Date | null,
-    end: Date | null,
+    days: number | null = null,
     defaultDays: number = 180
 ) {
-    const minDays = Math.ceil(defaultDays / 4);
+    const minDays = Math.ceil(defaultDays * 2 / 3 );
     defaultDays = Math.ceil(defaultDays);
     
-    if (start && end) {
-        const days = Math.ceil(daysBetween(start, end) / 4);
+    if (days) {
+        days = Math.ceil(days);
         return days > minDays ? days : minDays;
     }
     
@@ -330,26 +331,41 @@ export async function initDynamicTimelyChart<D extends TimelyArrayData>(
     const {
         optionTemplate = getDefaultOptionTemplate<D>(initChartOptions),
         initialStateValue = startTime ? startTime.toISOString() : null,
-        fetchDataStep = getDefaultFetchDataStep(startTime, endTime),
+        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(startTime, endTime)),
         fetchDataFunc,
         overrideOption = getDefaultOverrideOption<D>(initChartOptions),
         updateStateFunc = (state, data) => {
             const newState: State<NullableTime> = Object.assign({}, state);
-            const rawEndData = data[data.length - 1]
-            newState.value = rawEndData[0] as string;
-            const localEndTime = new Date(rawEndData[0]);
+            if (data.length == 0) {
+                newState.state = StateType.stop;
+                return newState;
+            }
+            const rawEndDate = data[data.length - 1]
+            const rawStartDate = data[0][0]
+            const localEndTime = new Date(rawEndDate[0]);
+            const localStartTime = new Date(rawStartDate);
 
             if (endTime && localEndTime >= endTime) {
                 newState.state = StateType.stop;
+                return newState;
             }
             
             if (fetchDataStep) {
-                const localStartTime = new Date(data[0][0]);
+                const localSecondTime = new Date(data[1][0]);
                 // tolerance: 1 hour
-                const timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
-                if (timeSpan <= fetchDataStep * 24)
+                const timeInterval = data.length == 1 ? null : (localSecondTime.getTime() - localStartTime.getTime()) / 3600000;
+                let timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
+                if (timeInterval) timeSpan = timeSpan + timeInterval;
+                
+                if (timeSpan < fetchDataStep * 24) {
                     newState.state = StateType.stop;
+                    return newState;
+                }
+                
             }
+
+            const nextTime = new Date(localStartTime.getTime() + fetchDataStep * 86400000).toISOString();
+            newState.value = nextTime;
             
             return newState;
         },

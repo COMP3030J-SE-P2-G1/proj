@@ -4,7 +4,7 @@ import type { InitChartOptions } from './basic';
 import type { NullableTime, Solar, Usage, ElectricityPrice, TimelyArrayData } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
-import { dateAdd } from '../lib/utils.ts';
+import { dateAdd, daysBetweenNull, hoursBetweenNull } from '../lib/utils.ts';
 
 const DEFAULT_FETCH_DATA_STEP = 180; // days for hourly data 
 
@@ -29,7 +29,7 @@ export async function initElectricityUsageChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
+        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), DEFAULT_FETCH_DATA_STEP * sum_hours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -86,7 +86,7 @@ export async function initSolarChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
+        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), DEFAULT_FETCH_DATA_STEP * sum_hours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -121,16 +121,18 @@ export async function initSolarChart(
     );
 }
 
-
 export async function initElectricityPriceChart(
     elm: HTMLElement,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    sum_hours: number = 24,
+    spanHours: number | null = null,
+    sumHours: number = 24,
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-    const gStartTime = startTime;
+
     const gEndTime = endTime;
+    spanHours = spanHours ?? hoursBetweenNull(startTime, endTime);
+    const spanDays = spanHours ? spanHours / 24 : null; 
     
     const {
         title = "Electricity Price Chart",
@@ -141,7 +143,7 @@ export async function initElectricityPriceChart(
         },
         optionTemplate,
         initialStateValue,
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
+        fetchDataStep = getDefaultFetchDataStep(spanDays, DEFAULT_FETCH_DATA_STEP * sumHours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -149,8 +151,8 @@ export async function initElectricityPriceChart(
                 const ed = dateAdd(startTime, fetchDataStep);
                 endTime = (!gEndTime || gEndTime < ed) ? gEndTime : ed;
             }
-            const spanHours = endTime ? null : fetchDataStep * 24;
-            return DATA_API.getElectricityPrice(startTime, endTime, spanHours, sum_hours) as Promise<TimelyArrayData[]>;
+            spanHours = spanHours ?? (endTime ? null : fetchDataStep * 24);
+            return DATA_API.getElectricityPrice(startTime, endTime, spanHours, sumHours) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
