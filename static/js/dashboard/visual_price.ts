@@ -4,7 +4,7 @@ import * as echarts from 'echarts/core';
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity_price");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity_price."); return;}
-    initElectricityPriceChart(electricityUsageChartElm, null, null, {
+    initElectricityPriceChart(electricityUsageChartElm, null, null, 24, {
         optionTemplate: {
             dateset: {
                 source: []

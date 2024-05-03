@@ -56,7 +56,7 @@ function bindEvents(): void {
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("cock_chart");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceChart(electricityUsageChartElm, null, null, {
+    initElectricityPriceChart(electricityUsageChartElm, null, null, 24, {
         fetchDataStep: 360,
         optionTemplate: {
             dateset: {
@@ -92,7 +92,7 @@ function initCharts() {
 
     const electricityUsagePieChartElm = document.getElementById("p_chart");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, {
+    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, 24, {
         type: {
             type: "pie",
             xField: 0,

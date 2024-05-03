@@ -11,6 +11,7 @@ export async function initElectricityUsageChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
+    sum_hours: number = 24,
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
@@ -34,7 +35,7 @@ export async function initElectricityUsageChart(
                 const ed = dateAdd(startTime, fetchDataStep);
                 endTime = gEndTime > ed ? ed : gEndTime;
             }
-            return PROFILE_API.getUsage(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
+            return PROFILE_API.getUsage(profile.id, startTime, endTime, null, sum_hours) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -67,6 +68,7 @@ export async function initSolarChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
+    sum_hours: number = 24,
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
@@ -90,7 +92,7 @@ export async function initSolarChart(
                 const ed = dateAdd(startTime, fetchDataStep);
                 endTime = gEndTime > ed ? ed : gEndTime;
             }
-            return PROFILE_API.getSolar(profile.id, startTime, endTime) as Promise<TimelyArrayData[]>;
+            return PROFILE_API.getSolar(profile.id, startTime, endTime, null, sum_hours) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -122,6 +124,7 @@ export async function initElectricityPriceChart(
     elm: HTMLElement,
     startTime: Date | null = null,
     endTime: Date | null = null,
+    sum_hours: number = 24,
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const gStartTime = startTime;
@@ -145,7 +148,7 @@ export async function initElectricityPriceChart(
                 endTime = (!gEndTime || gEndTime < ed) ? gEndTime : ed;
             }
             const spanHours = endTime ? null : fetchDataStep * 24;
-            return DATA_API.getElectricityPrice(startTime, endTime, spanHours) as Promise<TimelyArrayData[]>;
+            return DATA_API.getElectricityPrice(startTime, endTime, spanHours, sum_hours) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,

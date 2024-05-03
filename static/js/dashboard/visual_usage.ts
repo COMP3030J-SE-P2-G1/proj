@@ -4,7 +4,7 @@ import * as echarts from 'echarts/core';
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity-usage-chart");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityUsageChart(electricityUsageChartElm, 1, null, null, {
+    initElectricityUsageChart(electricityUsageChartElm, 1, null, null, 24, {
         optionTemplate: {
             dateset: {
                 source: []
@@ -67,7 +67,7 @@ function initCharts() {
 
     const electricityPieChartElm = document.getElementById("electricity-pie-chart");
     if (!electricityPieChartElm) { console.error("Cannot find HTML element #electricity-pie-chart."); return;}
-    initElectricityUsageChart(electricityPieChartElm, 1, null, null, {
+    initElectricityUsageChart(electricityPieChartElm, 1, null, null, 24, {
         type: {
             type: "pie",
             xField: 0,

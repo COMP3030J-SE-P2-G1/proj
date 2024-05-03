@@ -5,7 +5,7 @@ export async function getElectricityPrice(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null,
-    compact: boolean = true,
+    sum_hours: number = 24
 ): Promise<ElectricityPrice[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/data/sems`, {
         method: 'POST',
@@ -16,7 +16,7 @@ export async function getElectricityPrice(
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours,
-            api: compact ? "compact" : null
+            sum_hours: sum_hours
         })
     });
     

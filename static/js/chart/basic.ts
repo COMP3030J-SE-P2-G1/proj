@@ -337,14 +337,16 @@ export async function initDynamicTimelyChart<D extends TimelyArrayData>(
             const rawEndData = data[data.length - 1]
             newState.value = rawEndData[0] as string;
             const localEndTime = new Date(rawEndData[0]);
-            if (endTime) {
-                if (localEndTime >= endTime) newState.state = StateType.stop;
-            } else {
+            
+            if (fetchDataStep) {
                 const localStartTime = new Date(data[0][0]);
                 const timeSpan = localEndTime.getTime() - localStartTime.getTime();
-                if (fetchDataStep && timeSpan < fetchDataStep * 24 * 3600)
+                if (timeSpan < fetchDataStep * 24 * 3600)
                     newState.state = StateType.stop;
+            } else if (endTime && localEndTime >= endTime) {
+                newState.state = StateType.stop;
             }
+            
             return newState;
         },
         interval = 0,
