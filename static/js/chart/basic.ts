@@ -308,6 +308,7 @@ export function getDefaultFetchDataStep(
     defaultDays: number = 180
 ) {
     const minDays = Math.ceil(defaultDays / 4);
+    defaultDays = Math.ceil(defaultDays);
     
     if (start && end) {
         const days = Math.ceil(daysBetween(start, end) / 4);
@@ -337,14 +338,17 @@ export async function initDynamicTimelyChart<D extends TimelyArrayData>(
             const rawEndData = data[data.length - 1]
             newState.value = rawEndData[0] as string;
             const localEndTime = new Date(rawEndData[0]);
+
+            if (endTime && localEndTime >= endTime) {
+                newState.state = StateType.stop;
+            }
             
             if (fetchDataStep) {
                 const localStartTime = new Date(data[0][0]);
-                const timeSpan = localEndTime.getTime() - localStartTime.getTime();
-                if (timeSpan < fetchDataStep * 24 * 3600)
+                // tolerance: 1 hour
+                const timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
+                if (timeSpan <= fetchDataStep * 24)
                     newState.state = StateType.stop;
-            } else if (endTime && localEndTime >= endTime) {
-                newState.state = StateType.stop;
             }
             
             return newState;

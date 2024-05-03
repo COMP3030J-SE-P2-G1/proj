@@ -6,6 +6,8 @@ import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd } from '../lib/utils.ts';
 
+const DEFAULT_FETCH_DATA_STEP = 180; // days for hourly data 
+
 export async function initElectricityUsageChart(
     elm: HTMLElement,
     profileId: number,
@@ -27,7 +29,7 @@ export async function initElectricityUsageChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -84,7 +86,7 @@ export async function initSolarChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -139,7 +141,7 @@ export async function initElectricityPriceChart(
         },
         optionTemplate,
         initialStateValue,
-        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime),
+        fetchDataStep = getDefaultFetchDataStep(gStartTime, gEndTime, DEFAULT_FETCH_DATA_STEP * sum_hours),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
