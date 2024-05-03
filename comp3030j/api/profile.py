@@ -12,6 +12,7 @@ from .security import auth_guard
 
 bp = Blueprint("api/v1/profile", __name__, url_prefix="/profile")
 
+
 def get_profile(id):
     """
     Utility function to check get a profile.
@@ -46,11 +47,34 @@ def profile(id):
 @auth_guard
 def usage(id):
     """
-    request has body as:
+    request body:
     {
-        start_time: YYYY-MM-DD HH:MM:SS
-        end_time: YYYY-MM-DD HH:MM:SS
+        # data range specification
+        start_time : str, ISO 8601 formatted time = "",
+        end_time : str, ISO 8601 formatted time = "",
+        span_hours : integer = "",
+        # data format specification
+        sum_hours : int = ""
     }
+
+    All values are technically optional, will return datapoints according
+    to the combination of parameters received:
+
+    [start_time, end_time],
+    [start_time, start_time + span_hours], or
+    [end_time - span_hours, end_time], or
+    [profile.start_time, end_time] if only end_time is specified, or
+    [start_time, profile.end_time] if only start_time is specified
+
+    if `sum_hours` is not specified or blank, the returned list will consist of a
+    naiively serialized json representation of the underlying database with ORM-relations
+    elided. Otherwise, the only time varying data column will be returned, in the form of:
+
+    List[List[time: str, usage: float]]
+
+    where the time-varying column will be summed on a left-aligned basis, i.e. the
+    returned timestamps will consist of values sliced like [::sum_hours]. Note that
+    only "full" slices will be returned.
     """
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
@@ -58,11 +82,15 @@ def usage(id):
 
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
+
+    start_time = "start_time" in content and content["start_time"]
+    end_time = "end_time" in content and content["end_time"]
+    span_hours = "span_hours" in content and content["span_hours"]
+    sum_hours = "sum_hours" in content and content["sum_hours"]
+
     try:
-        start_time = "start_time" in content and content["start_time"]
-        end_time = "end_time" in content and content["end_time"]
-        span_hours = "span_hours" in content and content["span_hours"]
-        api_new = "api" in content and content["api"]
+        if sum_hours:
+            sum_hours = int(sum_hours)
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -87,59 +115,86 @@ def usage(id):
             end_dt = parse_iso_string(end_time)
 
         else:
-            raise KeyError()
-
-        result = db.session.scalars(
-            db.select(Usage)
-            .filter_by(profile_id=profile.id)
-            .filter(Usage.time.between(start_dt, end_dt))
-        )
-
-        if not api_new:
-            return jsonify([v.to_dict() for v in result])
-        else:
-            # List[List[time: str, usage: float]]
-            return jsonify([[to_iso_string(v.time), v.usage] for v in result])
+            raise KeyError(
+                "malformed request, specify either one of \
+(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
+(start_time), (end_time): "
+            )
 
     except (ValueError, TypeError) as e:
         return {
             "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
         }, 400
 
-    except KeyError as e:
-        return (
-            {
-                "errorMsg": "malformed request, specify either one of \
-(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
-(start_time), (end_time): "
-                + str(e),
-            },
-            400,
-        )
+    except Exception as e:
+        return ({"errorMsg": str(e)}, 400)
+
+    result = db.session.scalars(
+        db.select(Usage)
+        .filter_by(profile_id=profile.id)
+        .filter(Usage.time.between(start_dt, end_dt))
+    )
+    result_list = list(result)  # turn consumable iterator into imperishable list
+
+    if not sum_hours:
+        return jsonify([v.to_dict() for v in result_list])
+    else:
+        orig_series = [v.usage for v in result_list]
+        time_series = [
+            sum(v) for v in zip(*[orig_series[i::sum_hours] for i in range(sum_hours)])
+        ]
+        time_stamps = [to_iso_string(v.time) for v in result_list[::sum_hours]]
+        return jsonify([*zip(time_stamps, time_series)])
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
 @auth_guard
 def solar(id):
     """
-    request has body as:
+    request body:
     {
-        start_time: YYYY-MM-DD HH:MM:SS
-        end_time: YYYY-MM-DD HH:MM:SS
+        # data range specification
+        start_time : str, ISO 8601 formatted time = "",
+        end_time : str, ISO 8601 formatted time = "",
+        span_hours : integer = "",
+        # data format specification
+        sum_hours : int = ""
     }
-    """
 
+    All values are technically optional, will return datapoints according
+    to the combination of parameters received:
+
+    [start_time, end_time],
+    [start_time, start_time + span_hours], or
+    [end_time - span_hours, end_time], or
+    [profile.start_time, end_time] if only end_time is specified, or
+    [start_time, profile.end_time] if only start_time is specified
+
+    if `sum_hours` is not specified or blank, the returned list will consist of a
+    naiively serialized json representation of the underlying database with ORM-relations
+    elided. Otherwise, the only time varying data column will be returned, in the form of:
+
+    List[List[time: str, generation: float]]
+
+    where the time-varying column will be summed on a left-aligned basis, i.e. the
+    returned timestamps will consist of values sliced like [::sum_hours]. Note that
+    only "full" slices will be returned.
+    """
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
         return response
 
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
+
+    start_time = "start_time" in content and content["start_time"]
+    end_time = "end_time" in content and content["end_time"]
+    span_hours = "span_hours" in content and content["span_hours"]
+    sum_hours = "sum_hours" in content and content["sum_hours"]
+
     try:
-        start_time = "start_time" in content and content["start_time"]
-        end_time = "end_time" in content and content["end_time"]
-        span_hours = "span_hours" in content and content["span_hours"]
-        api_new = "api" in content and content["api"]
+        if sum_hours:
+            sum_hours = int(sum_hours)
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -164,86 +219,89 @@ def solar(id):
             end_dt = parse_iso_string(end_time)
 
         else:
-            raise KeyError()
+            raise KeyError(
+                "malformed request, specify either one of \
+(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
+(start_time), (end_time): "
+            )
 
-        result = db.session.scalars(
-            db.select(Solar)
-            .filter_by(
-                lon=profile.lon,
+    except (ValueError, TypeError) as e:
+        return {
+            "errorMsg": "inappropriate timestamp format, invalid duration or sum: "
+            + str(e),
+        }, 400
+
+    except Exception as e:
+        return {"errorMsg": str(e)}, 400
+
+    result = db.session.scalars(
+        db.select(Solar)
+        .filter_by(
+            lon=profile.lon,
+            lat=profile.lat,
+            tech=profile.tech,
+            loss=profile.loss,
+            power=profile.power,
+        )
+        .filter(Solar.time.between(start_dt, end_dt))
+    )
+    result_list = list(result)
+    stored_years = set(v.time.year for v in result_list)
+    required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
+    query_years = stored_years.symmetric_difference(required_years)
+
+    if len(query_years) == 0:
+        app.logger.info("returning results from DB")
+        if not sum_hours:
+            return jsonify([v.to_dict() for v in result_list])
+        else:
+            orig_series = [v.generation for v in result_list]
+            time_series = [
+                sum(v)
+                for v in zip(*[orig_series[i::sum_hours] for i in range(sum_hours)])
+            ]
+            time_stamps = [to_iso_string(v.time) for v in result_list[::sum_hours]]
+            return jsonify([*zip(time_stamps, time_series)])
+
+    app.logger.info("querying PVGIS")
+    # dispatch query_pvgis_one_year
+    result_list = []
+
+    for year in query_years:
+        solar_values = query_pvgis_one_year(
+            lat=profile.lat,
+            lon=profile.lon,
+            year=year,
+            power=profile.power,
+            loss=profile.loss,
+            pv_tech_code=profile.tech,
+        )
+
+        for timestamp, value in solar_values.items():
+            solar = Solar(
+                time=timestamp,
+                generation=value,
                 lat=profile.lat,
+                lon=profile.lon,
                 tech=profile.tech,
                 loss=profile.loss,
                 power=profile.power,
             )
-            .filter(Solar.time.between(start_dt, end_dt))
-        )
-        result_list = list(result)
-        stored_years = set(v.time.year for v in result_list)
-        required_years = set(v for v in range(start_dt.year, end_dt.year + 1))
-        query_years = stored_years.symmetric_difference(required_years)
+            db.session.add(solar)
+            if start_dt <= timestamp <= end_dt:
+                result_list.append(solar)
 
-        if len(query_years) == 0:
-            app.logger.info("returning results from DB")
-            if not api_new:
-                return jsonify([v.to_dict() for v in result_list])
-            else:
-                return jsonify(
-                    [[to_iso_string(v.time), v.generation] for v in result_list]
-                )
+    db.session.commit()
 
-        app.logger.info("querying PVGIS")
-        # dispatch query_pvgis_one_year
-        result_list = []
-
-        for year in query_years:
-            solar_values = query_pvgis_one_year(
-                lat=profile.lat,
-                lon=profile.lon,
-                year=year,
-                power=profile.power,
-                loss=profile.loss,
-                pv_tech_code=profile.tech,
-            )
-
-            for timestamp, value in solar_values.items():
-                solar = Solar(
-                    time=timestamp,
-                    generation=value,
-                    lat=profile.lat,
-                    lon=profile.lon,
-                    tech=profile.tech,
-                    loss=profile.loss,
-                    power=profile.power,
-                )
-                db.session.add(solar)
-                if start_dt <= timestamp <= end_dt:
-                    result_list.append(solar)
-
-        db.session.commit()
-
-        if not api_new:
-            return jsonify([v.to_dict() for v in result_list])
-        else:
-            # List[List[time: str, generation: float]]
-            return jsonify([[to_iso_string(v.time), v.generation] for v in result_list])
-
-    except (ValueError, TypeError) as e:
-        return {
-            "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
-        }, 400
-
-    except KeyError as e:
-        return (
-            {
-                "errorMsg": "malformed request, specify either one of \
-(start_time, end_time), (start_time, span_hours), (end_time, span_hours), \
-(start_time), (end_time): "
-                + str(e),
-            },
-            400,
-        )
-
-    # query the database assuming the data is in db.
+    if not sum_hours:
+        return jsonify([v.to_dict() for v in result_list])
+    else:
+        orig_series = [v.generation for v in result_list]
+        time_series = [
+            sum(v) for v in zip(*[orig_series[i::sum_hours] for i in range(sum_hours)])
+        ]
+        time_stamps = [to_iso_string(v.time) for v in result_list[::sum_hours]]
+        return jsonify([*zip(time_stamps, time_series)])
 
 
 def query_pvgis_one_year(
