@@ -2,55 +2,53 @@ import { BarChart } from 'echarts/charts';
 import { initElectricityPriceChart, initElectricityUsageChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
-function bindEvents(): void {
-    document.getElementById('profileForm').addEventListener('submit', async function (e) {
-        console.log("hello1")
-        e.preventDefault(); // Prevent the default form submission
+async function createNewProfileFromSubmitHandler(e: SubmitEvent) {
+    console.log("hello1")
+    e.preventDefault(); // Prevent the default form submission
 
-        const form = e.target;
-        const formData = new FormData(form); console.log("hello2")
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form); console.log("hello2")
 
-        try {
-            const response = await fetch('/dashboard/create_profile', {
-                method: 'POST',
-                body: formData
-            });
-            if (!response.ok) {
-                if (response.status === 400) {
-                    // Assuming the server responds with JSON containing the error details
-                    const errorData = await response.json();
+    try {
+        const response = await fetch('/dashboard/create_profile', {
+            method: 'POST',
+            body: formData
+        });
+        if (!response.ok) {
+            if (response.status === 400) {
+                // Assuming the server responds with JSON containing the error details
+                const errorData = await response.json();
 
-                    // Clear previous errors
-                    document.querySelectorAll('.form-group .alert-error').forEach(el => {
-                        el.remove();
-                    });
+                // Clear previous errors
+                document.querySelectorAll('.form-group .alert-error').forEach(el => {
+                    el.remove();
+                });
 
-                    // Insert error messages into the form
-                    Object.entries(errorData.errors).forEach(([fieldName, errorMessage]) => {
-                        const inputElement = document.querySelector(`[name="${fieldName}"]`);
-                        const errorElement = document.createElement('div');
-                        errorElement.className = 'alert alert-error shadow-lg mt-1 p-2 text-xs';
-                        errorElement.style.backgroundColor = '#FECACA';
-                        errorElement.style.color = '#B91C1C';
-                        errorElement.textContent = <string>errorMessage;
+                // Insert error messages into the form
+                Object.entries(errorData.errors).forEach(([fieldName, errorMessage]) => {
+                    const inputElement = document.querySelector(`[name="${fieldName}"]`);
+                    const errorElement = document.createElement('div');
+                    errorElement.className = 'alert alert-error shadow-lg mt-1 p-2 text-xs';
+                    errorElement.style.backgroundColor = '#FECACA';
+                    errorElement.style.color = '#B91C1C';
+                    errorElement.textContent = <string>errorMessage;
 
-                        if (inputElement) {
-                            inputElement.classList.add('input-error'); // Highlight the input
-                            inputElement.parentElement.appendChild(errorElement);
-                        }
-                    });
-                }
-            } else {
-                // Handle success
-                window.location.reload();
+                    if (inputElement) {
+                        inputElement.classList.add('input-error'); // Highlight the input
+                        inputElement.parentElement?.appendChild(errorElement);
+                    }
+                });
             }
-
-        } catch (error) {
-            // Handle error (e.g., keep the dialog open, display error messages)
-            console.error('Error:', error);
-            alert('Error: ' + error.message); // Simplified error handling for demonstration
+        } else {
+            // Handle success
+            window.location.reload();
         }
-    });
+
+    } catch (error) {
+        // Handle error (e.g., keep the dialog open, display error messages)
+        console.error('Error:', error);
+        alert('Error: ' + (error as Error).message); // Simplified error handling for demonstration
+    }
 }
 
 function initCharts() {
@@ -129,6 +127,10 @@ function initCharts() {
             animation: false,
         }
     })
+}
+
+function bindEvents(): void {
+    document.getElementById('profileForm')?.addEventListener('submit', createNewProfileFromSubmitHandler);
 }
 
 
