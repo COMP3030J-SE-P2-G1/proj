@@ -6,7 +6,7 @@ import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd, daysBetweenNull, hoursBetweenNull } from '../lib/utils.ts';
 
-const DEFAULT_FETCH_DATA_STEP = 180; // days for hourly data 
+const DEFAULT_FETCH_DATA_STEP = 30; // days for hourly data 
 
 export async function initElectricityUsageChart(
     elm: HTMLElement,

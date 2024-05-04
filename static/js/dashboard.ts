@@ -69,7 +69,7 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             void loadModule("electricity_usage_calculator.ts", () => import("./dashboard/electricity_usage_calculator.ts"));
             break;
         case 'tool/policy':
-            void loadModule("policy.ts", () => import("./dashboard/policy.ts"));
+            // void loadModule("policy.ts", () => import("./dashboard/policy.ts"));
             break;
         case 'api_doc/restful':
             void loadModule("api_doc_restful.ts", () => import("./dashboard/api_doc_restful.ts"));
@@ -82,7 +82,7 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             void loadModule("data_calculation.ts", () => import("./dashboard/data_calculation.ts"));
             break;
         case 'index':
-            void loadModule("visual_price.ts", () => import("./dashboard/visual_price.ts"));
+            void loadModule("index.ts", () => import("./dashboard/index.ts"));
             break;
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
@@ -95,9 +95,13 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
 /**
  * Use this function to async load resources
  */
-function asyncLoad() {
+async function asyncLoad() {
     // Promise may not be necessary here
     return new Promise<void>(() => {
+        // this line will prevent parcel from embedding chart.ts module into other modules 
+        import("./chart/chart.ts");
+        import("./dashboard/index.ts");
+        
         loadCssList(
             [
                 "https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css",
@@ -105,13 +109,13 @@ function asyncLoad() {
             ],
             () => {}
         );
-        import("./chart/chart.ts");
         import("./dashboard/api_doc_restful.ts");
         import("./dashboard/api_doc_graphql_playground.ts");
+        
         import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/usage_update.ts");
         import("./dashboard/profile.ts")
-        import("./dashboard/policy.ts");
+        // import("./dashboard/policy.ts");
     });
 }
 

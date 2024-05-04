@@ -20,7 +20,8 @@ import {
     GridComponent,
     DatasetComponent,
     TransformComponent,
-    DataZoomComponent
+    DataZoomComponent,
+    VisualMapComponent
 } from 'echarts/components';
 
 // Types
@@ -61,6 +62,7 @@ echarts.use([
     TooltipComponent,
     GridComponent,
     DatasetComponent,
+    VisualMapComponent,
     TransformComponent,
     LabelLayout,
     UniversalTransition,
