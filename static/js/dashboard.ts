@@ -106,11 +106,11 @@ function asyncLoad() {
             () => {}
         );
         import("./chart/chart.ts");
-        import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/api_doc_restful.ts");
+        import("./dashboard/api_doc_graphql_playground.ts");
+        import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/usage_update.ts");
         import("./dashboard/profile.ts")
-        import("./dashboard/api_doc_graphql_playground.ts");
         import("./dashboard/policy.ts");
     });
 }
