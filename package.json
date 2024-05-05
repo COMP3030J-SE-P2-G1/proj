@@ -1,14 +1,12 @@
 {
   "type": "module",
-  "name": "comp3030j-proj",
-  "version": "0.2.0",
+  "name": "comp3030j",
+  "version": "0.1.2",
   "description": "Literally a NPM package.",
   "files": [
-    "comp3030j/static/js/chart.992a7179.js"
+    "dist",
+    "!dist/**/*.j2"
   ],
-  "scripts": {
-    "prepublish": "echo 1 && mkdir 1"
-  },
   "devDependencies": {
     "browser-sync": "^3.0.2",
     "buffer": "^5.5.0||^6.0.0",

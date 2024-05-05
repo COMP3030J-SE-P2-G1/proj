@@ -35,7 +35,12 @@ jobs:
                   env POPULATE_DB=1 just initialize
                   
             - name: build project
-              run: just build
+              run: build-use-cdn
+
+            - name: publish npm package (CDN)
+              run: npm publish
+              env:
+                NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
             - name: clean previous deployed files on server
               uses: appleboy/ssh-action@v1.0.3

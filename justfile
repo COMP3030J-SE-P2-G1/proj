@@ -89,6 +89,9 @@ parcel-clean:
 parcel-build: parcel-clean
     {{npx}} parcel build 'templates/**/*.j2'
 
+parcel-build-use-cdn: parcel-clean
+    {{npx}} parcel build --public-url 'https://cdn.jsdelivr.net/npm/comp3030j/dist/' 'templates/**/*.j2'
+
 [windows]
 tailwind:
     {{npx}} tailwindcss -i ./static/css/main.tailwind.css -o ./static/css/main.css --minify --watch
@@ -104,6 +107,9 @@ tailwind-build:
 
 # build the project
 build: tailwind-build parcel-build trans
+
+# build the project with resources using cdn
+build-use-cdn: tailwind-build parcel-build-use-cdn
 
 # kill all background processes managed by pm2
 kill:
