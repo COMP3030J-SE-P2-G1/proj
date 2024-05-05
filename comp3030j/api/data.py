@@ -1,9 +1,10 @@
-from comp3030j import app
+from comp3030j import app, cache
 from comp3030j.db import db
 from comp3030j.db.SEMSpot import SEMSpot
 from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
 from comp3030j.util import parse_iso_string, to_iso_string
+from comp3030j.util.cache import make_key_post_json
 from .security import auth_guard
 
 bp = Blueprint("api/data", __name__, url_prefix="/data")
@@ -11,6 +12,7 @@ bp = Blueprint("api/data", __name__, url_prefix="/data")
 
 @bp.route("/sems", methods=["POST"])
 @auth_guard
+@cache.cached(make_cache_key=make_key_post_json)
 def semspot():
     """
     request body:

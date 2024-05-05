@@ -66,7 +66,7 @@ def login():
 def logout():
     logout_user()
     session.pop('user_id')
-    return redirect(url_for('landing.hello'))
+    return redirect(url_for('landing.index'))
 
 
 @bp.route('/profile')

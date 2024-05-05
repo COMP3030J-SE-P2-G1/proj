@@ -1,4 +1,4 @@
-from comp3030j import app
+from comp3030j import app, cache
 from comp3030j.db import db
 from comp3030j.db.Profile import Profile
 from comp3030j.db.Usage import Usage
@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import requests, json
 from comp3030j.util import parse_iso_string, to_iso_string
 from .security import auth_guard
+from comp3030j.util.cache import make_key_post_json_user
 
 bp = Blueprint("api/v1/profile", __name__, url_prefix="/profile")
 
@@ -42,9 +43,9 @@ def profile(id):
         return response
     return profile.to_dict()
 
-
 @bp.route("/<int:id>/usage", methods=["POST"])
 @auth_guard
+@cache.cached(make_cache_key=make_key_post_json_user)
 def usage(id):
     """
     request body:
@@ -149,6 +150,7 @@ def usage(id):
 
 @bp.route("/<int:id>/solar", methods=["POST"])
 @auth_guard
+@cache.cached(make_cache_key=make_key_post_json_user)
 def solar(id):
     """
     request body:

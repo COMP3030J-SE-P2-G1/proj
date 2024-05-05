@@ -11,6 +11,10 @@ def is_valid(token):
         return True
     return False
 
+def get_api_key_from_request_header():
+    """Note: use try catch."""
+    return request.headers.get('Authorization').split('Bearer ')[1].strip()
+
 def auth_guard(func):
     """
     An decorator for those end points requires either user session login
@@ -24,7 +28,7 @@ def auth_guard(func):
             
         # Authentication gate
         try:
-            api_key = request.headers.get('Authorization').split('Bearer ')[1].strip()
+            api_key = get_api_key_from_request_header()
         except Exception as _:
             return {"errorMsg": "Missing access token"}, 401
         

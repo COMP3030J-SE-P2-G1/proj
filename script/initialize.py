@@ -95,6 +95,11 @@ def gen_config_py(filename: str):
     configuration = f"""SECRET_KEY="{secret_key}"
 SQLALCHEMY_DATABASE_URI="sqlite:///comp3030j.db"
 LANGUAGES=['en', 'zh']
+CACHE_TYPE="SimpleCache"
+CACHE_DEFAULT_TIMEOUT=300
+CACHE_REDIS_HOST="127.0.0.1"
+CACHE_REDIS_PORT=6379
+CACHE_REDIS_PORT=0
 """
 
     with open(filename, "w") as config_file:

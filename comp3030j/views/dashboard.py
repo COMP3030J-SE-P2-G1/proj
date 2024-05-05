@@ -9,6 +9,8 @@ from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
 from comp3030j.util import _ltr, read_hourly_usage_csv
 
+from comp3030j.util.cache import make_key_post_json
+
 bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 
@@ -17,18 +19,20 @@ bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 def dashboard():
     return render_template("page/dashboard/layout1/index.j2", form=User.query.filter_by(id=session['user_id']).first())
 
-
 @bp.route('/<path:path>')
 @login_required
-def serve_static(path):
-    if path == "profile" or path == "visual/usage":
-        profileForm = ProfileForm()
-        profiles = Profile.query.filter_by(user_id=session['user_id']).all()
-        profiles_dic = {}
-        for profile in profiles:
-            profiles_dic[profile.id] = profile.name
-        return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=User.query.filter_by(id=session['user_id']).first())
-    return render_template(f"page/dashboard/page/{path}.j2", form=User.query.filter_by(id=session['user_id']).first())
+def render_subpage(path):
+    if path == "profile":
+        return render_profile_subpage(path)
+    return render_template(f"page/dashboard/page/{path}.j2")
+
+def render_profile_subpage(path):
+    profileForm = ProfileForm()
+    profiles = Profile.query.filter_by(user_id=session['user_id']).all()
+    profiles_dic = {}
+    for profile in profiles:
+        profiles_dic[profile.id] = profile.name
+    return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=User.query.filter_by(id=session['user_id']).first())
 
 
 @bp.route('/create_profile', methods=['POST'])

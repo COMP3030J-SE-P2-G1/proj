@@ -195,7 +195,8 @@ The browser will automatically update since we have configured `browser-sync` to
 
 ### Additional Notes
 
-Install browser extension [Locale Switcher](https://github.com/locale-switcher/locale-switcher) to enable smooth language switch.
+1. Install browser extension [Locale Switcher](https://github.com/locale-switcher/locale-switcher) to enable smooth language switch.
+2. Cache: To use redis cahce instead of in-memory python dict cache, you only need to simply turn on your redis server (if you are using default redis configuration).
 
 ## API Document
 

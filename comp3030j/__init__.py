@@ -1,10 +1,12 @@
 from flask import Flask, request
 from flask_babel import Babel, gettext, ngettext, lazy_gettext
+from flask_caching import Cache
 from comp3030j.db import initialize_db
 from comp3030j.views import bind_views
 from comp3030j.api import bind_apis
 from .extensions import bcrypt, login_manager
 
+from redis import Redis
 
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
@@ -13,6 +15,16 @@ def get_locale():
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
+r = Redis(host=app.config["CACHE_REDIS_HOST"], port=app.config["CACHE_REDIS_PORT"], db=app.config["CACHE_REDIS_PORT"], socket_connect_timeout=300)
+try:
+    r.ping()
+    app.config["CACHE_TYPE"] = "RedisCache"
+except:
+    pass
+print("[*] Flask Cache: Use `{}` strategy.".format(app.config["CACHE_TYPE"]))
+r.close()
+
+cache = Cache(app)
 babel = Babel(app, locale_selector=get_locale)
 
 # add functions for jinja template

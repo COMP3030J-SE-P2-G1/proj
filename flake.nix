@@ -15,6 +15,7 @@
           python311
           just
           nodejs_20 bun # must have nodejs environment (otherwise bun cannot work properly)
+          redis
         ] ++ (with pkgs.python311Packages; [ pip ]);
       };
     });
