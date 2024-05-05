@@ -35,10 +35,12 @@ jobs:
                   env POPULATE_DB=1 just initialize
                   
             - name: build project
-              run: build-use-cdn
+              run: just build-use-cdn
 
             - name: publish npm package (CDN)
-              run: npm publish
+              run: |
+                  npm version --no-git-tag-version --allow-same-version $(npm info --json 'comp3030j' | jq -r '."dist-tags".latest' | awk -F. '{print $1 "." $2 "." $3+1}')
+                  npm publish
               env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
