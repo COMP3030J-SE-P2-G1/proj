@@ -27,6 +27,7 @@ jobs:
               with:
                   node-version: "lts/iron"
                   cache: 'npm'
+                  registry-url: 'https://registry.npmjs.org'
             
             - name: initialize project
               run: |
@@ -39,6 +40,9 @@ jobs:
 
             - name: publish npm package (CDN)
               run: |
+                  # debug
+                  cat ~/.npmrc || echo "no ~/.npmrc file"
+                  printenv NODE_AUTH_TOKEN
                   npm version --no-git-tag-version --allow-same-version $(npm info --json 'comp3030j' | jq -r '."dist-tags".latest' | awk -F. '{print $1 "." $2 "." $3+1}')
                   npm publish
               env:
