@@ -32,8 +32,11 @@
     "graphiql": "^3.2.0",
     "graphql": "^16.8.1",
     "htmx.org": "^1.9.11",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "preact": "^10.21.0",
     "swagger-ui-dist": "^5.15.2"
+  },
+  "alias": {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
   }
 }
