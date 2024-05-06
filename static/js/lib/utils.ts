@@ -1,9 +1,17 @@
+import * as Constants from '../constants.ts';
+
 export function ready(fn: () => void) {
     if (document.readyState !== 'loading') {
         fn();
     } else {
         document.addEventListener('DOMContentLoaded', fn);
     }
+}
+
+export function isDarkTheme() {
+    const rawIsDark = localStorage.getItem(Constants.LOCAL_STAGE_IS_DARK) ?? "false";
+    const isDark = JSON.parse(rawIsDark) as boolean;
+    return isDark;
 }
 
 /*

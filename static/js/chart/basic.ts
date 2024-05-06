@@ -1,7 +1,7 @@
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { NullableTime, TimelyArrayData } from '../api/types.ts';
-import { daysBetweenNull } from '../lib/utils.ts';
+import { daysBetweenNull, isDarkTheme } from '../lib/utils.ts';
 
 import { format } from 'date-fns';
 

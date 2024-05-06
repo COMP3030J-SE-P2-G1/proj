@@ -2,7 +2,7 @@
  this file is meant to only contain functions that is necessary to all the pages, such as theme control
  */
 
-import {ready} from "./lib/utils";
+import { ready, isDarkTheme } from "./lib/utils";
 import * as Constants from "./constants.ts";
 
 /**
@@ -13,8 +13,7 @@ function restoreState() {
     // restore theme
     const themeSelector = document.getElementById("theme-selector") as HTMLInputElement;
     if (themeSelector) {
-        const rawIsDark = localStorage.getItem(Constants.LOCAL_STAGE_IS_DARK) ?? "false";
-        const isDark = JSON.parse(rawIsDark) as boolean;
+        const isDark = isDarkTheme();
         themeSelector.checked = isDark;
     }
 }
