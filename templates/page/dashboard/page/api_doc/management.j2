@@ -1,7 +1,36 @@
-<div class="size-full p-3">
-    <section>
-        <div id="swagger-ui"></div>
-    </section>
+<div class="bg-white text-gray-800 font-sans">
+    <div class="max-w-screen-lg mx-auto p-5">
+        <header class="flex flex-col items-center mt-4">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">API Keys</h1>
+            <p class="text-gray-700 text-center">
+                Project API keys have replaced user API keys. We recommend using project-based API keys for more granular control over your resources.
+            </p>
+        </header>
+        <div class="mt-8">
+            <p class="text-left">
+                As an owner of this project, you can view and manage all SolarScape API keys associated with it.
+                Please do not share your API key with others or expose it in the browser or other client-side code. To protect the security of your account, SolarScape may also automatically disable any API key that has been publicly leaked.
+                You can view usage statistics for each API key on the Usage page.
+            </p>
+        </div>
+    </div>
+    <div class="max-w-screen-lg mx-auto p-5">
+        <div class="flex flex-col items-center mt-8">
+            <p class="text-center mb-4">
+                Create an API key to access the SolarScape API
+            </p>
+            <button class="btn" onclick="my_modal_4.showModal()">Open modal</button>
+        </div>
+        <dialog id="my_modal_4" class="modal">
+            <div class="modal-box w-4/12 max-w-5xl">
+                <h3 class="font-bold text-lg">Hello!</h3>
+                <p class="py-4">Click the button below to close</p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn">Close</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    </div>
 </div>
-
-
