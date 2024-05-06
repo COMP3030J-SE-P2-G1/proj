@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-06 14:32+0800\n"
+"POT-Creation-Date: 2024-05-06 16:10+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:108 comp3030j/views/dashboard.py:66
+#: comp3030j/views/auth.py:108 comp3030j/views/dashboard.py:70
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
@@ -203,11 +203,11 @@ msgstr "图像上传失败"
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
-#: comp3030j/views/dashboard.py:46
+#: comp3030j/views/dashboard.py:50
 msgid "Not allowed data in:"
 msgstr ""
 
-#: comp3030j/views/dashboard.py:63
+#: comp3030j/views/dashboard.py:67
 #, fuzzy
 msgid "Profile created successfully."
 msgstr "密码修改成功"
