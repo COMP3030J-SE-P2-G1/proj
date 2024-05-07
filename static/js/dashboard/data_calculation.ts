@@ -1,41 +1,44 @@
-import {Usage} from "../api/types";
+import type { Usage, TimelyArrayData } from '../api/types.ts';
 import * as PROFILE_API from "../api/profile";
-import {dateAdd, ready} from "../lib/utils";
-
 
 export async function getYearlyUsageSum(
     profileId: number,
-    startTime: Date | null = null,
-    endTime: Date | null = null,
-): Promise<{ [year: number]: number }> {
+    startTime: Date | null,
+    endTime: Date | null,
+    span_hours: number | null = null,
+    sum_hours: number = 24,
+): Promise<Usage[] | TimelyArrayData[]> {
     const profile = await PROFILE_API.getProfile(profileId);
     const gStartTime = startTime ? startTime : new Date(profile.start_time);
     const gEndTime = endTime ? endTime : new Date(profile.end_time);
 
-    const usageData = await PROFILE_API.getUsage(profile.id, gStartTime, gEndTime);
+    const usageData = await PROFILE_API.getUsage(profile.id, gStartTime, gEndTime, span_hours, sum_hours);
 
-    return calculateYearlyUsageSum(usageData);
+    return usageData;
 }
 
-function calculateYearlyUsageSum(data) {
-    const yearlyUsage = {};
-
-    data.forEach(item => {
-        const date = new Date(item.time);
-        const year = date.getFullYear();
-
-        if (!yearlyUsage[year]) {
-            yearlyUsage[year] = 0;
-        }
-        yearlyUsage[year] += item.usage;
-    });
-
-    return yearlyUsage;
-}
 
 async function displayYearlyUsageSum() {
     const profileId = 1; // Your profile ID
-    const yearlyUsageSum = await getYearlyUsageSum(profileId);
+    const yearlyUsageSum = {};
+    const daylyUsage= await getYearlyUsageSum(profileId, null, null, null, 24);
+    console.log("1 Usage Sum:");
+    console.log("We Get", daylyUsage);
+    let time_stamp: string;
+    let dt: Date;
+    let year: number;
+    for(const n in daylyUsage) {
+        const day = daylyUsage[n];
+        time_stamp = day[0];
+        dt= new Date(time_stamp);
+        year = dt.getFullYear();
+        console.log(year)
+
+        if (year in yearlyUsageSum)
+            yearlyUsageSum[year] += parseInt(day[1]);
+        else
+            yearlyUsageSum[year] = parseInt(day[1]);
+    }
 
     console.log("Yearly Usage Sum:");
     for (const year in yearlyUsageSum) {
