@@ -9,8 +9,8 @@
         <div class="mt-8">
             <p class="text-left">
                 As an owner of this project, you can view and manage all SolarScape API keys associated with it.
-                Please do not share your API key with others or expose it in the browser or other client-side code. To protect the security of your account, SolarScape may also automatically disable any API key that has been publicly leaked.
-                You can view usage statistics for each API key on the Usage page.
+                Please do not share your API key with others or expose it in the browser or other client-side code.
+                To protect the security of your account, SolarScape may also automatically disable any API key that has been publicly leaked.
             </p>
         </div>
     </div>
@@ -32,17 +32,17 @@
                 <h2 class="font-bold text-lg">Create new secret key</h2>
                 <p class="py-4">Name</p>
                 <input type="text" placeholder="My Test Key" class="input input-bordered w-full max-w-xs" />
-                <p class="py-4">Project</p>
+                <p class=" mt-2 py-4">Project</p>
                 <select class="select select-bordered w-full max-w-xs">
                     <option>One</option>
                     <option>Two</option>
                     <option>Three</option>
                 </select>
-                {# <div class="join grid grid-cols-3">
-                    <button class="join-item btn btn-xs">One</button>
-                    <button class="join-item btn btn-xs">Two</button>
-                    <button class="join-item btn btn-xs">Three</button>
-                </div> #}
+                <div class="my-4  join join-vertical lg:join-horizontal">
+                    <button class="btn join-item">Button</button>
+                    <button class="btn join-item">Button</button>
+                    <button class="btn join-item">Button</button>
+                </div>
                 <div class="modal-action">
                     <form method="dialog">
                         <button class="btn">Close</button>
@@ -50,5 +50,51 @@
                 </div>
             </div>
         </dialog>
+        <div class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>SECRET KEY</th>
+                        <th>CREATED</th>
+                        <th>LAST USED</th>
+                        <th>CREATED BY</th>
+                        <th>PERMISSIONS</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>1</th>
+                        <td>Test</td>
+                        <td>sk-...CtG7</td>
+                        <td>2024.5.1</td>
+                        <td>Never</td>
+                        <td>D-Low</td>
+                        <td>All</td>
+                        <td>
+                            <label class="swap">
+                                <input type="checkbox" />
+                                <div class="swap-on">ON</div>
+                                <div class="swap-off">OFF</div>
+                            </label>
+                        </td>
+                        <td>
+                            <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 12 12">
+                            <path fill="currentColor" d="M5 3h2a1 1 0 0 0-2 0M4 3a2 2 0 1 1 4 0h2.5a.5.5 0 0 1 0
+                            1h-.441l-.443 5.17A2 2 0 0 1 7.623 11H4.377a2 2 0 0 1-1.993-1.83L1.941 4H1.5a.5.5 0 0 1
+                            0-1zm3.5 3a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0zM5 5.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V6a.5.5
+                            0 0 1 .5-.5M3.38 9.085a1 1 0 0 0 .997.915h3.246a1 1 0 0 0 .996-.915L9.055 4h-6.11z"/>
+                            </svg>
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
