@@ -78,7 +78,7 @@ export async function calculateMonthlySum(profileId: number){
 
 async function displayYearlyUsageSum() {
     const profileId = 1; // Your profile ID
-    const yearlyUsageSum = await calculateMonthlySum(profileId);
+    const yearlyUsageSum = await calculateYearlySum(profileId);
     // Get the element where you want to display the data
     const usageSumContainer = document.getElementById('yearly-usage-sum');
 
