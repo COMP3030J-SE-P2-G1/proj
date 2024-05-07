@@ -80,41 +80,6 @@ function activeTabEvents(tabId: string): void {
 
 
 function initCharts() {
-    const electricityPriceChartElm = document.getElementById("chart1");
-    if (!electricityPriceChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceChart(electricityPriceChartElm, null, null, null, 24, {
-        optionTemplate: {
-            dateset: {
-                source: []
-            },
-            visualMap: {
-                show: false,
-                type: 'continuous',
-                seriesIndex: 0,
-                min: 0,
-            },
-            title: {
-                left: 'center',
-                text: 'Gradient along the y axis'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            xAxis: {
-                type: 'time'
-            },
-            yAxis: {},
-            grid: {},
-            series: [
-                {
-                    encode: { x: 0, y: 1 },
-                    type: "line",
-                }
-            ],
-            animation: false,
-        }
-    })
-
     const electricityUsagePieChartElm = document.getElementById("chart0");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #chart0"); return;}
     initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, 24, {
@@ -154,7 +119,59 @@ function initCharts() {
             ],
             animation: false,
         }
-    })
+    });
+
+    const electricityPriceChartElm = document.getElementById("chart1");
+    if (!electricityPriceChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+    initElectricityPriceChart(electricityPriceChartElm, null, null, null, 24, {
+        optionTemplate: {
+            dateset: {
+                source: []
+            },
+            visualMap: {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+            },
+            title: {
+                left: 'center',
+                text: 'Gradient along the y axis'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'time'
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                max: function (value) {
+                    return value.max * 1.5;
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 10
+                },
+                {
+                    start: 0,
+                    end: 10
+                }
+            ],
+            grid: {},
+            series: [
+                {
+                    encode: { x: 0, y: 1 },
+                    type: "bar",
+                }
+            ],
+            animation: false,
+        }
+    });
 }
 
 
