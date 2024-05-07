@@ -51,7 +51,33 @@ function bindEvents(): void {
             alert('Error: ' + error.message); // Simplified error handling for demonstration
         }
     });
+
+    activeTabEvents('tab1');
+    activeTabEvents('tab2');
+    activeTabEvents('tab3');
 }
+
+
+function activeTabEvents(tabId: string): void {
+    const tabElement = document.getElementById(tabId);
+    if (tabElement) {
+        tabElement.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default action if necessary
+            console.log(`${tabId} was clicked`);
+            if (!this.classList.contains('tab-active')) {
+                // Find the currently active tab and remove 'tab-active' class
+                const activeTab = document.querySelector('.tab.tab-active');
+                if (activeTab) {
+                    activeTab.classList.remove('tab-active');
+                }
+                // Add 'tab-active' class to the clicked tab
+                this.classList.add('tab-active');
+            }
+// Add your code here to do what you want when the tab is clicked
+        });
+    };
+}
+
 
 function initCharts() {
     const electricityPriceChartElm = document.getElementById("chart1");
