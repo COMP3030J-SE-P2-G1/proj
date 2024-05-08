@@ -1,15 +1,14 @@
+# curl -H 'Authorization: Bearer dac6164cd0cf4ea6b539aa2a6a1f457d' --json '{"start_time": "2023-1-31T23:00:00.000Z", "end_time": "2023-2-22T23:00:00.000Z", "sum_hours": 24}' http://csi420-02-vm8.ucd.ie/api/v1/profile/1/usage
 openapi: 3.0.0
 info:
   title: Restful API documentation
-  description: NOTE exposed API DOC. ADD user authentication key.
+  description: Experimental API DOC. Some endpoint may not work. TODO update to the newest stage.
   version: 0.1.0
 servers:
-  - url: https://localhost:5000
-  - url: https://localhost:3000
-    description: browsersync
+  - url: http://csi420-02-vm8.ucd.ie/api/v1
   
 paths:
-  /api/user/profiles:
+  /user/profiles:
     get:
       summary: get all profiles of a user. Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
       responses:
@@ -26,7 +25,7 @@ paths:
         - profile
         - electricity
         
-  /api/profile/{profileId}:
+  /profile/{profileId}:
     get:
       summary: get specifc profile
       parameters:
@@ -43,7 +42,7 @@ paths:
         - profile
         - electricity
         
-  /api/profile/{profileId}/usage:
+  /profile/{profileId}/usage:
     post:
       summary: usage data
       description: note user permission
@@ -68,7 +67,7 @@ paths:
         - profile
         - electricity
         
-  /api/profile/{profileId}/solar:
+  /profile/{profileId}/solar:
     post:
       summary: generated solar electricity data
       description: note user permission
@@ -93,7 +92,7 @@ paths:
         - profile
         - electricity
   
-  /api/data/sems:
+  /data/sems:
     post:
       summary: Single Electricity Market Spot
       requestBody:
