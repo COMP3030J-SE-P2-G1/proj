@@ -82,8 +82,8 @@
                     <tr>
                         <th>1</th>
                         <td>Test</td>
-                        <td>sk-...CtG7</td>
-                        <td>2024.5.1</td>
+                        <td>sk-1TFCOpcnRU</td>
+                        <td>2024/5/8</td>
                         <td>Never</td>
                         <td>
                             <label class="swap">
@@ -115,6 +115,7 @@
   const createKeyButton = document.querySelector('#createKeyButton');
   const keyTableBody = document.querySelector('#keyTableBody');
   const keyNameInput = document.querySelector('#keyNameInput');
+  let rowCounter = 2; // 从第二行开始计数
 
   // 点击按钮时触发的函数
   createKeyButton.addEventListener('click', function() {
@@ -125,31 +126,65 @@
     const newRow = document.createElement('tr');
 
     // 添加新的单元格并设置内容
+    const serialCell = document.createElement('td');
+    serialCell.textContent = rowCounter++;
+    newRow.appendChild(serialCell);
+
     const nameCell = document.createElement('td');
     nameCell.textContent = keyName;
     newRow.appendChild(nameCell);
 
     const secretKeyCell = document.createElement('td');
-    secretKeyCell.innerHTML = '<input type="text" placeholder="Secret key">';
+    const secretKey = generateSecretKey(); // 生成随机的secret key
+    secretKeyCell.textContent = secretKey;
     newRow.appendChild(secretKeyCell);
 
     const createdCell = document.createElement('td');
-    createdCell.textContent = 'Now';
+    const createdDate = new Date().toLocaleDateString();
+    createdCell.textContent = createdDate;
     newRow.appendChild(createdCell);
 
     const lastUsedCell = document.createElement('td');
     lastUsedCell.textContent = 'Never';
     newRow.appendChild(lastUsedCell);
 
-    const createdByCell = document.createElement('td');
-    createdByCell.textContent = 'You'; // 这里可以根据当前用户设置
-    newRow.appendChild(createdByCell);
-
     const permissionsCell = document.createElement('td');
-    permissionsCell.innerHTML = '<input type="text" placeholder="Permissions">';
+    permissionsCell.innerHTML = `
+    <label class="swap">
+        <input type="checkbox"/>
+        <div class="swap-on">ON</div>
+        <div class="swap-off">OFF</div>
+    </label>
+    `;
     newRow.appendChild(permissionsCell);
+
+
+    const deleteButtonCell = document.createElement('td');
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 12 12">
+                                    <path fill="currentColor" d="M5 3h2a1 1 0 0 0-2 0M4 3a2 2 0 1 1 4 0h2.5a.5.5 0 0 1 0
+                            1h-.441l-.443 5.17A2 2 0 0 1 7.623 11H4.377a2 2 0 0 1-1.993-1.83L1.941 4H1.5a.5.5 0 0 1
+                            0-1zm3.5 3a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0zM5 5.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V6a.5.5
+                            0 0 1 .5-.5M3.38 9.085a1 1 0 0 0 .997.915h3.246a1 1 0 0 0 .996-.915L9.055 4h-6.11z"/>
+                                </svg>`;
+    deleteButton.addEventListener('click', function() {
+      newRow.remove(); // 删除当前行
+    });
+    deleteButtonCell.appendChild(deleteButton);
+    newRow.appendChild(deleteButtonCell);
 
     // 将新行添加到表格中
     keyTableBody.appendChild(newRow);
   });
+
+  // 生成随机的secret key函数
+  function generateSecretKey() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const length = 10;
+    let secretKey = '';
+    for (let i = 0; i < length; i++) {
+      secretKey += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return 'sk-' + secretKey; // 根据你的格式要求返回secret key
+  }
 </script>
