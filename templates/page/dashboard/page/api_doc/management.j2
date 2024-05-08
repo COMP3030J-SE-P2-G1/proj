@@ -43,8 +43,8 @@
                 <div class="modal-box w-1/3 max-w-5xl">
                     <h2 class="font-bold text-lg">Create new secret key</h2>
                     <p class="py-4">Name</p>
-                    <input type="text" placeholder="My Test Key" class="input input-bordered w-full max-w-xs"/>
-                    <p class=" mt-2 py-4">Project</p>
+                    <input type="text" placeholder="My Key" id="keyNameInput" class="input input-bordered w-full max-w-xs"/>
+                    {# <p class=" mt-2 py-4">Project</p>
                     <select class="select select-bordered w-full max-w-xs">
                         <option>One</option>
                         <option>Two</option>
@@ -54,10 +54,13 @@
                         <button class="btn join-item">Button</button>
                         <button class="btn join-item">Button</button>
                         <button class="btn join-item">Button</button>
-                    </div>
+                    </div> #}
                     <div class="modal-action">
                         <form method="dialog">
                             <button class="btn">Close</button>
+                        </form>
+                        <form method="dialog">
+                            <button id="createKeyButton" class="btn bg-emerald-400">Create secret key</button>
                         </form>
                     </div>
                 </div>
@@ -71,21 +74,17 @@
                         <th>SECRET KEY</th>
                         <th>CREATED</th>
                         <th>LAST USED</th>
-                        <th>CREATED BY</th>
                         <th>PERMISSIONS</th>
-                        <th></th>
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="keyTableBody">
                     <tr>
                         <th>1</th>
                         <td>Test</td>
                         <td>sk-...CtG7</td>
                         <td>2024.5.1</td>
                         <td>Never</td>
-                        <td>D-Low</td>
-                        <td>All</td>
                         <td>
                             <label class="swap">
                                 <input type="checkbox"/>
@@ -103,7 +102,6 @@
                                 </svg>
                             </button>
                         </td>
-
                     </tr>
                     </tbody>
                 </table>
@@ -111,3 +109,47 @@
         </div>
     </section>
 </div>
+
+<script>
+  // 获取按钮和表格
+  const createKeyButton = document.querySelector('#createKeyButton');
+  const keyTableBody = document.querySelector('#keyTableBody');
+  const keyNameInput = document.querySelector('#keyNameInput');
+
+  // 点击按钮时触发的函数
+  createKeyButton.addEventListener('click', function() {
+    // 获取输入的 API Key 名称
+    const keyName = keyNameInput.value;
+
+    // 创建新的表格行
+    const newRow = document.createElement('tr');
+
+    // 添加新的单元格并设置内容
+    const nameCell = document.createElement('td');
+    nameCell.textContent = keyName;
+    newRow.appendChild(nameCell);
+
+    const secretKeyCell = document.createElement('td');
+    secretKeyCell.innerHTML = '<input type="text" placeholder="Secret key">';
+    newRow.appendChild(secretKeyCell);
+
+    const createdCell = document.createElement('td');
+    createdCell.textContent = 'Now';
+    newRow.appendChild(createdCell);
+
+    const lastUsedCell = document.createElement('td');
+    lastUsedCell.textContent = 'Never';
+    newRow.appendChild(lastUsedCell);
+
+    const createdByCell = document.createElement('td');
+    createdByCell.textContent = 'You'; // 这里可以根据当前用户设置
+    newRow.appendChild(createdByCell);
+
+    const permissionsCell = document.createElement('td');
+    permissionsCell.innerHTML = '<input type="text" placeholder="Permissions">';
+    newRow.appendChild(permissionsCell);
+
+    // 将新行添加到表格中
+    keyTableBody.appendChild(newRow);
+  });
+</script>
