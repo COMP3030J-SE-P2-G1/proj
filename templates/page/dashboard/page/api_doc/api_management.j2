@@ -74,7 +74,7 @@
                         <tr>
                             <th>1</th>
                             <td>Test</td>
-                            <td>sk-1TFCOpcnRU</td>
+                            <td>F3H******LS12</td>
                             <td>2024/5/8</td>
                             <td>Never</td>
                             <td>
@@ -191,12 +191,12 @@
     // 生成随机的secret key函数
     function generateSecretKey() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
-        const length = 10;
+        const length = 13;
         let secretKey = '';
         for (let i = 0; i < length; i++) {
             secretKey += characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        return 'sk-' + secretKey; // 根据你的格式要求返回secret key
+        return secretKey; // 根据你的格式要求返回secret key
     }
 
     // 隐藏SECRET KEY中间的几位
