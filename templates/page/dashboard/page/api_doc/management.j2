@@ -44,25 +44,17 @@
                     <h2 class="font-bold text-lg">Create new secret key</h2>
                     <p class="py-4">Name</p>
                     <input type="text" placeholder="My Key" id="keyNameInput" class="input input-bordered w-full max-w-xs"/>
-                    {# <p class=" mt-2 py-4">Project</p>
-                    <select class="select select-bordered w-full max-w-xs">
-                        <option>One</option>
-                        <option>Two</option>
-                        <option>Three</option>
-                    </select>
-                    <div class="my-4  join join-vertical lg:join-horizontal">
-                        <button class="btn join-item">Button</button>
-                        <button class="btn join-item">Button</button>
-                        <button class="btn join-item">Button</button>
-                    </div> #}
                     <div class="modal-action">
-                        <form method="dialog">
-                            <button class="btn">Close</button>
-                        </form>
-                        <form method="dialog">
-                            <button id="createKeyButton" class="btn bg-emerald-400">Create secret key</button>
-                        </form>
+                        <button class="btn" onclick="my_modal_4.close()">Close</button>
+                        <button id="createKeyButton" class="btn bg-emerald-400">Create secret key</button>
                     </div>
+                </div>
+            </dialog>
+            <dialog id="secretKeyModal" class="modal">
+                <div class="modal-box w-1/3 max-w-5xl">
+                    <h2 class="font-bold text-lg">Generated Secret Key</h2>
+                    <p class="py-4" id="secretKeyDisplay"></p>
+                    <button class="btn" onclick="secretKeyModal.close()">Close</button>
                 </div>
             </dialog>
             <div class="overflow-x-auto mt-4">
@@ -116,6 +108,7 @@
   const keyTableBody = document.querySelector('#keyTableBody');
   const keyNameInput = document.querySelector('#keyNameInput');
   let rowCounter = 2; // 从第二行开始计数
+  let currentModal = null; // 用于跟踪当前打开的对话框
 
   // 点击按钮时触发的函数
   createKeyButton.addEventListener('click', function() {
@@ -175,7 +168,25 @@
 
     // 将新行添加到表格中
     keyTableBody.appendChild(newRow);
+
+    // 关闭当前对话框
+    closeCurrentModal();
+
+    // 弹出对话框显示生成的SECRET KEY
+    const secretKeyModal = document.querySelector('#secretKeyModal');
+    secretKeyModal.showModal();
+    currentModal = secretKeyModal;
+
+    const secretKeyDisplay = document.querySelector('#secretKeyDisplay');
+    secretKeyDisplay.textContent = secretKey;
   });
+
+  // 关闭当前对话框
+  function closeCurrentModal() {
+    if (currentModal !== null && currentModal.open) {
+      currentModal.close();
+    }
+  }
 
   // 生成随机的secret key函数
   function generateSecretKey() {
