@@ -112,7 +112,7 @@
     // 点击按钮时触发的函数
     createKeyButton.addEventListener('click', function(event) {
         const dialogElm = document.getElementById("my_modal_4");
-        
+
         // 获取输入的 API Key 名称
         const keyName = keyNameInput.value;
 
@@ -130,7 +130,7 @@
 
         const secretKeyCell = document.createElement('td');
         const secretKey = generateSecretKey(); // 生成随机的secret key
-        secretKeyCell.textContent = secretKey;
+        secretKeyCell.textContent = maskSecretKey(secretKey);
         newRow.appendChild(secretKeyCell);
 
         const createdCell = document.createElement('td');
@@ -183,7 +183,6 @@
 
     // 关闭当前对话框
     function closeDialog(dialogElm) {
-        console.log(dialogElm);
         if (dialogElm !== null && dialogElm.open) {
             dialogElm.close();
         }
@@ -191,7 +190,7 @@
 
     // 生成随机的secret key函数
     function generateSecretKey() {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
         const length = 10;
         let secretKey = '';
         for (let i = 0; i < length; i++) {
@@ -199,4 +198,15 @@
         }
         return 'sk-' + secretKey; // 根据你的格式要求返回secret key
     }
+
+    // 隐藏SECRET KEY中间的几位
+    function maskSecretKey(secretKey) {
+        // 隐藏中间 4 位
+        const visibleLength = Math.min(4, secretKey.length);
+        const visiblePartStart = secretKey.substring(0, 3); // 保留前3位
+        const visiblePartEnd = secretKey.substring(secretKey.length - 4); // 保留后4位
+        const maskedPart = '*'.repeat(secretKey.length - 7); // 隐藏中间部分
+        return visiblePartStart + maskedPart + visiblePartEnd;
+    }
+
 </script>
