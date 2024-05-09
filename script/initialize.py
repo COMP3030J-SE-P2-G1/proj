@@ -51,7 +51,7 @@ def init_db():
                 username="demo_user",
                 email="example@example.com",
                 # password: password
-                password="$2b$12$x3ekrHN8Yca0edT6SV6IfelItLY/5JVo3piH3aZbmBu.G53yVpce."
+                password="$2b$12$bHS.YMIatAVXvH/ME5.ewO3sXEcz5Rls5pwJ195aSzRFRj58LlLSa"
             )
             db.session.add(user)
             db.session.flush()
