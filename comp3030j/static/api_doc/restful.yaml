@@ -10,7 +10,8 @@ servers:
 paths:
   /user/profiles:
     get:
-      summary: get all profiles of a user. Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
+      summary: Get all profiles of a user.
+      description: Profile means somethings like factory electricity usage management (it has usage, solar, etc. data). A user can have many profiles.
       responses:
         '200':
           description: success
@@ -45,7 +46,7 @@ paths:
   /profile/{profileId}/usage:
     post:
       summary: usage data
-      description: note user permission
+      description: Get the corresponding usage data of a profile.
       parameters:
         - $ref: '#/components/parameters/profileId'
       requestBody:
@@ -69,8 +70,8 @@ paths:
         
   /profile/{profileId}/solar:
     post:
-      summary: generated solar electricity data
-      description: note user permission
+      summary: Generated solar electricity data
+      description: Get the corresponding generated solar electricity data of a profile.
       parameters:
         - $ref: '#/components/parameters/profileId'
       requestBody:
@@ -129,6 +130,8 @@ components:
           description: id of the solar panel configuration profile
           
   requestBodies:
+    data_type: # TODO
+      required: true
     time_interval:
       description: time interval. Note that the `step` property is enum type, which is not noted in the `exmaple value` tab
       required: true
