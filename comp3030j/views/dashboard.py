@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, redirect, render_template, request, session, flash, jsonify, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from comp3030j.dashboard import ProfileForm
 from comp3030j.db import db
@@ -17,7 +17,7 @@ bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 @bp.route('/')
 @login_required
 def dashboard():
-    return render_template("page/dashboard/layout1/index.j2", form=User.query.filter_by(id=session['user_id']).first())
+    return render_template("page/dashboard/layout1/index.j2", form=current_user)
 
 @bp.route('/<path:path>')
 @login_required
@@ -28,11 +28,11 @@ def render_subpage(path):
 
 def render_profile_subpage(path):
     profileForm = ProfileForm()
-    profiles = Profile.query.filter_by(user_id=session['user_id']).all()
+    profiles = Profile.query.filter_by(user_id=current_user.id).all()
     profiles_dic = {}
     for profile in profiles:
         profiles_dic[profile.id] = profile.name
-    return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=User.query.filter_by(id=session['user_id']).first())
+    return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=current_user)
 
 
 @bp.route('/create_profile', methods=['POST'])
