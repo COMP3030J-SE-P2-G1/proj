@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_serializer import SerializerMixin
 from uuid import uuid4
 
+
 class ApiKey(db.Model, SerializerMixin):
     __tablename__ = "api_key"
 

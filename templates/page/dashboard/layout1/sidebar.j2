@@ -172,20 +172,20 @@
         <div class="flex h-full items-center justify-center xl:justify-start">
             <div class="avatar">
                 <div class="w-12 rounded-full">
-                    {% if form.avatar_file %}
-                        <img src="{{ url_for('static', filename='profile_pics/'+ form.avatar_file) }}"
+                    {% if current_user.avatar_file %}
+                        <img src="{{ url_for('static', filename='profile_pics/'+ current_user.avatar_file) }}"
                              alt="logo">
                     {% else %}
                         <div class="avatar placeholder">
                             <div class="bg-neutral text-neutral-content rounded-full w-36">
-                                <span class="text-3xl">{{ form.username }}</span>
+                                <span class="text-3xl">{{ current_user.username }}</span>
                             </div>
                         </div>
                     {% endif %}
                 </div>
             </div>
             <div class="hidden xl:block ml-2 font-bold">
-                {{ form.username }}
+                {{ current_user.username }}
             </div>
             <div class="grow block hidden xl:block"></div>
             <div class="">

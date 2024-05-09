@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from flask import Blueprint, render_template, url_for, session, flash, redirect, request, jsonify
+from flask import Blueprint, render_template, url_for, flash, redirect, request, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 
@@ -53,8 +53,7 @@ def login():
             login_user(user, remember=form.remember.data)
             # Back the user to the page they visited before login
             next_page = request.args.get('next')
-            # Ternary conditional
-            session['user_id'] = user.id
+            # # Ternary conditional
             return redirect(next_page) if next_page else redirect(url_for('auth.profile'))
     else:
         if 'next' in request.args and request.args.get('next') == url_for('auth.profile'):
@@ -65,19 +64,17 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    session.pop('user_id')
-    return redirect(url_for('landing.index'))
+    return render_template("page/landing/index.j2")
 
 
 @bp.route('/profile')
 # make sure the user login before they can access the account page
 @login_required
 def profile():
-    if 'user_id' not in session:
+    if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
     password = ChangePassForm()
-    return render_template("page/auth/profile/index.j2", form=User.query.filter_by(id=session['user_id']).first(),
-                           password=password)
+    return render_template("page/auth/profile/index.j2", form=current_user, password=password)
 
 
 @bp.route('/image_edit', methods=['POST'])
@@ -87,7 +84,7 @@ def upload_picture():
         return redirect(url_for('auth.profile'))
     file = request.files['file']
     if file and allowed_img(file.filename):
-        filename = User.query.filter_by(id=session['user_id']).first().avatar_file
+        filename = current_user.avatar_file
         # remove the old avatar
         if filename != 'default.jpg':
             delete_file('static/profile_pics', filename)
@@ -97,7 +94,7 @@ def upload_picture():
         unique_filename = str(uuid.uuid4()) + os.path.splitext(filename)[1]
 
         # update the avatar in the database
-        user_to_update = User.query.filter_by(id=session['user_id']).first()
+        user_to_update = current_user
         if user_to_update:
             user_to_update.avatar_file = unique_filename
             db.session.commit()
@@ -117,7 +114,7 @@ def change_pass():
     password = ChangePassForm()
     if password.validate_on_submit():
         # Query our database to make sure the user exist
-        user = User.query.filter_by(id=session['user_id']).first()
+        user = current_user
         hashed_password = bcrypt.generate_password_hash(password.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
@@ -129,5 +126,5 @@ def change_pass():
 
 @bp.route('/history')
 def history():
-    profiles = Profile.query.filter_by(user_id=session['user_id']).all()
-    return render_template("page/auth/history/index.j2", profiles=profiles, form=User.query.filter_by(id=session['user_id']).first())
+    profiles = Profile.query.filter_by(user_id=current_user.user_id).all()
+    return render_template("page/auth/history/index.j2", profiles=profiles, form=current_user)
