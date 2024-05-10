@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
 from comp3030j.util import parse_iso_string, to_iso_string
 from comp3030j.util.cache import make_key_post_json
 from .security import auth_guard
+from dateutils import relativedelta
 
 bp = Blueprint("api/data", __name__, url_prefix="/data")
 
@@ -34,26 +35,23 @@ def semspot():
     [profile.start_time, end_time] if only end_time is specified, or
     [start_time, profile.end_time] if only start_time is specified
 
-    if `sum_hours` is not specified or blank, the returned list will consist of a
+    if `aggregate` is not specified or blank, the returned list will consist of a
     naiively serialized json representation of the underlying database with ORM-relations
     elided. Otherwise, the only time varying data column will be returned, in the form of:
 
-    List[List[time: str, spot: float]]
+    List[List[time: str, usage: float]]
 
-    where the time-varying column will be summed on a left-aligned basis, i.e. the
-    returned timestamps will consist of values sliced like [::sum_hours]. Note that
-    only "full" slices will be returned.
+    Where the time-varying column will be summed on a left-aligned basis.
+    NOTE: UNFULL BRACKETS WILL BE RETURNED!
     """
     content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
     start_time = "start_time" in content and content["start_time"]
     end_time = "end_time" in content and content["end_time"]
     span_hours = "span_hours" in content and content["span_hours"]
-    sum_hours = "sum_hours" in content and content["sum_hours"]
+    aggregate = "aggregate" in content and content["aggregate"]
 
     try:
-        if sum_hours:
-            sum_hours = int(sum_hours)
 
         if start_time and end_time:
             start_dt = parse_iso_string(start_time)
@@ -82,6 +80,44 @@ def semspot():
 (start_time, end_time), (start_time, span_hours), (end_time, span_hours) or (span_hours): "
             )
 
+        result = db.session.scalars(
+            db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
+        )
+        result_list = list(result)  # turn consumable iterator into imperishable list
+        result_list.sort(key=lambda entry: entry.time)
+
+        if not aggregate:
+            return jsonify([v.to_dict() for v in result_list])
+        else:
+            # fmt: off
+            min_dt = result_list[0].time
+            if aggregate == "hour":
+                iter_dt = datetime(min_dt.year, min_dt.month, min_dt.day, min_dt.hour, tzinfo=timezone.utc)
+                rel_t = relativedelta(hours=1)
+            elif aggregate == "day":
+                iter_dt = datetime(min_dt.year, min_dt.month, min_dt.day, tzinfo=timezone.utc)
+                rel_t = relativedelta(days=1)
+            elif aggregate == "month":
+                iter_dt = datetime(min_dt.year, min_dt.month, 1, tzinfo=timezone.utc)
+                rel_t = relativedelta(months=1)
+            elif aggregate == "year":
+                iter_dt = datetime(min_dt.year, 1, 1, tzinfo=timezone.utc)
+                rel_t = relativedelta(years=1)
+            else:
+                raise KeyError("unrecognized aggregate statement, specifyeither 'hour', 'day', 'month' or 'year'")
+            time_stamps = [to_iso_string(iter_dt)]
+            time_series = [0]
+
+            for entry in result_list:
+                if iter_dt <= entry.time < iter_dt + rel_t:
+                    time_series[-1] += entry.spot
+                elif entry.time >= iter_dt + rel_t:
+                    iter_dt += rel_t
+                    iso_dt = to_iso_string(iter_dt)
+                    time_stamps.append(iso_dt)
+                    time_series.append(entry.spot)
+            return jsonify([*zip(time_stamps, time_series)])
+
     except (ValueError, TypeError) as e:
         return {
             "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
@@ -89,18 +125,3 @@ def semspot():
 
     except Exception as e:
         return ({"errorMsg": str(e)}, 400)
-
-    result = db.session.scalars(
-        db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
-    )
-    result_list = list(result)  # turn consumable iterator into imperishable list
-
-    if not sum_hours:
-        return jsonify([v.to_dict() for v in result])
-    else:
-        orig_series = [v.spot for v in result_list]
-        time_series = [
-            sum(v) for v in zip(*[orig_series[i::sum_hours] for i in range(sum_hours)])
-        ]
-        time_stamps = [to_iso_string(v.time) for v in result_list[::sum_hours]]
-        return jsonify([*zip(time_stamps, time_series)])

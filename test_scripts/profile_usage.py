@@ -13,10 +13,39 @@ res = requests.post(
     "http://127.0.0.1:5000/api/v1/profile/1/usage",
     headers=HEADERS,
     json={
-        "start_time": "2023-1-31T23:00:00.000Z",
-        "end_time": "2023-2-22T23:00:00.000Z",
-        "span_hours": None,
-        "sum_hours": "24",
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "day",
+    },
+)
+if res.ok:
+    print("response body:", json.dumps(res.json(), indent=4))
+else:
+    print("response body", res.text)
+
+
+res = requests.post(
+    "http://127.0.0.1:5000/api/v1/profile/1/usage",
+    headers=HEADERS,
+    json={
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "month",
+    },
+)
+if res.ok:
+    print("response body:", json.dumps(res.json(), indent=4))
+else:
+    print("response body", res.text)
+
+
+res = requests.post(
+    "http://127.0.0.1:5000/api/v1/profile/1/usage",
+    headers=HEADERS,
+    json={
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "year",
     },
 )
 if res.ok:

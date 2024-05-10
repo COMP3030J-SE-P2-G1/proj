@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-10 15:40+0800\n"
+"POT-Creation-Date: 2024-05-10 18:08+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: comp3030j/auth/__init__.py:14 templates/page/auth/profile/profile.j2:83
 msgid "Username"
@@ -243,12 +243,12 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
-#: templates/page/dashboard/page/profile.j2:120
+#: templates/page/dashboard/page/profile.j2:121
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
-#: templates/page/dashboard/page/profile.j2:122
+#: templates/page/dashboard/page/profile.j2:123
 msgid "Close"
 msgstr "取消"
 

@@ -8,9 +8,9 @@ res = requests.post(
     "http://127.0.0.1:5000/api/v1/data/sems",
     headers=HEADERS,
     json={
-        "start_time": "2022-12-31T23:00:00.000Z",
-        "end_time": "2023-01-01T22:00:00.000Z",
-        "span_hours": None,
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "hour",
     },
 )
 if res.ok:
@@ -24,10 +24,9 @@ res = requests.post(
     "http://127.0.0.1:5000/api/v1/data/sems",
     headers=HEADERS,
     json={
-        "start_time": "2022-12-31T23:00:00.000Z",
-        "end_time": None,
-        "span_hours": "25",
-        "sum_hours": "1",
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "day",
     },
 )
 print("response code:", res)
@@ -41,9 +40,9 @@ res = requests.post(
     headers=HEADERS,
     json={
         "start_time": None,
-        "end_time": "2023-12-31T23:00:00.000Z",
-        "span_hours": "5",
-        "sum_hours": "24",
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "month",
     },
 )
 if res.ok:
@@ -56,9 +55,9 @@ res = requests.post(
     "http://127.0.0.1:5000/api/v1/data/sems",
     headers=HEADERS,
     json={
-        "start_time": None,
-        "end_time": None,
-        "span_hours": "5",
+        "start_time": "1990-1-31T23:00:00.000Z",
+        "end_time": "2025-2-22T23:00:00.000Z",
+        "aggregate": "year",
     },
 )
 if res.ok:

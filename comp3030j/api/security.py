@@ -2,24 +2,29 @@ from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
 from comp3030j.db.apikey import ApiKey
 from functools import wraps
+from typing import Union
 
 bp = Blueprint("api/security", __name__, url_prefix="/security")
 
-def is_valid(token) -> ApiKey | bool:
+
+def is_valid(token) -> Union[ApiKey, bool]:
     apikey = ApiKey.find_by_token(token)
     if apikey:
         return apikey
     return False
 
+
 def get_api_key_from_request_header():
     """Note: use try catch."""
-    return request.headers.get('Authorization').split('Bearer ')[1].strip()
+    return request.headers.get("Authorization").split("Bearer ")[1].strip()
+
 
 def auth_guard(return_auth: bool = False):
     """
     An decorator for those end points requires either user session login
     (@login_required) or api_key
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -44,7 +49,9 @@ def auth_guard(return_auth: bool = False):
                     return func(*args, **kwargs)
             else:
                 return {"message": "The provided API key is not valid"}, 403
+
         return wrapper
+
     return decorator
 
 
