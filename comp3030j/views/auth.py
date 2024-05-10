@@ -126,5 +126,5 @@ def change_pass():
 
 @bp.route('/history')
 def history():
-    profiles = Profile.query.filter_by(user_id=current_user.user_id).all()
+    profiles = Profile.query.filter_by(user_id=current_user.id).all()
     return render_template("page/auth/history/index.j2", profiles=profiles, form=current_user)
