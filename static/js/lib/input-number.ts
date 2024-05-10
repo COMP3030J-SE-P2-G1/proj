@@ -1,12 +1,17 @@
 type NullableNumber = number | null;
 
 /**
- * @param selector: a selector for selectoring 
+ * @param selector: a selector for selectoring
  */
-export function initInputNumber(selector: string, clickEvent: (event: Event, el: HTMLInputElement) => void = () => {}) {
+export function initInputNumber(
+    selector: string,
+    valueChangeEvent: (event: Event, el: HTMLInputElement) => void = () => {},
+) {
     const elements: NodeListOf<HTMLInputElement> = document.querySelectorAll(selector);
 
     elements.forEach((element) => {
+        element.addEventListener('change', event => valueChangeEvent(event, element));
+        
         const min: NullableNumber = element.hasAttribute('min') ? parseInt(element.getAttribute('min')!) : null;
         const max: NullableNumber = element.hasAttribute('max') ? parseInt(element.getAttribute('max')!) : null;
 
@@ -28,7 +33,7 @@ export function initInputNumber(selector: string, clickEvent: (event: Event, el:
         if (min === null || value >= min) {
             el.value = value.toString();
         }
-        clickEvent(event, el);
+        valueChangeEvent(event, el);
     }
 
     function increment(event: Event, el: HTMLInputElement, max: NullableNumber) {
@@ -37,6 +42,6 @@ export function initInputNumber(selector: string, clickEvent: (event: Event, el:
         if (max === null || value <= max) {
             el.value = value.toString();
         }
-        clickEvent(event, el)
+        valueChangeEvent(event, el)
     }
 }
