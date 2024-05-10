@@ -91,7 +91,8 @@
                                             <label for="address" class="mr-2">Search Address:</label>
                                             <input type="text" id="address" placeholder="Enter an address"
                                                    class="input input-bordered w-full text-sm mr-2">
-                                            <button onclick="geocodeAddress()" class="btn">Search</button>
+                                            <button onclick="geocodeAddress(event)" class="btn">Search</button>
+
 
                                         </div>
                                         <div id="map" class="h-96 mt-4"></div>
@@ -133,12 +134,6 @@
                     <input type="date" class="grow input flex items-center gap-2 select-bordered join-item"/>
                 </div>
             </div>
-        </div>
-
-        <div role="tablist" class="tabs tabs-boxed w-1/5">
-          <a role="tab" id="tab1" class="tab tab-active">Yearly</a>
-          <a role="tab" id="tab2" class="tab">Monthly</a>
-          <a role="tab" id="tab3" class="tab">Everyday</a>
         </div>
 
         <div class="flex gap-5 justify-center m-2">
@@ -183,13 +178,14 @@
         </div>
 
         <div class="flex h-full">
-            <div id="chart0" class="basis-1/2 h-full m-2 flex justify-center items-center">
+            <div id="p_chart" class="basis-1/2 h-full m-2 flex justify-center items-center">
                 Here put another chart, idk what it is...
             </div>
-            <div id="chart1" class="basis-1/2 h-full m-2 flex justify-center items-center">
+            <div id="cock_chart" class="basis-1/2 h-full m-2 flex justify-center items-center">
                 Here put the bar chart 6
             </div>
         </div>
+
     </section>
 </div>
 
@@ -230,18 +226,20 @@
         document.getElementById('lat').value = lat;
     }
 
-    function geocodeAddress() {
-        const address = document.getElementById('address').value;
+function geocodeAddress(event) {
+    event.preventDefault(); // Prevent default form submission behavior
 
-        geocoder.geocode({'address': address}, function (results, status) {
-            if (status === 'OK') {
-                const location = results[0].geometry.location;
-                updateMarker(location.lat(), location.lng());
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });
-    }
+    const address = document.getElementById('address').value;
+
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status === 'OK') {
+            const location = results[0].geometry.location;
+            updateMarker(location.lat(), location.lng());
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
 
     window.initMap = initMap;
 
