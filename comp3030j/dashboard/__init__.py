@@ -12,7 +12,7 @@ class ProfileForm(FlaskForm):
     end_time = DateField(_ltr('End Time'), validators=[DataRequired()])
     lon = FloatField(_ltr('Longitude'), validators=[DataRequired()])
     lat = FloatField(_ltr('Latitude'), validators=[DataRequired()])
-    tech = SelectField(_ltr('Technology'), choices=[('1', 'A'), ('2', 'B'), ('3', 'C')])
+    tech = SelectField(_ltr('Technology'), choices=[('1', 'crystSi'), ('2', 'CIS'), ('3', 'CdTe')])
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
     power = FloatField(_ltr('Power'), validators=[DataRequired()])
     generation = FloatField(_ltr('Generation'), validators=[DataRequired()])
