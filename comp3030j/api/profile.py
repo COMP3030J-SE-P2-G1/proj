@@ -154,11 +154,13 @@ def usage(id):
             time_stamps = [to_iso_string(iter_dt)]
             time_series = [0]
 
+            next_dt = iter_dt + rel_t
             for entry in result_list:
-                if iter_dt <= entry.time < iter_dt + rel_t:
-                    time_series[-1] += entry.usage
-                elif entry.time >= iter_dt + rel_t:
-                    iter_dt += rel_t
+                if iter_dt <= entry.time < next_dt:
+                    time_series[-1] += entry.generation
+                elif entry.time >= next_dt:
+                    iter_dt = next_dt
+                    next_dt += rel_t
                     iso_dt = to_iso_string(iter_dt)
                     time_stamps.append(iso_dt)
                     time_series.append(entry.usage)
@@ -323,11 +325,13 @@ def solar(id):
             time_stamps = [to_iso_string(iter_dt)]
             time_series = [0]
 
+            next_dt = iter_dt + rel_t
             for entry in result_list:
-                if iter_dt <= entry.time < iter_dt + rel_t:
+                if iter_dt <= entry.time < next_dt:
                     time_series[-1] += entry.generation
-                elif entry.time >= iter_dt + rel_t:
-                    iter_dt += rel_t
+                elif entry.time >= next_dt:
+                    iter_dt = next_dt
+                    next_dt += rel_t
                     iso_dt = to_iso_string(iter_dt)
                     time_stamps.append(iso_dt)
                     time_series.append(entry.generation)
