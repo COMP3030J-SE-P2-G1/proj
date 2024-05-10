@@ -4,7 +4,7 @@
  * Pls forgive me.
  */
 
-import type { Profile, Solar, Usage, TimelyArrayData } from './types.ts';
+import type { Profile, Solar, Usage, TimelyArrayData, Aggregate } from './types.ts';
 import { API_PREFIX } from './constants.ts';
 
 export async function getProfile(id: number): Promise<Profile> {
@@ -22,7 +22,7 @@ export async function getSolar(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null = null,
-    sum_hours: number = 24,
+    aggregate: Aggregate = "day",
 ): Promise<Solar[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/profile/${profileId}/solar`, {
         method: 'POST',
@@ -33,7 +33,7 @@ export async function getSolar(
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours,
-            sum_hours: sum_hours
+            aggregate: aggregate
         })
     });
     
@@ -49,7 +49,7 @@ export async function getUsage(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null = null,
-    sum_hours: number = 24,
+    aggregate: Aggregate = "day"
 ): Promise<Usage[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/profile/${profileId}/usage`, {
         method: 'POST',
@@ -60,7 +60,7 @@ export async function getUsage(
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours,
-            sum_hours: sum_hours
+            aggregate: "day"
         })
     });
     

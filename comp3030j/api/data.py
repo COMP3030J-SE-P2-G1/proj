@@ -111,7 +111,7 @@ def semspot():
             next_dt = iter_dt + rel_t
             for entry in result_list:
                 if iter_dt <= entry.time < next_dt:
-                    time_series[-1] += entry.generation
+                    time_series[-1] += entry.spot
                 elif entry.time >= next_dt:
                     iter_dt = next_dt
                     next_dt += rel_t

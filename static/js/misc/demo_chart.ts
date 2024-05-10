@@ -35,7 +35,7 @@ async function demoInitDynamicChart() {
         async state => {
             const startTime = new Date(state.value);
             const endTime = dateAdd(startTime, 15);
-            return PROFILE_API.getSolar(profile.id, startTime, endTime, null, 24) as Promise<TimelyArrayData[]>;
+            return PROFILE_API.getSolar(profile.id, startTime, endTime, null, "day") as Promise<TimelyArrayData[]>;
         },
         (data, prevData, _prevOption) => {
             if (prevData) data = prevData.concat(data);
@@ -64,28 +64,28 @@ async function demoInitDynamicChart() {
 
 function demoInitElectricityUsageLineChart() {
     const elm = document.getElementById("initElectricityUsageLineChart");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, 24, {
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, "day", {
         title: "initElectricityUsageLineChart",
     });
 }
 
 function demoInitSolarLineChart() {
     const elm = document.getElementById("initSolarLineChart");
-    if (elm) Chart.initSolarChart(elm, 1, gStartTime, gEndTime, 24, {
+    if (elm) Chart.initSolarChart(elm, 1, gStartTime, gEndTime, "day", {
         title: "initSolarLineChart"
     });
 }
 
 function demoInitElectricityPriceLineChart() {
     const elm = document.getElementById("initElectricityPriceLineChart");
-    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime, null, 24, {
+    if (elm) Chart.initElectricityPriceChart(elm, gStartTime, gEndTime, null, "day", {
         title: "initElectricityPriceLineChart",
     });
 }
 
 function demoInitElectricityUsagePieChart() {
     const elm = document.getElementById("initElectricityUsageChart-PieChart");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, 24, {
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, "day", {
         title: "initElectricityUsageChart-PieChart",
         type: {
             type: "pie",
@@ -98,7 +98,7 @@ function demoInitElectricityUsagePieChart() {
 
 function demoInitElectricityPriceHypridChart() {
     const elm = document.getElementById("initElectricityUsageChart-hybrid");
-    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, 24, {
+    if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, "day", {
         optionTemplate: {
             dataset: [
                 {

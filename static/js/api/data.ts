@@ -1,11 +1,11 @@
 import { API_PREFIX } from './constants.ts';
-import type { ElectricityPrice, TimelyArrayData } from './types.ts';
+import type { ElectricityPrice, TimelyArrayData, Aggregate } from './types.ts';
 
 export async function getElectricityPrice(
     startTime: Date | null,
     endTime: Date | null,
     span_hours: number | null,
-    sum_hours: number = 24
+    aggregate: Aggregate = "day"
 ): Promise<ElectricityPrice[] | TimelyArrayData[]> {
     const response = await fetch(`${API_PREFIX}/data/sems`, {
         method: 'POST',
@@ -16,7 +16,7 @@ export async function getElectricityPrice(
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours,
-            sum_hours: sum_hours
+            aggregate: aggregate
         })
     });
     

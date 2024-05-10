@@ -4,7 +4,6 @@ import * as echarts from 'echarts/core';
 
 function bindEvents(): void {
     document.getElementById('profileForm').addEventListener('submit', async function (e) {
-        console.log("hello1")
         e.preventDefault(); // Prevent the default form submission
 
         const form = e.target;
@@ -82,7 +81,7 @@ function activeTabEvents(tabId: string): void {
 function initCharts() {
     const electricityUsagePieChartElm = document.getElementById("chart0");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #chart0"); return;}
-    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, 24, {
+    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, "day", {
         type: {
             type: "pie",
             xField: 0,
@@ -123,7 +122,7 @@ function initCharts() {
 
     const electricityPriceChartElm = document.getElementById("chart1");
     if (!electricityPriceChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceChart(electricityPriceChartElm, null, null, null, 24, {
+    initElectricityPriceChart(electricityPriceChartElm, null, null, null, "day", {
         optionTemplate: {
             dateset: {
                 source: []

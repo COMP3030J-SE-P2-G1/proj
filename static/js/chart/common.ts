@@ -1,19 +1,35 @@
 import * as echarts from 'echarts/core';
 import { initDynamicTimelyChart, getDefaultFetchDataStep } from './basic';
 import type { InitChartOptions } from './basic';
-import type { NullableTime, Solar, Usage, ElectricityPrice, TimelyArrayData } from '../api/types.ts';
+import type { NullableTime, Solar, Usage, ElectricityPrice, TimelyArrayData, Aggregate } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
 import { dateAdd, daysBetweenNull, hoursBetweenNull } from '../lib/utils.ts';
 
-const DEFAULT_FETCH_DATA_STEP = 30; // days for hourly data 
+function aggregate2hours(aggregate: Aggregate) {
+    switch (aggregate) {
+        case "hour":
+            return 1;
+        case "day":
+            return 24;
+        case "month":
+            return 24 * 30;
+        case "year":
+            return 24 * 30 * 360;
+    }
+}
+
+function getDefaultFetchDataDays(aggregate: Aggregate) {
+    const base = 30;
+    return base * aggregate2hours(aggregate);
+}
 
 export async function initElectricityUsageChart(
     elm: HTMLElement,
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    sum_hours: number = 24,
+    aggregate: Aggregate = "day",
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
@@ -29,7 +45,7 @@ export async function initElectricityUsageChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), DEFAULT_FETCH_DATA_STEP * sum_hours),
+        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), getDefaultFetchDataDays(aggregate)),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -37,7 +53,7 @@ export async function initElectricityUsageChart(
                 const ed = dateAdd(startTime, fetchDataStep);
                 endTime = gEndTime > ed ? ed : gEndTime;
             }
-            return PROFILE_API.getUsage(profile.id, startTime, endTime, null, sum_hours) as Promise<TimelyArrayData[]>;
+            return PROFILE_API.getUsage(profile.id, startTime, endTime, null, aggregate) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -70,7 +86,7 @@ export async function initSolarChart(
     profileId: number,
     startTime: Date | null = null,
     endTime: Date | null = null,
-    sum_hours: number = 24,
+    aggregate: Aggregate = "day",
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
     const profile = await PROFILE_API.getProfile(profileId);
@@ -86,7 +102,7 @@ export async function initSolarChart(
         },
         optionTemplate,
         initialStateValue = gStartTime.toISOString(),
-        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), DEFAULT_FETCH_DATA_STEP * sum_hours),
+        fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(gStartTime, gEndTime), getDefaultFetchDataDays(aggregate)),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -94,7 +110,7 @@ export async function initSolarChart(
                 const ed = dateAdd(startTime, fetchDataStep);
                 endTime = gEndTime > ed ? ed : gEndTime;
             }
-            return PROFILE_API.getSolar(profile.id, startTime, endTime, null, sum_hours) as Promise<TimelyArrayData[]>;
+            return PROFILE_API.getSolar(profile.id, startTime, endTime, null, aggregate) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,
@@ -126,10 +142,9 @@ export async function initElectricityPriceChart(
     startTime: Date | null = null,
     endTime: Date | null = null,
     spanHours: number | null = null,
-    sumHours: number = 24,
+    aggregate: Aggregate = "day",
     initChartOptions: Partial<InitChartOptions<TimelyArrayData, NullableTime>> = {},
 ): Promise<echarts.ECharts>  {
-
     const gEndTime = endTime;
     spanHours = spanHours ?? hoursBetweenNull(startTime, endTime);
     const spanDays = spanHours ? spanHours / 24 : null; 
@@ -143,7 +158,7 @@ export async function initElectricityPriceChart(
         },
         optionTemplate,
         initialStateValue,
-        fetchDataStep = getDefaultFetchDataStep(spanDays, DEFAULT_FETCH_DATA_STEP * sumHours),
+        fetchDataStep = getDefaultFetchDataStep(spanDays, getDefaultFetchDataDays(aggregate)),
         fetchDataFunc = async state => {
             const startTime = state.value ? new Date(state.value) : null;
             let endTime = null;
@@ -152,7 +167,7 @@ export async function initElectricityPriceChart(
                 endTime = (!gEndTime || gEndTime < ed) ? gEndTime : ed;
             }
             spanHours = spanHours ?? (endTime ? null : fetchDataStep * 24);
-            return DATA_API.getElectricityPrice(startTime, endTime, spanHours, sumHours) as Promise<TimelyArrayData[]>;
+            return DATA_API.getElectricityPrice(startTime, endTime, spanHours, aggregate) as Promise<TimelyArrayData[]>;
         },
         overrideOption,
         updateStateFunc,

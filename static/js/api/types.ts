@@ -41,3 +41,5 @@ export interface Usage extends TimelyData {
 export interface ElectricityPrice extends TimelyData {
     spot: number,
 }
+
+export type Aggregate = "hour" | "day" | "month" | "year";
