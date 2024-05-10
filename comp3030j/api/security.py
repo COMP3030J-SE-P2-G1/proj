@@ -5,37 +5,46 @@ from functools import wraps
 
 bp = Blueprint("api/security", __name__, url_prefix="/security")
 
-def is_valid(token):
+def is_valid(token) -> ApiKey | bool:
     apikey = ApiKey.find_by_token(token)
     if apikey:
-        return True
+        return apikey
     return False
 
 def get_api_key_from_request_header():
     """Note: use try catch."""
     return request.headers.get('Authorization').split('Bearer ')[1].strip()
 
-def auth_guard(func):
+def auth_guard(return_auth: bool = False):
     """
     An decorator for those end points requires either user session login
     (@login_required) or api_key
     """
-    @wraps(func)
-    def decorator(*args, **kwargs):
-        # compatibility with flask_login's login_required decorator
-        if current_user.is_authenticated:
-            return func(*args, **kwargs)
-            
-        # Authentication gate
-        try:
-            api_key = get_api_key_from_request_header()
-        except Exception as _:
-            return {"errorMsg": "Missing access token"}, 401
-        
-        if is_valid(api_key):
-            return func(*args, **kwargs)
-        else:
-            return {"message": "The provided API key is not valid"}, 403
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # compatibility with flask_login's login_required decorator
+            if current_user.is_authenticated:
+                if return_auth:
+                    return func(current_user, *args, **kwargs)
+                else:
+                    return func(*args, **kwargs)
+
+            # Authentication gate
+            try:
+                raw_api_key = get_api_key_from_request_header()
+            except Exception as _:
+                return {"errorMsg": "Missing access token"}, 401
+
+            api_key = is_valid(raw_api_key)
+            if api_key:
+                if return_auth:
+                    return func(api_key, *args, **kwargs)
+                else:
+                    return func(*args, **kwargs)
+            else:
+                return {"message": "The provided API key is not valid"}, 403
+        return wrapper
     return decorator
 
 

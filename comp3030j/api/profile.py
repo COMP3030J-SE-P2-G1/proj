@@ -36,7 +36,7 @@ def get_profile(id):
 
 
 @bp.route("/<int:id>")
-@auth_guard
+@auth_guard()
 def profile(id):
     profile, response = get_profile(id)
     if response:
@@ -44,7 +44,7 @@ def profile(id):
     return profile.to_dict()
 
 @bp.route("/<int:id>/usage", methods=["POST"])
-@auth_guard
+@auth_guard()
 @cache.cached(make_cache_key=make_key_post_json_user)
 def usage(id):
     """
@@ -149,7 +149,7 @@ def usage(id):
 
 
 @bp.route("/<int:id>/solar", methods=["POST"])
-@auth_guard
+@auth_guard()
 @cache.cached(make_cache_key=make_key_post_json_user)
 def solar(id):
     """
