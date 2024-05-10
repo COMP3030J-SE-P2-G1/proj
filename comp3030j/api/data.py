@@ -11,7 +11,7 @@ bp = Blueprint("api/data", __name__, url_prefix="/data")
 
 
 @bp.route("/sems", methods=["POST"])
-@auth_guard
+@auth_guard()
 @cache.cached(make_cache_key=make_key_post_json)
 def semspot():
     """
