@@ -119,15 +119,35 @@ components:
     profile:
       type: object
       properties:
-        profile_id:
+        id:
           type: integer
-          description: id of this profile
-        usage_id:
+          description: the id of this profile
+        user_id:
+          type: integer
+          description: the id of the owner of this profile
+        name:
           type: string
-          description: id of the usage profile
-        solar_id:
+          description: the name of the profile
+        desc:
           type: string
-          description: id of the solar panel configuration profile
+          description: profile description
+        start_time:
+          type: string
+          format: date-time
+          description: the start time of data in this profile
+        end_time:
+          type: string
+          format: date-time
+          description: the start time of data in this profile
+        lon:
+          type: number
+          description: lontitude
+        lat:
+          type: number
+          description: latitude
+        tech:
+          type: 
+          
           
   requestBodies:
     data_type: # TODO
