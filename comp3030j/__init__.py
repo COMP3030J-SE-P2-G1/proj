@@ -2,11 +2,11 @@ from flask import Flask, request
 from flask_babel import Babel, gettext, ngettext, lazy_gettext
 from flask_admin import Admin
 from flask_caching import Cache
-from comp3030j.db import initialize_db
+from comp3030j.db import initialize_db, db, User
 from comp3030j.views import bind_views
 from comp3030j.api import bind_apis
 from .extensions import bcrypt, login_manager
-
+from flask_admin.contrib.sqla import ModelView
 from redis import Redis
 
 
@@ -18,6 +18,7 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
 admin = Admin(app, name='COMP3030J', template_mode='bootstrap4')
+admin.add_view(ModelView(User, db.session))
 
 r = Redis(host=app.config["CACHE_REDIS_HOST"], port=app.config["CACHE_REDIS_PORT"], db=app.config["CACHE_REDIS_PORT"],
           socket_connect_timeout=300)
