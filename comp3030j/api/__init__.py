@@ -3,12 +3,18 @@ from flask import Blueprint
 
 
 def bind_apis(app: Flask):
-    from . import user, profile, data, security
+    from . import restful, graphql
 
-    bp = Blueprint("api/v1", __name__, url_prefix="/api/v1")
-    bp.register_blueprint(user.bp)
-    bp.register_blueprint(profile.bp)
-    bp.register_blueprint(data.bp)
-    bp.register_blueprint(security.bp)
-
-    app.register_blueprint(bp)
+    api = Blueprint("api", __name__, url_prefix="/api")
+    
+    restful_prefix = Blueprint("api/v1", __name__, url_prefix="/v1")
+    restful_prefix.register_blueprint(restful.bp_security)
+    restful_prefix.register_blueprint(restful.bp_data)
+    restful_prefix.register_blueprint(restful.bp_user)
+    restful_prefix.register_blueprint(restful.bp_profile)
+    
+    api.register_blueprint(restful_prefix)
+    api.register_blueprint(graphql.bp)
+    
+    app.register_blueprint(api)
+    

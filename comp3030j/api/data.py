@@ -8,13 +8,7 @@ from comp3030j.util.cache import make_key_post_json
 from .security import auth_guard
 from dateutils import relativedelta
 
-bp = Blueprint("api/data", __name__, url_prefix="/data")
-
-
-@bp.route("/sems", methods=["POST"])
-@auth_guard()
-@cache.cached(make_cache_key=make_key_post_json)
-def semspot():
+def semspot(content: dict):
     """
     request body:
     {
@@ -44,7 +38,6 @@ def semspot():
     Where the time-varying column will be summed on a left-aligned basis.
     NOTE: UNFULL BRACKETS WILL BE RETURNED!
     """
-    content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
     start_time = "start_time" in content and content["start_time"]
     end_time = "end_time" in content and content["end_time"]
@@ -87,7 +80,7 @@ def semspot():
         result_list.sort(key=lambda entry: entry.time)
 
         if not aggregate:
-            return jsonify([v.to_dict() for v in result_list])
+            return [v.to_dict() for v in result_list], None
         else:
             # fmt: off
             min_dt = result_list[0].time
@@ -118,12 +111,12 @@ def semspot():
                     iso_dt = to_iso_string(iter_dt)
                     time_stamps.append(iso_dt)
                     time_series.append(entry.spot)
-            return jsonify([*zip(time_stamps, time_series)])
+            return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return {
+        return None, ({
             "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
-        }, 400
+        }, 400)
 
     except Exception as e:
-        return ({"errorMsg": str(e)}, 400)
+        return None, ({"errorMsg": str(e)}, 400)

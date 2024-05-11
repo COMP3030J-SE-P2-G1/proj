@@ -4,9 +4,6 @@ from comp3030j.db.apikey import ApiKey
 from functools import wraps
 from typing import Union
 
-bp = Blueprint("api/security", __name__, url_prefix="/security")
-
-
 def is_valid(token) -> Union[ApiKey, bool]:
     apikey = ApiKey.find_by_token(token)
     if apikey:
@@ -54,10 +51,7 @@ def auth_guard(return_auth: bool = False):
 
     return decorator
 
-
-@bp.route("/create_api_key")
-@login_required
 def create_api_key():
     new_api_key = ApiKey(current_user.id)
     new_api_key.save_to_db()
-    return new_api_key.to_dict(), 201
+    return new_api_key, 201

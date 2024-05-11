@@ -1,3 +1,8 @@
+/* A simple way to remove the logo at top right */
+.graphiql-logo-link {
+    display: none
+}
+
 /* https://github.com/graphql/graphiql/blob/9d42a25c97d722fd165f97ec806754d792a3de81/packages/graphiql-react/src/style/root.css#L74-L95 */
 [data-theme="dim"], :root:has(input.theme-controller[value="dim"]:checked) {
     body:not(.graphiql-light) .graphiql-container,

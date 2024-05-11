@@ -238,6 +238,8 @@ function getDefaultOptionTemplate<D>(initChartOptions: Partial<InitChartOptions<
                 }
             ],
             animation: false // pie chart dynamic updating animation is ugly
+
+
         };
     }
 }

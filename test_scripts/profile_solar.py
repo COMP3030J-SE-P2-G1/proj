@@ -13,9 +13,9 @@ res = requests.post(
     "http://127.0.0.1:5000/api/v1/profile/1/solar",
     headers=HEADERS,
     json={
-        "start_time": "2005-1-31T23:00:00.000Z",
-        "end_time": "2025-2-22T23:00:00.000Z",
-        "aggregate": "year",
+        "start_time": "2023-1-31T23:00:00.000Z",
+        "end_time": "2023-2-22T23:00:00.000Z",
+        "aggregate": "day",
     },
 )
 if res.ok:

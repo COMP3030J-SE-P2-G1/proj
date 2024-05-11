@@ -13,10 +13,7 @@ from comp3030j.util import parse_iso_string, to_iso_string
 from .security import auth_guard
 from comp3030j.util.cache import make_key_post_json_user
 
-bp = Blueprint("api/v1/profile", __name__, url_prefix="/profile")
-
-
-def get_profile(id):
+def get_profile(id: int):
     """
     Utility function to check get a profile.
     Returns a tuple (profile, response) where:
@@ -36,20 +33,7 @@ def get_profile(id):
     else:
         return None, ({"code": 2, "errorMsg": "Unauthorized access"}, 403)
 
-
-@bp.route("/<int:id>")
-@auth_guard()
-def profile(id):
-    profile, response = get_profile(id)
-    if response:
-        return response
-    return profile.to_dict()
-
-
-@bp.route("/<int:id>/usage", methods=["POST"])
-@auth_guard()
-@cache.cached(make_cache_key=make_key_post_json_user)
-def usage(id):
+def usage(id: int, content: dict):
     """
     request body:
     {
@@ -81,9 +65,8 @@ def usage(id):
     """
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
-        return response
+        return None, response
 
-    content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
 
     start_time = "start_time" in content and content["start_time"]
@@ -132,7 +115,7 @@ def usage(id):
         result_list.sort(key=lambda entry: entry.time)
 
         if not aggregate:
-            return jsonify([v.to_dict() for v in result_list])
+            return [v.to_dict() for v in result_list], None
         else:
             # fmt: off
             min_dt = result_list[0].time
@@ -165,21 +148,17 @@ def usage(id):
                     time_stamps.append(iso_dt)
                     time_series.append(entry.usage)
 
-            return jsonify([*zip(time_stamps, time_series)])
+            return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return {
+        return None, ({
             "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
-        }, 400
+        }, 400)
 
     except Exception as e:
-        return ({"errorMsg": str(e)}, 400)
+        return None, ({"errorMsg": str(e)}, 400)
 
-
-@bp.route("/<int:id>/solar", methods=["POST"])
-@auth_guard()
-@cache.cached(make_cache_key=make_key_post_json_user)
-def solar(id):
+def solar(id: int, content: dict):
     """
     request body:
     {
@@ -211,9 +190,8 @@ def solar(id):
     """
     profile, response = get_profile(id)
     if response:  # for some reason user profile is not available
-        return response
+        return None, response
 
-    content = request.json  # get POSTed content
     one_hour = timedelta(hours=1)
 
     start_time = "start_time" in content and content["start_time"]
@@ -273,11 +251,11 @@ def solar(id):
             app.logger.info("returning results from DB")
         else:
             app.logger.info("querying PVGIS")
-            # dispatch query_pvgis_one_year
+            # dispatch _query_pvgis_one_year
             result_list = []
 
             for year in query_years:
-                solar_values = query_pvgis_one_year(
+                solar_values = _query_pvgis_one_year(
                     lat=profile.lat,
                     lon=profile.lon,
                     year=year,
@@ -304,7 +282,7 @@ def solar(id):
 
         result_list.sort(key=lambda entry: entry.time)
         if not aggregate:
-            return jsonify([v.to_dict() for v in result_list])
+            return [v.to_dict() for v in result_list], None
         else:
             # fmt: off
             min_dt = result_list[0].time
@@ -336,19 +314,19 @@ def solar(id):
                     time_stamps.append(iso_dt)
                     time_series.append(entry.generation)
 
-            return jsonify([*zip(time_stamps, time_series)])
+            return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return {
+        return None, ({
             "errorMsg": "inappropriate timestamp format, invalid duration or sum: "
             + str(e),
-        }, 400
+        }, 400)
 
     except Exception as e:
-        return {"errorMsg": str(e)}, 400
+        return None, ({"errorMsg": str(e)}, 400)
 
 
-def query_pvgis_one_year(
+def _query_pvgis_one_year(
     lat: float,
     lon: float,
     year: int,  # PVGIS returns result in UTC, therefore no further processing is necessary
