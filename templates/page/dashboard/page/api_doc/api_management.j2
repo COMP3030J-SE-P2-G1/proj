@@ -103,23 +103,18 @@
 </div>
 
 <script>
-    // 获取按钮和表格
     const createKeyButton = document.querySelector('#createKeyButton');
     const keyTableBody = document.querySelector('#keyTableBody');
     const keyNameInput = document.querySelector('#keyNameInput');
-    let rowCounter = 2; // 从第二行开始计数
+    let rowCounter = 2;
 
-    // 点击按钮时触发的函数
     createKeyButton.addEventListener('click', function(event) {
         const dialogElm = document.getElementById("my_modal_4");
 
-        // 获取输入的 API Key 名称
         const keyName = keyNameInput.value;
 
-        // 创建新的表格行
         const newRow = document.createElement('tr');
 
-        // 添加新的单元格并设置内容
         const serialCell = document.createElement('td');
         serialCell.textContent = rowCounter++;
         newRow.appendChild(serialCell);
@@ -129,7 +124,7 @@
         newRow.appendChild(nameCell);
 
         const secretKeyCell = document.createElement('td');
-        const secretKey = generateSecretKey(); // 生成随机的secret key
+        const secretKey = generateSecretKey();
         secretKeyCell.textContent = maskSecretKey(secretKey);
         newRow.appendChild(secretKeyCell);
 
@@ -162,18 +157,15 @@
                 0 0 1 .5-.5M3.38 9.085a1 1 0 0 0 .997.915h3.246a1 1 0 0 0 .996-.915L9.055 4h-6.11z"/>
         </svg>`;
         deleteButton.addEventListener('click', function() {
-            newRow.remove(); // 删除当前行
+            newRow.remove();
         });
         deleteButtonCell.appendChild(deleteButton);
         newRow.appendChild(deleteButtonCell);
 
-        // 将新行添加到表格中
         keyTableBody.appendChild(newRow);
 
-        // 关闭当前对话框
         closeDialog(dialogElm);
 
-        // 弹出对话框显示生成的SECRET KEY
         const secretKeyModal = document.querySelector('#secretKeyModal');
         secretKeyModal.showModal();
 
@@ -181,14 +173,12 @@
         secretKeyDisplay.textContent = secretKey;
     });
 
-    // 关闭当前对话框
     function closeDialog(dialogElm) {
         if (dialogElm !== null && dialogElm.open) {
             dialogElm.close();
         }
     }
 
-    // 生成随机的secret key函数
     function generateSecretKey() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
         const length = 13;
@@ -196,16 +186,14 @@
         for (let i = 0; i < length; i++) {
             secretKey += characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        return secretKey; // 根据你的格式要求返回secret key
+        return secretKey;
     }
 
-    // 隐藏SECRET KEY中间的几位
     function maskSecretKey(secretKey) {
-        // 隐藏中间 4 位
         const visibleLength = Math.min(4, secretKey.length);
-        const visiblePartStart = secretKey.substring(0, 3); // 保留前3位
-        const visiblePartEnd = secretKey.substring(secretKey.length - 4); // 保留后4位
-        const maskedPart = '*'.repeat(secretKey.length - 7); // 隐藏中间部分
+        const visiblePartStart = secretKey.substring(0, 3);
+        const visiblePartEnd = secretKey.substring(secretKey.length - 4);
+        const maskedPart = '*'.repeat(secretKey.length - 7);
         return visiblePartStart + maskedPart + visiblePartEnd;
     }
 
