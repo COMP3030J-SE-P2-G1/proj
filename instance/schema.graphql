@@ -1,0 +1,40 @@
+# However, user can input any types of data
+scalar StringOrInt
+
+type Query {
+    me: User!
+    profile(id: Int!): Profile!
+    data: Data!
+}
+
+type Profile {
+    id: Int!
+    user_id: Int!
+    name: String!
+    desc: String
+    start_time: String!
+    end_time: String!
+    lon: Float
+    lat: Float
+    tech: Int
+    loss: Float
+    power: Float
+    usage(start_time: String!, end_time: String!, span_hours: Int, aggregate: Aggregate!): [[StringOrInt]!]!
+    solar(start_time: String!, end_time: String!, span_hours: Int, aggregate: Aggregate!): [[StringOrInt]!]!
+}
+
+type User {
+    profiles: [Profile!]
+}
+
+type Data {
+    sems(start_time: String!, end_time: String!, span_hours: Int, aggregate: Aggregate!): [[StringOrInt]!]!
+}
+
+enum Aggregate {
+    hour
+    day
+    month
+    year
+}
+
