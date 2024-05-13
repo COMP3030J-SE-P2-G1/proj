@@ -28,7 +28,7 @@ def _return_jsonify(ret: tuple[any, any]):
 @bp_profile.route("/<int:id>")
 @auth_guard()
 def profile_profile(id):
-    return _return(profile.get_profile(id))
+    return _return_dict(profile.get_profile(id))
 
 @bp_profile.route("/<int:id>/usage", methods=["POST"])
 @auth_guard()
