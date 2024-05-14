@@ -69,7 +69,7 @@ export async function getUsage(
             start_time: startTime?.toISOString() ?? null,
             end_time: span_hours ? null : (endTime?.toISOString() ?? null),
             span_hours: span_hours,
-            aggregate: "day"
+            aggregate: aggregate
         })
     });
     console.log(response)

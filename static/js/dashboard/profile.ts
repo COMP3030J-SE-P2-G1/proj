@@ -81,7 +81,7 @@ function activeTabEvents(tabId: string): void {
 function initCharts() {
     const electricityUsagePieChartElm = document.getElementById("chart0");
     if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #chart0"); return;}
-    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, "day", {
+    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, "month", {
         type: {
             type: "pie",
             xField: 0,
