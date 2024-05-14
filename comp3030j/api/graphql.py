@@ -108,13 +108,13 @@ def query_data(*_):
 @s_profile.field("usage")
 def profile_usage(obj, _, **kwargs):
     profile_id = obj["id"]
-    return _return(profile.usage(profile_id, kwargs))
+    return _return(profile.usage_route(profile_id, kwargs))
 
 
 @s_profile.field("solar")
 def profile_solar(obj, _, **kwargs):
     profile_id = obj["id"]
-    return _return(profile.usage(profile_id, kwargs))
+    return _return(profile.solar_route(profile_id, kwargs))
 
 
 @s_user.field("profiles")
