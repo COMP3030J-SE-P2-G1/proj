@@ -57,5 +57,5 @@ def security_create_api_key():
 @bp_user.route("/profiles")
 @auth_guard(return_auth=True)
 def user_profiles(auth: Union[User, ApiKey]):
-    return user.profiles(auth)
+    return _return(user.profiles(auth))
 
