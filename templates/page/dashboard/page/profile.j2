@@ -136,11 +136,11 @@
             </div>
         </div>
 
-         <div role="tablist" class="tabs tabs-boxed w-1/5">
-           <a role="tab" id="tab1" class="tab tab-active">Yearly</a>
-           <a role="tab" id="tab2" class="tab">Monthly</a>
-           <a role="tab" id="tab3" class="tab">Everyday</a>
-         </div>
+        <div role="tablist" class="tabs tabs-boxed w-1/5">
+            <a role="tab" id="tab1" class="tab tab-active">Yearly</a>
+            <a role="tab" id="tab2" class="tab">Monthly</a>
+            <a role="tab" id="tab3" class="tab">Everyday</a>
+        </div>
 
         <div class="flex gap-5 justify-center m-2">
             <div class="stat shadow rounded xl:rounded-2xl">
@@ -184,12 +184,8 @@
         </div>
 
         <div class="flex h-full">
-            <div id="chart0" class="basis-1/2 h-full m-2 flex justify-center items-center">
-                Here put another chart, idk what it is...
-            </div>
-            <div id="chart1" class="basis-1/2 h-full m-2 flex justify-center items-center">
-                Here put the bar chart 6
-            </div>
+            <div id="chart0" class="basis-1/2 h-full m-2 flex justify-center items-center"></div>
+            <div id="chart1" class="basis-1/2 h-full m-2 flex justify-center items-center"></div>
         </div>
 
     </section>
@@ -232,26 +228,26 @@
         document.getElementById('lat').value = lat;
     }
 
-function geocodeAddress(event) {
-    event.preventDefault(); // Prevent default form submission behavior
+    function geocodeAddress(event) {
+        event.preventDefault(); // Prevent default form submission behavior
 
-    const address = document.getElementById('address').value;
+        const address = document.getElementById('address').value;
 
-    geocoder.geocode({'address': address}, function (results, status) {
-        if (status === 'OK') {
-            const location = results[0].geometry.location;
-            updateMarker(location.lat(), location.lng());
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
-}
+        geocoder.geocode({'address': address}, function (results, status) {
+            if (status === 'OK') {
+                const location = results[0].geometry.location;
+                updateMarker(location.lat(), location.lng());
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
 
     window.initMap = initMap;
 
 
     document.addEventListener('DOMContentLoaded', function () {
-        
+
     });
 </script>
 

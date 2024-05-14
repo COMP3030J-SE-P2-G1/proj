@@ -123,19 +123,19 @@ msgstr "技术"
 
 #: comp3030j/dashboard/__init__.py:16
 msgid "Loss"
-msgstr ""
+msgstr "损耗"
 
 #: comp3030j/dashboard/__init__.py:17
 msgid "Power"
-msgstr ""
+msgstr "功率"
 
 #: comp3030j/dashboard/__init__.py:18
 msgid "Generation"
-msgstr ""
+msgstr "发电量"
 
 #: comp3030j/dashboard/__init__.py:19
 msgid "Usage - UTC+1(No DST)"
-msgstr ""
+msgstr "用量 - UTC+1(无夏令时)"
 
 #: comp3030j/dashboard/__init__.py:19
 msgid "csv only!"
@@ -154,28 +154,24 @@ msgid "Latitude should be between -90 and 90."
 msgstr "纬度应在-90到90之间"
 
 #: comp3030j/dashboard/__init__.py:35
-msgid "Please choose a Technology."
-msgstr "请选择一种技术"
+msgid "Please choose a technology of solar panel."
+msgstr "请选择一种太阳能板的制造工艺"
 
 #: comp3030j/dashboard/__init__.py:37
 msgid "Technology should be a positive integer."
 msgstr "技术应为正整数"
 
 #: comp3030j/dashboard/__init__.py:41
-msgid "Loss should be a positive float."
-msgstr ""
-
-#: comp3030j/dashboard/__init__.py:43
-msgid "Loss should be less than 1."
-msgstr ""
+msgid "Loss should be a positive float which is less than 1."
+msgstr "损耗应为小于1的正浮点数"
 
 #: comp3030j/dashboard/__init__.py:47
 msgid "Power should be a positive float."
-msgstr ""
+msgstr "功率应为正浮点数"
 
 #: comp3030j/dashboard/__init__.py:51
 msgid "Generation should be a positive float."
-msgstr ""
+msgstr "发电量应为正浮点数"
 
 #: comp3030j/views/auth.py:37
 msgid "Your account has been created! You are now able to log in."

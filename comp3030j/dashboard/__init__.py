@@ -16,7 +16,8 @@ class ProfileForm(FlaskForm):
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
     power = FloatField(_ltr('Power'), validators=[DataRequired()])
     generation = FloatField(_ltr('Generation'), validators=[DataRequired()])
-    usage_file = MultipleFileField(_ltr('Usage - UTC+1(No DST)'), validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
+    usage_file = MultipleFileField(_ltr('Usage - UTC+1(No DST)'),
+                                   validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
 
     def validate_end_time(self, end_time):
         if end_time.data < self.start_time.data:
@@ -32,15 +33,13 @@ class ProfileForm(FlaskForm):
 
     def validate_tech(self, tech):
         if tech.data is None:
-            raise ValidationError(_ltr('Please choose a Technology.'))
+            raise ValidationError(_ltr('Please choose a technology of solar panel.'))
         elif int(tech.data) > 2 or int(tech.data) < 0:
             raise ValidationError(_ltr('Technology should be a positive integer.'))
 
     def validate_loss(self, loss):
-        if loss.data < 0:
-            raise ValidationError(_ltr('Loss should be a positive float.'))
-        elif loss.data > 1:
-            raise ValidationError(_ltr('Loss should be less than 1.'))
+        if loss.data < 0 or loss.data > 1:
+            raise ValidationError(_ltr('Loss should be a positive float which is less than 1.'))
 
     def validate_power(self, power):
         if power.data < 0:
