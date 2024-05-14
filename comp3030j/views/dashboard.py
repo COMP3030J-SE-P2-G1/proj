@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import Blueprint, redirect, render_template, request, session, flash, jsonify, url_for
+from flask import Blueprint, redirect, render_template, request, session, flash, jsonify, send_file
 from flask_login import login_required, current_user
 
 from comp3030j.dashboard import ProfileForm
@@ -73,6 +73,12 @@ def create_profile():
         form_errors = {field: error[0] for field, error in profileForm.errors.items()}
         print(form_errors)
         return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': form_errors}), 400
+
+
+@bp.route('/download_template', methods=['Get'])
+@login_required
+def download_templates():
+    return send_file('static/demo_2023.csv', as_attachment=True)
 
 #
 # @bp.route('/update_usage', methods=['POST'])
