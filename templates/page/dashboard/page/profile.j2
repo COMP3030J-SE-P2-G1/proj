@@ -48,7 +48,54 @@
                                             {{ field(class="input input-bordered w-full text-sm") }}
                                         {% endif %}
                                     {% else %}
-                                        {{ field.label(class="label") }}
+                                        {% if type=="file" %}
+                                            <div class="flex">
+                                                <div class="flex flex-row grow place-self-center gap-4">
+                                                    {{ field.label(class="label") }}
+                                                </div>
+                                                <div class="flex flex-row gap-1 place-items-end place-self-center">
+                                                    <div class="">
+                                                        <div class="dropdown dropdown-top dropdown-end">
+                                                            <div tabindex="0" role="button" class="btn btn-circle">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6"
+                                                                     viewBox="0 0 24 24">
+                                                                    <path fill="currentColor"
+                                                                          d="M5 21q-.825 0-1.412-.587T3 19v-4h2v4h4v2zm14 0h-4v-2h4v-4h2v4q0 .825-.587 1.413T19 21M3 5q0-.825.588-1.412T5 3h4v2H5v4H3zm18 0v4h-2V5h-4V3h4q.825 0 1.413.588T21 5m-9 13q.525 0 .888-.363t.362-.887t-.363-.888T12 15.5t-.888.363t-.362.887t.363.888T12 18m-.9-3.825h1.825q0-.85.2-1.3T14 11.75q.875-.875 1.163-1.412t.287-1.288q0-1.35-.975-2.2T12 6q-1.25 0-2.15.65T8.55 8.5l1.65.675q.175-.65.663-1.062T12 7.7q.725 0 1.163.388t.437 1.037q0 .5-.237.938t-.813.912q-.825.725-1.137 1.4t-.313 1.8"/>
+                                                                </svg>
+                                                            </div>
+                                                            <ul tabindex="0"
+                                                                class="dropdown-content z-[1] menu p-2 shadow rounded-box w-44 bg-base-100 place-items-end">
+                                                                <li>
+                                                                    <a href="{{ url_for('auth.logout') }}"
+                                                                       class="btn bg-base-100 border-0">
+                                                                        Logout
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             fill="none" viewBox="0 0 24 24"
+                                                                             stroke="currentColor" class="w-6 h-6">
+                                                                            <path stroke-linecap="round"
+                                                                                  stroke-linejoin="round"
+                                                                                  stroke-width="2"
+                                                                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                                                        </svg>
+                                                                    </a>
+                                                                </li>
+                                                                <li><a href="{{ url_for('auth.profile') }}"
+                                                                       class="btn bg-base-100 border-0">
+                                                                    My Account
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                         class="w-6 h-6" viewBox="0 0 512 512">
+                                                                        <path fill="currentColor"
+                                                                              d="M406.5 399.6c-19.1-46.7-65-79.6-118.5-79.6h-64c-53.5 0-99.4 32.9-118.5 79.6C69.9 362.2 48 311.7 48 256c0-114.9 93.1-208 208-208s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6m-40.1 32.7c-32 20.1-69.8 31.7-110.4 31.7s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3h64c38.8 0 71.2 27.6 78.5 64.3zM256 512a256 256 0 1 0 0-512a256 256 0 1 0 0 512m0-272a40 40 0 1 1 0-80a40 40 0 1 1 0 80m-88-40a88 88 0 1 0 176 0a88 88 0 1 0-176 0"/>
+                                                                    </svg>
+                                                                </a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            {{ field.label(class="label") }}
+                                        {% endif %}
                                         {% if field.errors %}
                                             {% if type=="file" %}
                                                 {{ field(class="file-input input-error file-input-bordered w-full max-w-xs", type=type) }}
