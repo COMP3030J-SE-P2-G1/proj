@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-13 16:14+0800\n"
+"POT-Creation-Date: 2024-05-14 09:51+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: comp3030j/auth/__init__.py:14 templates/page/auth/profile/profile.j2:83
 msgid "Username"
@@ -94,38 +94,36 @@ msgid "Please check your password again!"
 msgstr "请重新检查输入的密码"
 
 #: comp3030j/dashboard/__init__.py:9
-#, fuzzy
 msgid "Name"
 msgstr "用户名"
 
 #: comp3030j/dashboard/__init__.py:10
 msgid "Description(Optional)"
-msgstr ""
+msgstr "描述（可选）"
 
 #: comp3030j/dashboard/__init__.py:11
 msgid "Start Time"
-msgstr ""
+msgstr "开始时间"
 
 #: comp3030j/dashboard/__init__.py:12
 msgid "End Time"
-msgstr ""
+msgstr "结束时间"
 
 #: comp3030j/dashboard/__init__.py:13
 msgid "Longitude"
-msgstr ""
+msgstr "经度"
 
 #: comp3030j/dashboard/__init__.py:14
 msgid "Latitude"
-msgstr ""
+msgstr "纬度"
 
 #: comp3030j/dashboard/__init__.py:15
 msgid "Technology"
-msgstr ""
+msgstr "技术"
 
 #: comp3030j/dashboard/__init__.py:16
-#, fuzzy
 msgid "Loss"
-msgstr "取消"
+msgstr ""
 
 #: comp3030j/dashboard/__init__.py:17
 msgid "Power"
@@ -141,27 +139,27 @@ msgstr ""
 
 #: comp3030j/dashboard/__init__.py:19
 msgid "csv only!"
-msgstr ""
+msgstr "只能上传csv文件"
 
 #: comp3030j/dashboard/__init__.py:23
 msgid "End time should be later than start time."
-msgstr ""
+msgstr "结束时间应晚于开始时间"
 
 #: comp3030j/dashboard/__init__.py:27
 msgid "Longitude should be between -180 and 180."
-msgstr ""
+msgstr "经度应在-180到180之间"
 
 #: comp3030j/dashboard/__init__.py:31
 msgid "Latitude should be between -90 and 90."
-msgstr ""
+msgstr "纬度应在-90到90之间"
 
 #: comp3030j/dashboard/__init__.py:35
 msgid "Please choose a Technology."
-msgstr ""
+msgstr "请选择一种技术"
 
 #: comp3030j/dashboard/__init__.py:37
 msgid "Technology should be a positive integer."
-msgstr ""
+msgstr "技术应为正整数"
 
 #: comp3030j/dashboard/__init__.py:41
 msgid "Loss should be a positive float."
@@ -185,7 +183,7 @@ msgstr "成功注册账号！你现在可以登录了"
 
 #: comp3030j/views/auth.py:60
 msgid "Please login first."
-msgstr ""
+msgstr "请先登录"
 
 #: comp3030j/views/auth.py:103
 msgid "Profile picture uploaded and saved."
@@ -205,10 +203,9 @@ msgstr "密码修改成功"
 
 #: comp3030j/views/dashboard.py:50
 msgid "Not allowed data in:"
-msgstr ""
+msgstr "不允许的数据："
 
 #: comp3030j/views/dashboard.py:67
-#, fuzzy
 msgid "Profile created successfully."
 msgstr "密码修改成功"
 
@@ -253,7 +250,6 @@ msgid "Close"
 msgstr "取消"
 
 #: templates/page/dashboard/page/profile.j2:28
-#, fuzzy
 msgid "Create a Profile"
 msgstr "个人中心"
 
@@ -264,16 +260,4 @@ msgstr "登出"
 #: templates/page/landing/header.j2:16
 msgid "Profile"
 msgstr "个人中心"
-
-#~ msgid "El Psy Kongaroo"
-#~ msgstr "Ciallo～(∠・ω< )⌒★"
-
-#~ msgid "Usage data uploaded and saved."
-#~ msgstr "头像文件已上传并修改"
-
-#~ msgid "Usage"
-#~ msgstr ""
-
-#~ msgid "Please log in to create a profile."
-#~ msgstr "个人中心"
 
