@@ -9,7 +9,16 @@ import { API_PREFIX } from './constants.ts';
 
 export async function getProfile(id: number): Promise<Profile> {
     const response = await fetch(`${API_PREFIX}/profile/${id}`);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
+    }
 
+    return response.json();
+}
+
+export async function getProfiles(uid: number): Promise<Profile> {
+    const response = await fetch(`${API_PREFIX}/profile/${uid}/profiles`);
+    console.log(response);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
@@ -63,6 +72,7 @@ export async function getUsage(
             aggregate: "day"
         })
     });
+    console.log(response)
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);

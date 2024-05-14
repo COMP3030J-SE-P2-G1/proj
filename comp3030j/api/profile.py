@@ -13,6 +13,7 @@ from comp3030j.util import parse_iso_string, to_iso_string
 from .security import auth_guard
 from comp3030j.util.cache import make_key_post_json_user
 
+
 def get_profile(id: int):
     """
     Utility function to check get a profile.
@@ -32,6 +33,20 @@ def get_profile(id: int):
         return profile, None
     else:
         return None, ({"code": 2, "errorMsg": "Unauthorized access"}, 403)
+
+
+def get_profiles(uid: int):
+    # return Profile(id = 1, u_id = 2, usage_id = 3, solar_id = 4), None
+    profiles = db.session.scalars(db.select(Profile).filter_by(user_id=uid)).all()
+    if not profiles:
+        return None, ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
+    elif profiles.user_id < 1000:  # public data: user_id < 1000 (typically 0)
+        return profiles, None
+    elif not current_user.is_authenticated:
+        return None, current_app.login_manager.unauthorized()
+    else:
+        return None, ({"code": 2, "errorMsg": "Unauthorized access"}, 403)
+
 
 def usage(id: int, content: dict):
     """
@@ -74,7 +89,7 @@ def usage(id: int, content: dict):
     span_hours = "span_hours" in content and content["span_hours"]
     aggregate = "aggregate" in content and content["aggregate"]
     # sum_hours = "sum_hours" in content and content["sum_hours"]
-
+    print(start_time, end_time, span_hours, aggregate)
     try:
 
         if start_time and end_time:

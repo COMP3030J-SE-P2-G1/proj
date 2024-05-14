@@ -7,6 +7,7 @@ from flask_login import current_user, login_required
 from .security import auth_guard
 from typing import Union
 
+
 def profiles(auth: Union[User, ApiKey]):
     user = auth if isinstance(auth, User) else auth.user
     return [profile.to_dict() for profile in user.profiles], None
