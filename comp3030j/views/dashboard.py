@@ -24,7 +24,10 @@ def dashboard():
 def render_subpage(path):
     if path == "profile":
         return render_profile_subpage(path)
+    if path == "index":
+        return render_index_subpage(path)
     return render_template(f"page/dashboard/page/{path}.j2")
+
 
 def render_profile_subpage(path):
     profileForm = ProfileForm()
@@ -32,7 +35,15 @@ def render_profile_subpage(path):
     profiles_dic = {}
     for profile in profiles:
         profiles_dic[profile.id] = profile.name
-    return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm, form=current_user)
+    return render_template(f"page/dashboard/page/{path}.j2", profiles=profiles_dic, profileForm=profileForm)
+
+
+def render_index_subpage(path):
+    profiles = Profile.query.filter_by(user_id=current_user.id).all()
+    profiles_dic = {}
+    for profile in profiles:
+        profiles_dic[profile.id] = profile.name
+    return render_template(f"page/dashboard/page/{path}.j2", profiles_amount=len(profiles_dic))
 
 
 @bp.route('/create_profile', methods=['POST'])
@@ -41,7 +52,7 @@ def create_profile():
     profileForm = ProfileForm()
     if profileForm.validate_on_submit():
         # Add profile to the database
-        user_to_update = User.query.filter_by(id=session['user_id']).first()
+        user_to_update = User.query.filter_by(id=current_user.id).first()
         if user_to_update:
             file = request.files[profileForm.usage_file.name]
             usages = read_hourly_usage_csv(file)
@@ -53,7 +64,7 @@ def create_profile():
             profileForm.start_time.data = datetime.strptime(str(profileForm.start_time.data) + " +01:00", "%Y-%m-%d %z")
             profileForm.end_time.data = datetime.strptime(str(profileForm.end_time.data) + " +01:00", "%Y-%m-%d %z")
             print(profileForm.end_time.data)
-            profile = Profile(user_id=session['user_id'], name=profileForm.name.data, desc=profileForm.desc.data,
+            profile = Profile(user_id=current_user.id, name=profileForm.name.data, desc=profileForm.desc.data,
                               start_time=profileForm.start_time.data, end_time=profileForm.end_time.data,
                               lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
                               loss=profileForm.loss.data, power=profileForm.power.data)
@@ -79,39 +90,3 @@ def create_profile():
 @login_required
 def download_templates():
     return send_file('static/demo_2023.csv', as_attachment=True)
-
-#
-# @bp.route('/update_usage', methods=['POST'])
-# @login_required
-# def update_usage():
-#     if 'file' not in request.files:
-#         flash(_ltr('Upload failed'), 'error')
-#         return jsonify({'status': 'error', 'message': 'File upload failure'}), 400
-#     file = request.files['file']
-#     filetype = allowed_file(file.filename)
-#     if file and filetype:
-#         # update the avatar in the database
-#         user_to_update = User.query.filter_by(id=session['user_id']).first()
-#         if user_to_update:
-#             if filetype == "csv":
-#                 usages = read_hourly_usage_csv(file)
-#             profile = Profile(user_id=session['user_id'], name=str(file.filename.rsplit(".", 1)[0]),
-#                               desc="Demo Profile")
-#             db.session.add(profile)
-#             db.session.commit()
-#             for timestamp, value in usages.items():
-#                 if value is None:
-#                     flash(_ltr('Not allowed data in:' + str(timestamp)), 'error')
-#                     return jsonify(
-#                         {'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
-#                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
-#                 db.session.add(usage)
-#             db.session.commit()
-#             flash(_ltr('Usage data uploaded and saved.'), 'success')
-#             return jsonify({'status': 'success', 'message': 'Usage updated successfully'}), 200
-#         else:
-#             flash(_ltr('Unavailable Account.'), 'error')
-#             return jsonify({'status': 'error', 'message': 'Unavailable Account.'}), 400
-#     else:
-#         flash(_ltr('Upload failed'), 'error')
-#         return jsonify({'status': 'error', 'message': 'Validation errors', 'errors': "unsupported file"}), 400

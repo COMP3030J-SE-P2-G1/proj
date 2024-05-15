@@ -3,14 +3,6 @@ import * as PROFILE_API from "../api/profile";
 import {Aggregate} from "../api/types.ts";
 
 
-// export async function getProfiles(
-//     userId: number
-// ): Promise<Usage[] | TimelyArrayData[]> {
-//     const profiles = await PROFILE_API.getProfiles(userId);
-//
-//     return usageData;
-// }
-
 export async function getUsageSum(
     profileId: number,
     startTime: Date | null,
@@ -30,7 +22,6 @@ export async function getUsageSum(
 export async function calculateYearlySum(profileId: number){
     const yearlyUsageSum = {};
     const daylyUsage= await getUsageSum(profileId, null, null, null, "month");
-    console.log("1 Usage Sum:");
     console.log("We Get", daylyUsage);
     let time_stamp: string;
     let dt: Date;

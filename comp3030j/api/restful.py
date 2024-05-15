@@ -30,11 +30,6 @@ def _return_jsonify(ret: tuple[any, any]):
 def profile_profile(id):
     return _return_dict(profile.get_profile(id))
 
-@bp_profile.route("/<int:id>/profiles", methods=["POST"])
-@auth_guard()
-def profile_profiles(uid):
-    return _return_dict(profile.get_profiles(uid))
-
 @bp_profile.route("/<int:id>/usage", methods=["POST"])
 @auth_guard()
 @cache.cached(make_cache_key=make_key_post_json_user)
