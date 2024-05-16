@@ -8,6 +8,7 @@ from flask import Blueprint, current_app, request, jsonify
 from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 from datetime import timezone
 from dateutils import relativedelta
+from typing import Dict
 import requests, json
 from comp3030j.util import parse_iso_string, to_iso_string
 from .security import auth_guard
@@ -48,7 +49,7 @@ def get_profiles(uid: int):
         return None, ({"code": 2, "errorMsg": "Unauthorized access"}, 403)
 
 
-def usage(id: int, content: dict):
+def usage(id: int, content: Dict):
     """
     request body:
     {
@@ -166,14 +167,19 @@ def usage(id: int, content: dict):
             return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return None, ({
-            "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
-        }, 400)
+        return None, (
+            {
+                "errorMsg": "inappropriate timestamp format or invalid duration: "
+                + str(e),
+            },
+            400,
+        )
 
     except Exception as e:
         return None, ({"errorMsg": str(e)}, 400)
 
-def solar(id: int, content: dict):
+
+def solar(id: int, content: Dict):
     """
     request body:
     {
@@ -332,10 +338,13 @@ def solar(id: int, content: dict):
             return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return None, ({
-            "errorMsg": "inappropriate timestamp format, invalid duration or sum: "
-            + str(e),
-        }, 400)
+        return None, (
+            {
+                "errorMsg": "inappropriate timestamp format, invalid duration or sum: "
+                + str(e),
+            },
+            400,
+        )
 
     except Exception as e:
         return None, ({"errorMsg": str(e)}, 400)

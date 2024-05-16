@@ -7,8 +7,10 @@ from comp3030j.util import parse_iso_string, to_iso_string
 from comp3030j.util.cache import make_key_post_json
 from .security import auth_guard
 from dateutils import relativedelta
+from typing import Dict
 
-def semspot(content: dict):
+
+def semspot(content: Dict):
     """
     request body:
     {
@@ -114,9 +116,13 @@ def semspot(content: dict):
             return [*zip(time_stamps, time_series)], None
 
     except (ValueError, TypeError) as e:
-        return None, ({
-            "errorMsg": "inappropriate timestamp format or invalid duration: " + str(e),
-        }, 400)
+        return None, (
+            {
+                "errorMsg": "inappropriate timestamp format or invalid duration: "
+                + str(e),
+            },
+            400,
+        )
 
     except Exception as e:
         return None, ({"errorMsg": str(e)}, 400)
