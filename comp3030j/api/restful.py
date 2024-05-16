@@ -1,6 +1,6 @@
 from comp3030j import cache
 from flask import Blueprint, request, jsonify
-from . import profile, data, security, user
+from . import profile, data, security, user, decorators
 from .security import auth_guard
 from typing import Tuple, Any  # Python 3.8 compatibility
 from flask_login import login_required
@@ -33,7 +33,7 @@ def _return_jsonify(ret: Tuple[Any, Any]):
 @bp_profile.route("/<int:id>")
 @auth_guard()
 def profile_profile(id):
-    return _return_dict(profile.get_profile(id))
+    return _return_dict(decorators.get_profile(id))
 
 
 @bp_profile.route("/<int:id>/usage", methods=["POST"])

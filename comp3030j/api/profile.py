@@ -10,18 +10,6 @@ from .decorators import parse_profile_request, aggregate_result
 import requests
 import json
 
-# def get_profiles(uid: int):
-#     # return Profile(id = 1, u_id = 2, usage_id = 3, solar_id = 4), None
-#     profile = db.session.scalars(db.select(Profile).filter_by(user_id=uid)).first()
-#     if not profile:
-#         return None, ({"code": 1, "errorMsg": "No corresponding resource"}, 400)
-#     elif profile.user_id < 1000:  # public data: user_id < 1000 (typically 0)
-#         return profile, None
-#     elif not current_user.is_authenticated:
-#         return None, current_app.login_manager.unauthorized()
-#     else:
-#         return None, ({"code": 2, "errorMsg": "Unauthorized access"}, 403)
-
 
 @parse_profile_request
 @aggregate_result
