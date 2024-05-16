@@ -40,21 +40,28 @@ def profile_profile(id):
 @auth_guard()
 @cache.cached(make_cache_key=make_key_post_json_user)
 def profile_usage(id):
-    return _return_jsonify(profile.usage(id, request.json))
+    return _return_jsonify(profile.usage_route(id, request.json))
 
 
 @bp_profile.route("/<int:id>/solar", methods=["POST"])
 @auth_guard()
 @cache.cached(make_cache_key=make_key_post_json_user)
 def profile_solar(id):
-    return _return_jsonify(profile.solar(id, request.json))
+    return _return_jsonify(profile.solar_route(id, request.json))
+
+
+@bp_profile.route("/<int:id>/saving", methods=["POST"])
+@auth_guard()
+@cache.cached(make_cache_key=make_key_post_json_user)
+def profile_saving(id):
+    return _return_jsonify(profile.saving_route(id, request.json))
 
 
 @bp_data.route("/sems", methods=["POST"])
 @auth_guard()
 @cache.cached(make_cache_key=make_key_post_json)
 def data_semspot():
-    return _return_jsonify(data.semspot(request.json))
+    return _return_jsonify(data.semspot_route(request.json))
 
 
 @bp_security.route("/create_api_key")

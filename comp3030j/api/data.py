@@ -1,76 +1,17 @@
-from comp3030j import app, cache
 from comp3030j.db import db
 from comp3030j.db.SEMSpot import SEMSpot
-from flask import Blueprint, current_app, request, jsonify
-from datetime import datetime, timedelta, MINYEAR, MAXYEAR, timezone
-from comp3030j.util import parse_iso_string, to_iso_string
-from comp3030j.util.cache import make_key_post_json
-from .security import auth_guard
-from dateutils import relativedelta
-from typing import Dict, Callable
-from .profile import aggregate_result
-
-
-def parse_data_request(func: Callable):
-
-    def inner(content: Dict, *args, **kwargs):
-        one_hour = timedelta(hours=1)
-        start_time = "start_time" in content and content["start_time"]
-        end_time = "end_time" in content and content["end_time"]
-        span_hours = "span_hours" in content and content["span_hours"]
-        aggregate = "aggregate" in content and content["aggregate"]
-
-        try:
-
-            if start_time and end_time:
-                start_dt = parse_iso_string(start_time)
-                end_dt = parse_iso_string(end_time)
-
-            elif start_time and span_hours:
-                start_dt = parse_iso_string(start_time)
-                delta_hours = abs(int(span_hours))
-                end_dt = start_dt + one_hour * delta_hours
-
-            elif end_time and span_hours:
-                end_dt = parse_iso_string(end_time)
-                delta_hours = abs(int(span_hours))
-                start_dt = end_dt - one_hour * delta_hours
-
-            elif span_hours:  # default to first
-                start_dt = db.session.scalar(
-                    db.select(SEMSpot).order_by(SEMSpot.time.asc())
-                ).time
-                delta_hours = abs(int(span_hours))
-                end_dt = start_dt + one_hour * delta_hours
-
-            else:
-                raise KeyError(
-                    "malformed request, specify either \
-    (start_time, end_time), (start_time, span_hours), (end_time, span_hours) or (span_hours): "
-                )
-
-            return func(
-                *args, start_dt=start_dt, end_dt=end_dt, aggregate=aggregate, **kwargs
-            )
-
-        except (ValueError, TypeError) as e:
-            return None, (
-                {
-                    "errorMsg": "inappropriate timestamp format or invalid duration: "
-                    + str(e),
-                },
-                400,
-            )
-
-        except Exception as e:
-            return None, ({"errorMsg": str(e)}, 400)
-
-    return inner
+from datetime import datetime
+from typing import List
+from .decorators import parse_data_request, aggregate_result
 
 
 @parse_data_request
 @aggregate_result
-def semspot(start_dt: datetime, end_dt: datetime):
+def semspot_route(*args, **kwargs):
+    return get_semspot(*args, **kwargs)
+
+
+def get_semspot(start_dt: datetime, end_dt: datetime) -> List[SEMSpot]:
     """
     request body:
     {
@@ -105,4 +46,5 @@ def semspot(start_dt: datetime, end_dt: datetime):
         db.select(SEMSpot).filter(SEMSpot.time.between(start_dt, end_dt))
     )
     result_list = list(result)  # turn consumable iterator into imperishable list
+    result_list.sort(key=lambda entry: entry.time)
     return result_list

@@ -20,7 +20,7 @@ class Usage(db.Model, SerializerMixin):
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
     profile: Mapped[Profile] = relationship(back_populates="usage")
     time: Mapped[datetime] = mapped_column(UtcDateTime())
-    usage: Mapped[float] = mapped_column()
+    usage: Mapped[float] = mapped_column()  # in kWh
 
     def to_timeseries(self):
         return self.usage
