@@ -19,3 +19,6 @@ class SEMSpot(db.Model, SerializerMixin):
     __tablename__ = "sems"
     time: Mapped[datetime] = mapped_column(UtcDateTime(), primary_key=True)
     spot: Mapped[float] = mapped_column(nullable=False)
+
+    def to_timeseries(self):
+        return self.spot

@@ -8,7 +8,7 @@ from ariadne import (
 )
 from ariadne.explorer import ExplorerGraphiQL
 from .security import auth_guard
-from typing import Dict, Any
+from typing import Any, Tuple
 from comp3030j.api import profile, user, data
 from comp3030j import app
 import os

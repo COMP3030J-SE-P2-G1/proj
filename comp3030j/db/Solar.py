@@ -32,3 +32,6 @@ class Solar(db.Model, SerializerMixin):
     power: Mapped[float] = mapped_column()
     time: Mapped[datetime] = mapped_column(UtcDateTime())
     generation: Mapped[float] = mapped_column()
+
+    def to_timeseries(self):
+        return self.generation

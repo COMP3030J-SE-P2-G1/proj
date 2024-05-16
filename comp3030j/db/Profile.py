@@ -33,9 +33,9 @@ class Profile(db.Model, SerializerMixin):
     start_time: Mapped[datetime] = mapped_column(UtcDateTime())
     end_time: Mapped[datetime] = mapped_column(UtcDateTime())
 
-    lon: Mapped[Optional[float]] = mapped_column()
-    lat: Mapped[Optional[float]] = mapped_column()
-    tech: Mapped[Optional[int]] = mapped_column()
+    lon: Mapped[float] = mapped_column()
+    lat: Mapped[float] = mapped_column()
+    tech: Mapped[int] = mapped_column()
 
-    loss: Mapped[Optional[float]] = mapped_column()
-    power: Mapped[Optional[float]] = mapped_column()
+    loss: Mapped[float] = mapped_column()
+    power: Mapped[float] = mapped_column()

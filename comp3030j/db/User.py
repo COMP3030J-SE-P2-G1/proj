@@ -28,9 +28,7 @@ class User(db.Model, UserMixin, SerializerMixin):
     avatar_file: Mapped[str] = mapped_column(default="default.jpg")
     profiles: Mapped[List[Profile]] = relationship(back_populates="user")
     apikeys: Mapped[List[ApiKey]] = relationship(back_populates="user")
-    
+
     @classmethod
     def find_by_id(cls, id: str):
         return User.query.filter_by(id=id).first()
-    
-
