@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-16 16:33+0800\n"
+"POT-Creation-Date: 2024-05-16 21:09+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: comp3030j/auth/__init__.py:14 templates/page/auth/profile/profile.j2:83
 msgid "Username"
@@ -37,8 +37,8 @@ msgstr "确认密码"
 
 #: comp3030j/auth/__init__.py:18 templates/page/auth/history/index.j2:42
 #: templates/page/auth/profile/index.j2:43 templates/page/auth/register.j2:21
-#: templates/page/auth/register.j2:46 templates/page/landing/header.j2:19
-#: templates/page/landing/index.j2:41
+#: templates/page/auth/register.j2:46 templates/page/landing/header.j2:23
+#: templates/page/landing/index.j2:42
 msgid "Sign Up"
 msgstr "注册"
 
@@ -68,8 +68,8 @@ msgstr "记住我"
 
 #: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
 #: templates/page/auth/login.j2:63 templates/page/auth/login.j2:92
-#: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:18
-#: templates/page/landing/index.j2:40
+#: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:22
+#: templates/page/landing/index.j2:41
 msgid "Sign In"
 msgstr "登录"
 
@@ -249,11 +249,11 @@ msgstr "取消"
 msgid "Create a Profile"
 msgstr "个人中心"
 
-#: templates/page/landing/header.j2:15
+#: templates/page/landing/header.j2:19
 msgid "Logout"
 msgstr "登出"
 
-#: templates/page/landing/header.j2:16
+#: templates/page/landing/header.j2:20
 msgid "Profile"
 msgstr "个人中心"
 

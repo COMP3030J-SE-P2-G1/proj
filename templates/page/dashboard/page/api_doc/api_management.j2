@@ -1,6 +1,7 @@
 <div class="size-full flex flex-col p-3">
     <header class="flex flex-col items-center mt-4">
-        <div class="flex"><h1 class="text-3xl font-bold text-base-content">API Keys</h1>
+        <div class="flex">
+            <h1 class="text-3xl font-bold text-base-content">API Keys</h1>
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-xs text-info">
                     <svg tabindex="0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -38,6 +39,12 @@
             <dialog id="my_modal_4" class="modal">
                 <div class="modal-box justify-center">
                     <h2 class="font-bold text-center text-lg">Create new secret key</h2>
+                    <div id="alert" role="alert" class="alert alert-error hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Error! Key name already exists. Please choose a different name.</span>
+                    </div>
                     <div class="modal-action justify-center">
                         <input type="text" placeholder="Enter the Name of Key" id="keyNameInput" class="input input-bordered w-full max-w-xs"/>
                     </div>
@@ -104,12 +111,19 @@
     const createKeyButton = document.querySelector('#createKeyButton');
     const keyTableBody = document.querySelector('#keyTableBody');
     const keyNameInput = document.querySelector('#keyNameInput');
+    const alertBox = document.getElementById('alert');
     let rowCounter = 2;
 
     createKeyButton.addEventListener('click', function(event) {
         const dialogElm = document.getElementById("my_modal_4");
 
-        const keyName = keyNameInput.value;
+        const keyName = keyNameInput.value.trim();
+        if (isKeyNameDuplicate(keyName)) {
+            alertBox.classList.remove('hidden');
+            return;
+        }
+
+        alertBox.classList.add('hidden');
 
         const newRow = document.createElement('tr');
 
@@ -144,7 +158,6 @@
             </label>
         `;
         newRow.appendChild(permissionsCell);
-
 
         const deleteButtonCell = document.createElement('td');
         const deleteButton = document.createElement('button');
@@ -195,4 +208,8 @@
         return visiblePartStart + maskedPart + visiblePartEnd;
     }
 
+    function isKeyNameDuplicate(keyName) {
+        const keyNames = Array.from(keyTableBody.querySelectorAll('tr td:first-child + td')).map(td => td.textContent);
+        return keyNames.includes(keyName);
+    }
 </script>
