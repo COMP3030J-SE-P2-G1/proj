@@ -1,11 +1,17 @@
-import { initElectricityPriceChart } from '../chart/chart.ts';
+import * as Chart from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
 
 function initCharts() {
     const electricityUsageChartElm = document.getElementById("electricity_price");
     if (!electricityUsageChartElm) { console.error("Cannot find HTML element #electricity_price."); return;}
-    initElectricityPriceChart(electricityUsageChartElm, null, null, null, "day", {
-        optionTemplate: {
+    
+    const dataSources = [
+        new Chart.ElectricityPriceDataSource()
+    ];
+    Chart.initDynamicTimelyChart(
+        electricityUsageChartElm,
+        dataSources,
+        {
             dateset: {
                 source: []
             },
@@ -67,7 +73,7 @@ function initCharts() {
             ],
             animation: false, // disable animation to achieve the best performance
         }
-    });
+    )
 }
 
 

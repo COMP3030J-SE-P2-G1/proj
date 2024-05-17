@@ -1,6 +1,8 @@
 import { BarChart } from 'echarts/charts';
 import { initElectricityPriceChart, initElectricityUsageChart } from '../chart/chart.ts';
 import * as echarts from 'echarts/core';
+import * as PROFILE_API from '../api/profile.ts';
+import * as Chart from '../chart/chart.ts';
 
 function bindEvents(): void {
     document.getElementById('profileForm').addEventListener('submit', async function (e) {
@@ -79,21 +81,29 @@ function activeTabEvents(tabId: string): void {
 
 
 function initCharts() {
-    const electricityUsagePieChartElm = document.getElementById("chart0");
-    if (!electricityUsagePieChartElm) { console.error("Cannot find HTML element #chart0"); return;}
-    initElectricityUsageChart(electricityUsagePieChartElm, 1, null, null, "month", {
-        type: {
-            type: "pie",
-            xField: 0,
-            yField: 1,
-            format: "yyyy-MMMM"
-        },
-        optionTemplate: {
+    const chart0Elm = document.getElementById("chart0");
+    if (!chart0Elm) { console.error("Cannot find HTML element #chart0"); return;}
+    const chart0dataSources = [
+        new Chart.ElectricityPriceDataSource({
+            initChartOptions: {
+                type: {
+                    type: "pie",
+                    xField: 0,
+                    yField: 1,
+                    format: "yyyy-MMMM"
+                }
+            }
+        })
+    ];
+    Chart.initDynamicTimelyChart(
+        chart0Elm,
+        chart0dataSources,
+        {
             dateset: {
                 source: []
             },
             title: {
-                text: 'Electricity Usage',
+                text: 'Electricity Price',
                 left: 'center'
             },
             tooltip: {
@@ -118,60 +128,73 @@ function initCharts() {
             ],
             animation: false,
         }
-    });
+    )
 
-    const electricityPriceChartElm = document.getElementById("chart1");
-    if (!electricityPriceChartElm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    initElectricityPriceChart(electricityPriceChartElm, null, null, null, "day", {
-        optionTemplate: {
-            dateset: {
-                source: []
-            },
-            visualMap: {
-                show: false,
-                type: 'continuous',
-                seriesIndex: 0,
-                min: 0,
-            },
-            title: {
-                left: 'center',
-                text: 'Gradient along the y axis'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            xAxis: {
-                type: 'time'
-            },
-            yAxis: {
-                type: 'value',
-                boundaryGap: [0, '100%'],
-                max: function (value) {
-                    return value.max * 1.5;
-                }
-            },
-            dataZoom: [
+    
+    const chart1Elm = document.getElementById("chart1");
+    if (!chart1Elm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+    PROFILE_API.getProfile(1).then(
+        profile => {
+            const chart1dataSources = [
+                new Chart.ProfileUsageDataSource(profile)
+            ];
+            Chart.initDynamicTimelyChart(
+                chart1Elm,
+                chart1dataSources,
                 {
-                    type: 'inside',
-                    start: 0,
-                    end: 10
-                },
-                {
-                    start: 0,
-                    end: 10
+                    dateset: {
+                        source: []
+                    },
+                    visualMap: {
+                        show: false,
+                        type: 'continuous',
+                        seriesIndex: 0,
+                        min: 0,
+                    },
+                    title: {
+                        left: 'center',
+                        text: 'Electricity Usage Chart'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'time'
+                    },
+                    yAxis: {
+                        type: 'value',
+                        boundaryGap: [0, '100%'],
+                        max: function (value) {
+                            return value.max * 1.5;
+                        }
+                    },
+                    dataZoom: [
+                        {
+                            type: 'inside',
+                            start: 0,
+                            end: 10
+                        },
+                        {
+                            start: 0,
+                            end: 10
+                        }
+                    ],
+                    grid: {},
+                    series: [
+                        {
+                            encode: { x: 0, y: 1 },
+                            type: "bar",
+                        }
+                    ],
+                    animation: false,
                 }
-            ],
-            grid: {},
-            series: [
-                {
-                    encode: { x: 0, y: 1 },
-                    type: "bar",
-                }
-            ],
-            animation: false,
+            )       
         }
-    });
+    )
+
 }
+
+
 let map: google.maps.Map;
 let marker: google.maps.Marker;
 let geocoder: google.maps.Geocoder;
