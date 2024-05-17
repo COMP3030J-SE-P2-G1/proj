@@ -323,6 +323,48 @@ export function getDefaultFetchDataStep(
     return defaultDays;
 }
 
+function defaultUpdateStateFunction<D extends TimelyArrayData>(
+    endTime: Date | null,
+    fetchDataStep: number
+) {
+    return (state: State<NullableTime>, data: D[]) => {
+        const newState: State<NullableTime> = Object.assign({}, state);
+        if (data.length == 0) {
+            newState.state = StateType.stop;
+            return newState;
+        }
+        const rawEndDate = data[data.length - 1]
+        const rawStartDate = data[0][0]
+        const localEndTime = new Date(rawEndDate[0]);
+        const localStartTime = new Date(rawStartDate);
+
+        if (endTime && localEndTime >= endTime) {
+            newState.state = StateType.stop;
+            return newState;
+        }
+            
+        if (fetchDataStep) {
+            const localSecondTime = new Date(data[1][0]);
+            // tolerance: 1 hour
+            const timeInterval = data.length == 1 ? null : (localSecondTime.getTime() - localStartTime.getTime()) / 3600000;
+            let timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
+            if (timeInterval) timeSpan = timeSpan + timeInterval;
+                
+            if (timeSpan < fetchDataStep * 24) {
+                newState.state = StateType.stop;
+                return newState;
+            }
+                
+        }
+
+        const nextTime = new Date(localStartTime.getTime() + fetchDataStep * 86400000).toISOString();
+        newState.value = nextTime;
+            
+        return newState;
+    } ;
+}    
+
+
 /**
  * if endTime is null, then only request data once
  */
@@ -338,41 +380,7 @@ export async function initDynamicTimelyChart<D extends TimelyArrayData>(
         fetchDataStep = getDefaultFetchDataStep(daysBetweenNull(startTime, endTime)),
         fetchDataFunc,
         overrideOption = getDefaultOverrideOption<D>(initChartOptions),
-        updateStateFunc = (state, data) => {
-            const newState: State<NullableTime> = Object.assign({}, state);
-            if (data.length == 0) {
-                newState.state = StateType.stop;
-                return newState;
-            }
-            const rawEndDate = data[data.length - 1]
-            const rawStartDate = data[0][0]
-            const localEndTime = new Date(rawEndDate[0]);
-            const localStartTime = new Date(rawStartDate);
-
-            if (endTime && localEndTime >= endTime) {
-                newState.state = StateType.stop;
-                return newState;
-            }
-            
-            if (fetchDataStep) {
-                const localSecondTime = new Date(data[1][0]);
-                // tolerance: 1 hour
-                const timeInterval = data.length == 1 ? null : (localSecondTime.getTime() - localStartTime.getTime()) / 3600000;
-                let timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
-                if (timeInterval) timeSpan = timeSpan + timeInterval;
-                
-                if (timeSpan < fetchDataStep * 24) {
-                    newState.state = StateType.stop;
-                    return newState;
-                }
-                
-            }
-
-            const nextTime = new Date(localStartTime.getTime() + fetchDataStep * 86400000).toISOString();
-            newState.value = nextTime;
-            
-            return newState;
-        },
+        updateStateFunc = defaultUpdateStateFunction(endTime, fetchDataStep),
         interval = 0,
         shouldStopFetchingFunc
     } = initChartOptions;

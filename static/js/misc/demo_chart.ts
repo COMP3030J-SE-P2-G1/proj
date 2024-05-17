@@ -111,13 +111,13 @@ function demoInitElectricityPriceHypridChart() {
                         type: 'filter',
                         config: {
                             dimension: 1,
-                            '<': 2000
+                            '<': 40000
                         }
                     }
                 },
             ],
             title: {
-                text: "Usage hybrid chart (bar & line whose value is lower than 2000)"
+                text: "Usage hybrid chart (bar & line whose value is lower than 40000)"
             },
             xAxis: {
                 type: 'time'
