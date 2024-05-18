@@ -5,12 +5,47 @@ import type {
 
 import { format } from 'date-fns';
 
-import { StateType } from './basic.ts';
-import type { State, ChartTypeOption, ChartOption, PieChartType, StringNumberDict } from './basic.ts';
+import type { ChartOption } from './basic.ts';
 import type { NullableTime, TimelyArrayData, Aggregate, Profile } from '../api/types.ts';
 import { dateAdd, daysBetweenNull, hoursBetweenNull } from '../lib/utils.ts';
 import * as PROFILE_API from '../api/profile.ts';
 import * as DATA_API from '../api/data.ts';
+
+export enum StateType {
+    initial,
+    continue,
+    stop
+}
+
+export type State<T> = {
+    state: StateType,
+    value: T
+};
+
+export type PieChartInterval = 'day' | 'week' | 'month' | 'year';
+export type StringNumberDict = { [key: string]: number };
+
+export type Chart2D = {
+    type: string,
+    xField: string | number,
+    yField: string | number,
+}
+
+export interface LineChartType extends Chart2D {
+    type: "line"
+}
+
+export interface BarChartType extends Chart2D {
+    type: "bar"
+}
+
+export interface PieChartType extends Chart2D {
+    type: "pie",
+    /** format should be in date-fns format. See https://date-fns.org/v3.6.0/docs/format */
+    format: string
+}
+
+export type ChartTypeOption =  LineChartType | BarChartType | PieChartType;
 
 export type OverrideOptionFuncType<D> = (data: D[], prevData: D[] | null, prevOption: ChartOption, index: number) => ChartOption;
 

@@ -1,7 +1,5 @@
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import type { NullableTime, TimelyArrayData } from '../api/types.ts';
-import { daysBetweenNull, isDarkTheme } from '../lib/utils.ts';
 import { DataSource, DataSourceTimelyData } from './datasource.ts';
 
 
@@ -69,43 +67,6 @@ echarts.use([
     CanvasRenderer
 ]);
 
-export enum StateType {
-    initial,
-    continue,
-    stop
-}
-
-export type State<T> = {
-    state: StateType,
-    value: T
-};
-
-export type PieChartInterval = 'day' | 'week' | 'month' | 'year';
-export type StringNumberDict = { [key: string]: number };
-
-export type Chart2D = {
-    type: string,
-    xField: string | number,
-    yField: string | number,
-}
-
-export interface LineChartType extends Chart2D {
-    type: "line"
-}
-
-export interface BarChartType extends Chart2D {
-    type: "bar"
-}
-
-export interface PieChartType extends Chart2D {
-    type: "pie",
-    /** format should be in date-fns format. See https://date-fns.org/v3.6.0/docs/format */
-    format: string
-}
-
-export type ChartTypeOption =  LineChartType | BarChartType | PieChartType;
-
-export type OverrideOptionReturnType<D> = (data: D[], prevData: D[] | null, prevOption: ChartOption) => ChartOption;
 
 /**
  * Asynchronous Loading + Dynamic Update
