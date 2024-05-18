@@ -9,8 +9,6 @@ from comp3030j.db.Usage import Usage
 from comp3030j.db.User import User
 from comp3030j.util import _ltr, read_hourly_usage_csv
 
-from comp3030j.util.cache import make_key_post_json
-
 bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 

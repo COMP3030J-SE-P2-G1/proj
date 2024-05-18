@@ -6,7 +6,7 @@ from typing import Union
 
 def is_valid(token) -> Union[ApiKey, bool]:
     apikey = ApiKey.find_by_token(token)
-    if apikey:
+    if apikey and apikey.enabled:
         return apikey
     return False
 
@@ -40,6 +40,7 @@ def auth_guard(return_auth: bool = False):
 
             api_key = is_valid(raw_api_key)
             if api_key:
+                api_key.update_last_used_time()
                 if return_auth:
                     return func(api_key, *args, **kwargs)
                 else:

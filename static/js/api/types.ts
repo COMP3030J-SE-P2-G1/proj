@@ -22,6 +22,15 @@ export type Profile = {
     power: number | null
 }
 
+export type ApiKey = {
+    id: number,
+    desc: string | null,
+    enabled: boolean,
+    created_time: string,
+    last_used_time: string,
+    token: string
+}
+
 export interface Solar extends TimelyData {
     generation: number,
     id: number,

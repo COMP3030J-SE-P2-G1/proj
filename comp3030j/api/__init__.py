@@ -12,6 +12,7 @@ def bind_apis(app: Flask):
     restful_prefix.register_blueprint(restful.bp_data)
     restful_prefix.register_blueprint(restful.bp_user)
     restful_prefix.register_blueprint(restful.bp_profile)
+    restful_prefix.register_blueprint(restful.bp_apikey_management)
 
     api.register_blueprint(restful_prefix)
     api.register_blueprint(graphql.bp)

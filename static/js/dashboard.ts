@@ -84,6 +84,9 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
         case 'api_doc/graphql_playground':
             void loadModule("api_doc_graphql_playground.ts", () => import("./dashboard/api_doc_graphql_playground.ts"));
             break;
+        case 'api_doc/apikey_management':
+            void loadModule("apikey_management.ts", () => import("./dashboard/apikey_management.js"));
+            break;
         default:
             break;
     }
@@ -111,7 +114,8 @@ async function asyncLoad() {
         
         import("./dashboard/electricity_usage_calculator.ts");
         import("./dashboard/usage_update.ts");
-        import("./dashboard/profile.ts")
+        import("./dashboard/profile.ts");
+        import("./dashboard/apikey_management.js")
         // import("./dashboard/policy.ts");
     });
 }
