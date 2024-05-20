@@ -129,6 +129,9 @@ function initCharts(aggregate: Aggregate = "year") {
                                 itemName: 0,
                                 value: 1
                             },
+                            tooltip: {
+                                valueFormatter: value => `${parseFloat(value).toFixed(2)} kWh`
+                            },
                             emphasis: {
                                 itemStyle: {
                                     shadowBlur: 10,
@@ -174,7 +177,7 @@ function initCharts(aggregate: Aggregate = "year") {
                     },
                     title: {
                         left: 'center',
-                        text: 'Generated Solar Chart'
+                        text: 'Generated Solar Energy vs Electricity Usage'
                     },
                     tooltip: {
                         trigger: 'axis'
@@ -188,6 +191,9 @@ function initCharts(aggregate: Aggregate = "year") {
                     yAxis: {
                         type: 'value',
                         boundaryGap: [0, '100%'],
+                        axisLabel: {
+                            inside: true
+                        },
                         max: function (value) {
                             return value.max * 1.5;
                         }
@@ -195,13 +201,32 @@ function initCharts(aggregate: Aggregate = "year") {
                     grid: {},
                     series: [
                         {
+                            name: "Solar",
                             encode: { x: 0, y: 1 },
                             type: "bar",
-                            datasetIndex: 0,
+                            stack: "jntm",
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            tooltip: {
+                                valueFormatter: value => `${parseFloat(value).toFixed(2)} kWh`
+                            },
+                            datasetIndex: 0
                         },
                         {
+                            name: "Usage",
                             encode: { x: 0, y: 1 },
                             type: "bar",
+                            stack: "jntm",
+                            emphasis: {
+                                focus: 'series'
+                            },
+                            itemStyle: {
+                                borderRadius: [5, 5, 0, 0]
+                            },
+                            tooltip: {
+                                valueFormatter: value => `${parseFloat(value).toFixed(2)} kWh`
+                            },
                             datasetIndex: 1,
                         }
                     ],

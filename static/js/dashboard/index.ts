@@ -8,6 +8,7 @@ function initCharts() {
     const dataSources = [
         new Chart.ElectricityPriceDataSource()
     ];
+
     Chart.initDynamicTimelyChart(
         electricityUsageChartElm,
         dataSources,
@@ -16,10 +17,7 @@ function initCharts() {
                 source: []
             },
             tooltip: {
-                trigger: 'axis',
-                position: function (pt) {
-                    return [pt[0], '10%'];
-                }
+                trigger: 'axis'
             },
             title: {
                 left: 'center',
@@ -31,6 +29,9 @@ function initCharts() {
             yAxis: {
                 type: 'value',
                 boundaryGap: [0, '100%'],
+                axisLabel: {
+                    formatter: "${value}",
+                },
                 max: function (value) {
                     return value.max * 2;
                 }
@@ -48,12 +49,15 @@ function initCharts() {
             ],
             series: [
                 {
-                    name: 'id0',
+                    name: 'Price',
                     type: 'line',
                     symbol: 'none',
                     sampling: 'lttb',
                     itemStyle: {
                         color: 'rgb(255, 70, 131)'
+                    },
+                    tooltip: {
+                        valueFormatter: value => `${parseFloat(value).toFixed(2)} €/MWh`
                     },
                     areaStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
