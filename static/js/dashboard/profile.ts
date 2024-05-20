@@ -158,9 +158,14 @@ function initCharts(aggregate: Aggregate = "year") {
                     })
                 ];
                 const optionTemplate = {
-                    dateset: {
-                        source: []
-                    },
+                    dateset: [
+                        {
+                            source: []
+                        },
+                        {
+                            source: []
+                        }
+                    ],
                     visualMap: {
                         show: false,
                         type: 'continuous',

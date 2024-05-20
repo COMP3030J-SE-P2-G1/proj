@@ -5,6 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime
+from sqlalchemy import Float
 
 
 class Solar(db.Model, SerializerMixin):
@@ -25,13 +26,13 @@ class Solar(db.Model, SerializerMixin):
     datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    lon: Mapped[float] = mapped_column()
-    lat: Mapped[float] = mapped_column()
+    lon: Mapped[float] = mapped_column(Float(10, 2))
+    lat: Mapped[float] = mapped_column(Float(10, 2))
     tech: Mapped[int] = mapped_column()  # use Integer to represent different techs
-    loss: Mapped[float] = mapped_column()
-    power: Mapped[float] = mapped_column()
+    loss: Mapped[float] = mapped_column(Float(10, 2))
+    power: Mapped[float] = mapped_column(Float(10, 2))
     time: Mapped[datetime] = mapped_column(UtcDateTime())
-    generation: Mapped[float] = mapped_column()
+    generation: Mapped[float] = mapped_column(Float(10, 2))
 
     def to_timeseries(self):
         return self.generation

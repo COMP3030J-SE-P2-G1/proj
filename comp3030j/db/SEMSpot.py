@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime
+from sqlalchemy import Float
 
 
 class SEMSpot(db.Model, SerializerMixin):
@@ -18,7 +19,7 @@ class SEMSpot(db.Model, SerializerMixin):
 
     __tablename__ = "sems"
     time: Mapped[datetime] = mapped_column(UtcDateTime(), primary_key=True)
-    spot: Mapped[float] = mapped_column(nullable=False)
+    spot: Mapped[float] = mapped_column(Float(10, 2), nullable=False)
 
     def to_timeseries(self):
         return self.spot

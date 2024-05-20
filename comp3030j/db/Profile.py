@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime
 from datetime import datetime
-
+from sqlalchemy import Float
 
 class Profile(db.Model, SerializerMixin):
     """
@@ -33,9 +33,9 @@ class Profile(db.Model, SerializerMixin):
     start_time: Mapped[datetime] = mapped_column(UtcDateTime())
     end_time: Mapped[datetime] = mapped_column(UtcDateTime())
 
-    lon: Mapped[float] = mapped_column()
-    lat: Mapped[float] = mapped_column()
-    tech: Mapped[int] = mapped_column()
+    lon: Mapped[float] = mapped_column(Float(10, 2))
+    lat: Mapped[float] = mapped_column(Float(10, 2))
+    tech: Mapped[int] = mapped_column(Float(10, 2))
 
-    loss: Mapped[float] = mapped_column()
-    power: Mapped[float] = mapped_column()  # kW
+    loss: Mapped[float] = mapped_column(Float(10, 2))
+    power: Mapped[float] = mapped_column(Float(10, 2))  # kW

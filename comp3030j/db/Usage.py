@@ -5,6 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime
+from sqlalchemy import Float
 
 
 class Usage(db.Model, SerializerMixin):
@@ -20,7 +21,7 @@ class Usage(db.Model, SerializerMixin):
     profile_id: Mapped[int] = mapped_column(ForeignKey("profile.id"))
     profile: Mapped[Profile] = relationship(back_populates="usage")
     time: Mapped[datetime] = mapped_column(UtcDateTime())
-    usage: Mapped[float] = mapped_column()  # in kWh
+    usage: Mapped[float] = mapped_column(Float(10, 2))  # in kWh
 
     def to_timeseries(self):
         return self.usage
