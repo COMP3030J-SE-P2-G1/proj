@@ -2,10 +2,14 @@
 openapi: 3.0.0
 info:
   title: Restful API documentation
-  description: Experimental API DOC. Some endpoint may not work. TODO update to the newest stage.
+  description: Interactive Restful API Document.
   version: 0.1.0
 servers:
   - url: http://csi420-02-vm8.ucd.ie/api/v1
+  - url: http://localhost:3000/api/v1
+    description: local test only
+  - url: http://localhost:5000/api/v1
+    description: local test only
   
 paths:
   /user/profiles:
@@ -57,13 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: array
-                  items:
-                    type: integer
-                  minItems: 2
-                  maxItems: 2
+                $ref: '#/components/schemas/timelyData'
       tags:
         - profile
         - electricity
@@ -82,13 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: array
-                  items:
-                    type: integer
-                  minItems: 2
-                  maxItems: 2
+                $ref: '#/components/schemas/timelyData'
       tags:
         - profile
         - electricity
@@ -104,18 +96,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: array
-                  items:
-                    type: integer
-                  minItems: 2
-                  maxItems: 2
+                $ref: '#/components/schemas/timelyData'
       tags:
         - electricity
         
 components:
   schemas:
+    timelyData:
+      type: array
+      items:
+        anyOf:
+          - type: string
+            format: date-time
+          - type: integer
     profile:
       type: object
       properties:
@@ -146,7 +139,14 @@ components:
           type: number
           description: latitude
         tech:
-          type: 
+          type: number
+          description: technique type
+        loss:
+          type: number
+          description: loss
+        power:
+          type: number
+          description: power
           
           
   requestBodies:
@@ -160,22 +160,30 @@ components:
           schema:
             type: object
             properties:
-              step:
-                type: string
-                description: time step
-                enum: 
-                 - 15m
-                 - 30m
-                 - 1d
-                 - 1m
-                 - 1y
               start_time:
                 type: string
                 format: date-time
+                nullable: true
+                example: "2023-1-31T23:00:00.000Z"
               end_time:
                 type: string
                 format: date-time
-          
+                nullable: true
+                example: "2023-2-22T23:00:00.000Z"
+              span_hours:
+                type: integer
+                description: Span hours. Used when at least one of start_time or end_time is not specified.
+                nullable: true
+                example: null
+              aggregate:
+                type: string
+                description: sum of data every interval
+                enum:
+                  - hour
+                  - day
+                  - month
+                  - year
+                example: "day"
   parameters:
     profileId:
       in: path
