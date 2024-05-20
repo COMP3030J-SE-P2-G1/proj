@@ -13,13 +13,13 @@ class Solar(db.Model, SerializerMixin):
     required attr:
         id: self id
         time: hourly timestamp
-        generation: float, power-generated.
+        generation: float, power-generated. kWh.
         # parameters the calculation was called with.
         lon: float
         lat: float
         tech: String, see proof-of-concept/solar.py
-        loss: float，内损
-        power: float, 装机发电量（瓦特）
+        loss: float
+        power: float, KW
     """
 
     datetime_format = "%Y-%m-%dT%H:%M:%S.%fZ"

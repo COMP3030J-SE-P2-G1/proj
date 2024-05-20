@@ -203,7 +203,7 @@ def _query_pvgis_one_year(
     lat: float,
     lon: float,
     year: int,  # PVGIS returns result in UTC, therefore no further processing is necessary
-    power: float,  # nominal capacity, in watts
+    power: float,  # nominal capacity, in kW
     pv_tech_code: int,
     loss: float,  # system loss
 ):
@@ -241,8 +241,8 @@ def _query_pvgis_one_year(
         timestamp = datetime.strptime(time + " +00:00", "%Y%m%d:%H%M %z")
         # use the actual year when calling this function.
         timestamp = timestamp.replace(year=year, minute=0)
-        # convert power_out (in watts) to generation (in kilowatt-hour)
-        generation = power_out * 3.6
+        # convert power_out (in watts) to generation (in kilowatt-hour/hour)
+        generation = power_out * 1e-3
         series_dict.update({timestamp: generation})
 
     return series_dict

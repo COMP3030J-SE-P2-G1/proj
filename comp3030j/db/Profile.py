@@ -38,4 +38,4 @@ class Profile(db.Model, SerializerMixin):
     tech: Mapped[int] = mapped_column()
 
     loss: Mapped[float] = mapped_column()
-    power: Mapped[float] = mapped_column()
+    power: Mapped[float] = mapped_column()  # kW
