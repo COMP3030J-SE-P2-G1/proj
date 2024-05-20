@@ -246,7 +246,8 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
                         item[type.xField],
                         item[type.yField]
                     ]
-                )
+                ),
+                sourceHeader: false
             };
 
             const prevDataset = prevOption.dataset;
@@ -265,7 +266,8 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
             }
 
             const overrideDatasetOption: DatasetComponentOption = {
-                source: Object.entries(usageData)
+                source: Object.entries(usageData),
+                sourceHeader: false
             };
 
             const prevDataset = prevOption.dataset;
@@ -288,16 +290,17 @@ export function getDefaultFetchDataStep(
     defaultDays = Math.ceil(defaultDays);
     
     if (days) {
-        days = Math.ceil(days);
+        days = Math.ceil(days / 3);
         return days > minDays ? days : minDays;
     }
     
     return defaultDays;
 }
 
+
 function defaultUpdateStateFunction<D extends TimelyArrayData>(
     endTime: Date | null,
-    fetchDataStep: number
+    fetchDataStep: number /* in days */
 ) {
     return (state: State<NullableTime>, data: D[]) => {
         const newState: State<NullableTime> = Object.assign({}, state);
@@ -305,12 +308,13 @@ function defaultUpdateStateFunction<D extends TimelyArrayData>(
             newState.state = StateType.stop;
             return newState;
         }
-        const rawEndDate = data[data.length - 1]
-        const rawStartDate = data[0][0]
-        const localEndTime = new Date(rawEndDate[0]);
-        const localStartTime = new Date(rawStartDate);
+        const rawEndDate = data[data.length - 1][0];
+        const rawStartDate = data[0][0];
+        // if interval(fetchDataStep) is one year, then localEndTimeStart is the year start of the last data / year
+        const localEndTimeStart = new Date(rawEndDate);
+        const localStartTimeStart = new Date(rawStartDate);
 
-        if (endTime && localEndTime >= endTime) {
+        if (endTime && localEndTimeStart.getTime() + fetchDataStep * 86400000 >= endTime.getTime()) {
             newState.state = StateType.stop;
             return newState;
         }
@@ -318,8 +322,8 @@ function defaultUpdateStateFunction<D extends TimelyArrayData>(
         if (fetchDataStep) {
             const localSecondTime = new Date(data[1][0]);
             // tolerance: 1 hour
-            const timeInterval = data.length == 1 ? null : (localSecondTime.getTime() - localStartTime.getTime()) / 3600000;
-            let timeSpan = Math.ceil((localEndTime.getTime() - localStartTime.getTime()) / 3600000);
+            const timeInterval = data.length == 1 ? null : (localSecondTime.getTime() - localStartTimeStart.getTime()) / 3600000;
+            let timeSpan = Math.ceil((localEndTimeStart.getTime() - localStartTimeStart.getTime()) / 3600000);
             if (timeInterval) timeSpan = timeSpan + timeInterval;
                 
             if (timeSpan < fetchDataStep * 24) {
@@ -329,7 +333,7 @@ function defaultUpdateStateFunction<D extends TimelyArrayData>(
                 
         }
 
-        const nextTime = new Date(localStartTime.getTime() + fetchDataStep * 86400000).toISOString();
+        const nextTime = new Date(localStartTimeStart.getTime() + fetchDataStep * 86400000).toISOString();
         newState.value = nextTime;
             
         return newState;
@@ -418,8 +422,8 @@ export class ProfileDataSource extends DataSourceTimelyData {
         const fetchDataStep = initChartOptions.fetchDataStep;
         
         super(
-            startTime,
-            endTime,
+            gStartTime,
+            gEndTime,
             (state: State<NullableTime>) => {
                 const startTime = state.value ? new Date(state.value) : null;
                 let endTime = null;
@@ -489,7 +493,7 @@ export class ElectricityPriceDataSource extends DataSourceTimelyData {
 
         const gEndTime = endTime;
         let calSpanHours = spanHours ?? hoursBetweenNull(startTime, endTime);
-        const spanDays = calSpanHours ? calSpanHours / 24 : null; 
+        const spanDays = calSpanHours ? calSpanHours / 24 : null;
         
         initChartOptions.fetchDataStep = initChartOptions.fetchDataStep
             ?? getDefaultFetchDataStep(spanDays, getDefaultFetchDataDays(aggregate));

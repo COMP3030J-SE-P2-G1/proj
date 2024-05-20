@@ -5,6 +5,8 @@ import * as PROFILE_API from '../api/profile.ts';
 import * as Chart from '../chart/chart.ts';
 import type { Aggregate } from '../api/types.ts';
 
+// TODO start from and end from selection
+
 function bindEvents(): void {
     document.getElementById('profileForm').addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent the default form submission
@@ -34,7 +36,7 @@ function bindEvents(): void {
                         errorElement.className = 'alert alert-error shadow-lg mt-1 p-2 text-xs';
                         errorElement.style.backgroundColor = '#FECACA';
                         errorElement.style.color = '#B91C1C';
-                        errorElement.textContent = <string>errorMessage;
+                        errorElement.textContent = errorMessage;
 
                         if (inputElement) {
                             inputElement.classList.add('input-error'); // Highlight the input
@@ -86,8 +88,25 @@ function bindActiveTabEvents(tabId: string): void {
 function initCharts(aggregate: Aggregate = "year") {
     if (window.profile_chart0) window.profile_chart0.dispose();
     if (window.profile_chart1) window.profile_chart1.dispose();
+
+    const startTimeElm = document.getElementById("start_date");
+    const endTimeElm = document.getElementById("end_date");
+    let startTime = null;
+    let endTime = null;
+    if (startTimeElm) {
+        value = startTimeElm.value;
+        if (value != "") {
+            startTime = new Date(value);
+        }
+    }
+    if (endTimeElm) {
+        value = endTimeElm.value;
+        if (value != "") {
+            endTime = new Date(value);
+        }
+    }
     
-    initChart0();
+    // initChart0();
     initChart1();
     
     async function initChart0() {
@@ -96,6 +115,8 @@ function initCharts(aggregate: Aggregate = "year") {
         PROFILE_API.getProfile(1).then(profile => {
             const chart0dataSources = [
                 new Chart.ProfileUsageDataSource(profile, {
+                    startTime: startTime,
+                    endTime: endTime,
                     aggregate: aggregate,
                     initChartOptions: {
                         type: {
@@ -112,7 +133,8 @@ function initCharts(aggregate: Aggregate = "year") {
                 chart0dataSources,
                 {
                     dateset: {
-                        source: []
+                        source: [],
+                        sourceHeader: false
                     },
                     title: {
                         text: 'Electricity Usage',
@@ -154,27 +176,27 @@ function initCharts(aggregate: Aggregate = "year") {
             profile => {
                 const chart1dataSources = [
                     new Chart.ProfileSolarDataSource(profile, {
+                        startTime: startTime,
+                        endTime: endTime,
                         aggregate: aggregate,
                     }),
                     new Chart.ProfileUsageDataSource(profile, {
+                        startTime: startTime,
+                        endTime: endTime,
                         aggregate: aggregate,
                     })
                 ];
                 const optionTemplate = {
                     dateset: [
                         {
-                            source: []
+                            source: [],
+                            sourceHeader: false
                         },
                         {
-                            source: []
+                            source: [],
+                            sourceHeader: false
                         }
                     ],
-                    visualMap: {
-                        show: false,
-                        type: 'continuous',
-                        seriesIndex: 0,
-                        min: 0,
-                    },
                     title: {
                         left: 'center',
                         text: 'Generated Solar Energy vs Electricity Usage'

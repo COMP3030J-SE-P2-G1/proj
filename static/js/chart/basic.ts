@@ -116,7 +116,8 @@ export function getDefaultOptionTemplate(title: string | undefined, dataSources:
     const types = dataSources.map(dataSource => dataSource.initChartOptions.type)
     const dataset = types.map(_ => {
         return {
-            source: []
+            source: [],
+            sourceHeader: false,
         };
     });
     let template: ChartOption = {

@@ -5,7 +5,7 @@ import type { TimelyArrayData } from '../api/types.ts';
 import * as PROFILE_API from '../api/profile.ts';
 
 const gStartTime = new Date("2023-01-01T15:00:00.000000Z");
-const gEndTime = new Date("2023-03-03T15:00:00.000000Z");
+const gEndTime = new Date("2023-03-02T15:00:00.000000Z");
 
 function demoProfileUsageLineChart() {
     const elm = document.getElementById("demoProfileUsageLineChart");
@@ -20,7 +20,7 @@ function demoProfileUsageLineChart() {
                     }
                 )
             ];
-            Chart.initDynamicTimelyChart(
+            window.chart = Chart.initDynamicTimelyChart(
                 elm,
                 dataSources,
                 Chart.getDefaultOptionTemplate("demoProfileUsageLineChart", dataSources)

@@ -14,7 +14,8 @@ function initCharts() {
         dataSources,
         {
             dateset: {
-                source: []
+                source: [],
+                sourceHeader: false
             },
             tooltip: {
                 trigger: 'axis'
