@@ -106,7 +106,7 @@ function initCharts(aggregate: Aggregate = "year") {
         }
     }
     
-    // initChart0();
+    initChart0();
     initChart1();
     
     async function initChart0() {
