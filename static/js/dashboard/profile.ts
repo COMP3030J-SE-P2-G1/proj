@@ -3,6 +3,7 @@ import { initElectricityPriceChart, initElectricityUsageChart } from '../chart/c
 import * as echarts from 'echarts/core';
 import * as PROFILE_API from '../api/profile.ts';
 import * as Chart from '../chart/chart.ts';
+import type { Aggregate } from '../api/types.ts';
 
 function bindEvents(): void {
     document.getElementById('profileForm').addEventListener('submit', async function (e) {
@@ -53,13 +54,13 @@ function bindEvents(): void {
         }
     });
 
-    activeTabEvents('tab1');
-    activeTabEvents('tab2');
-    activeTabEvents('tab3');
+    bindActiveTabEvents('tab1');
+    bindActiveTabEvents('tab2');
+    bindActiveTabEvents('tab3');
 }
 
 
-function activeTabEvents(tabId: string): void {
+function bindActiveTabEvents(tabId: string): void {
     const tabElement = document.getElementById(tabId);
     if (tabElement) {
         tabElement.addEventListener('click', function (e) {
@@ -74,74 +75,89 @@ function activeTabEvents(tabId: string): void {
                 // Add 'tab-active' class to the clicked tab
                 this.classList.add('tab-active');
             }
-// Add your code here to do what you want when the tab is clicked
+            const aggregate = this.getAttribute("data-aggregate") ?? "day";
+            // Add your code here to do what you want when the tab is clicked
+            initCharts(aggregate);
         });
     };
 }
 
 
-function initCharts() {
-    const chart0Elm = document.getElementById("chart0");
-    if (!chart0Elm) { console.error("Cannot find HTML element #chart0"); return;}
-    const chart0dataSources = [
-        new Chart.ElectricityPriceDataSource({
-            initChartOptions: {
-                type: {
-                    type: "pie",
-                    xField: 0,
-                    yField: 1,
-                    format: "yyyy-MMMM"
-                }
-            }
-        })
-    ];
-    Chart.initDynamicTimelyChart(
-        chart0Elm,
-        chart0dataSources,
-        {
-            dateset: {
-                source: []
-            },
-            title: {
-                text: 'Electricity Price',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'item'
-            },
-            series: [
-                {
-                    type: 'pie',
-                    radius: '50%',
-                    encode: {
-                        itemName: 0,
-                        value: 1
-                    },
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+function initCharts(aggregate: Aggregate = "year") {
+    if (window.profile_chart0) window.profile_chart0.dispose();
+    if (window.profile_chart1) window.profile_chart1.dispose();
+    
+    initChart0();
+    initChart1();
+    
+    async function initChart0() {
+        const chart0Elm = document.getElementById("chart0");
+        if (!chart0Elm) { console.error("Cannot find HTML element #chart0"); return;}
+        PROFILE_API.getProfile(1).then(profile => {
+            const chart0dataSources = [
+                new Chart.ProfileUsageDataSource(profile, {
+                    aggregate: aggregate,
+                    initChartOptions: {
+                        type: {
+                            type: "pie",
+                            xField: 0,
+                            yField: 1,
+                            format: Chart.getAdaptivePieChartFormat(aggregate)
                         }
                     }
-                }
-            ],
-            animation: false,
-        }
-    )
-
-    
-    const chart1Elm = document.getElementById("chart1");
-    if (!chart1Elm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
-    PROFILE_API.getProfile(1).then(
-        profile => {
-            const chart1dataSources = [
-                new Chart.ProfileUsageDataSource(profile)
+                })
             ];
-            Chart.initDynamicTimelyChart(
-                chart1Elm,
-                chart1dataSources,
+            window.profile_chart0 = Chart.initDynamicTimelyChart(
+                chart0Elm,
+                chart0dataSources,
                 {
+                    dateset: {
+                        source: []
+                    },
+                    title: {
+                        text: 'Electricity Usage',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: '50%',
+                            encode: {
+                                itemName: 0,
+                                value: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ],
+                    animation: false,
+                }
+            )
+        })
+    }
+
+    async function initChart1() {
+        const chart1Elm = document.getElementById("chart1");
+        if (!chart1Elm) { console.error("Cannot find HTML element #electricity-usage-chart."); return;}
+        PROFILE_API.getProfile(1).then(
+            profile => {
+                const chart1dataSources = [
+                    new Chart.ProfileSolarDataSource(profile, {
+                        aggregate: aggregate,
+                    }),
+                    new Chart.ProfileUsageDataSource(profile, {
+                        aggregate: aggregate,
+                    })
+                ];
+                const optionTemplate = {
                     dateset: {
                         source: []
                     },
@@ -153,13 +169,16 @@ function initCharts() {
                     },
                     title: {
                         left: 'center',
-                        text: 'Electricity Usage Chart'
+                        text: 'Generated Solar Chart'
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     xAxis: {
-                        type: 'time'
+                        type: 'time',
+                        axisLabel: {
+                            formatter: Chart.getAdaptiveFormatter(aggregate)
+                        }
                     },
                     yAxis: {
                         type: 'value',
@@ -168,7 +187,24 @@ function initCharts() {
                             return value.max * 1.5;
                         }
                     },
-                    dataZoom: [
+                    grid: {},
+                    series: [
+                        {
+                            encode: { x: 0, y: 1 },
+                            type: "bar",
+                            datasetIndex: 0,
+                        },
+                        {
+                            encode: { x: 0, y: 1 },
+                            type: "bar",
+                            datasetIndex: 1,
+                        }
+                    ],
+                    animation: false,
+                };
+                
+                if (aggregate == "day") {
+                    optionTemplate['dataZoom'] = [
                         {
                             type: 'inside',
                             start: 0,
@@ -178,20 +214,17 @@ function initCharts() {
                             start: 0,
                             end: 10
                         }
-                    ],
-                    grid: {},
-                    series: [
-                        {
-                            encode: { x: 0, y: 1 },
-                            type: "bar",
-                        }
-                    ],
-                    animation: false,
+                    ];   
                 }
-            )       
-        }
-    )
-
+                
+                window.profile_chart1 = Chart.initDynamicTimelyChart(
+                    chart1Elm,
+                    chart1dataSources,
+                    optionTemplate
+                )       
+            }
+        )
+    }
 }
 
 

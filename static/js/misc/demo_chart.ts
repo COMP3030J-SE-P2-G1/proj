@@ -185,5 +185,4 @@ ready(() => {
     demoProfileMixedChart();
     demoElectricityPriceChart();
     demoProfileSavingChart();
-    // demoInitElectricityPriceHypridChart();
 })

@@ -26,8 +26,7 @@ function initCharts() {
                 text: 'Electricity Price'
             },
             xAxis: {
-                type: 'category',
-                boundaryGap: false,
+                type: 'time',
             },
             yAxis: {
                 type: 'value',
