@@ -41,7 +41,7 @@ def read_solar_json(json_filename: str):
             datetime.strptime(time + " +00:00", "%Y%m%d:%H%M %z") - eleven_minute
         )
         # convert power_out (in watts) to generation (in kilojoules)
-        generation = power_out * 3.6
+        generation = power_out * 1e-3
         series_dict.update({timestamp: generation})
 
     return inputs, series_dict
