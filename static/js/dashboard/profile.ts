@@ -10,7 +10,7 @@ function bindEvents(): void {
         e.preventDefault(); // Prevent the default form submission
 
         const form = e.target;
-        const formData = new FormData(form); console.log("hello2")
+        const formData = new FormData(form);
 
         try {
             const response = await fetch('/dashboard/create_profile', {
@@ -65,7 +65,7 @@ function bindActiveTabEvents(tabId: string): void {
     if (tabElement) {
         tabElement.addEventListener('click', function (e) {
             e.preventDefault(); // Prevent the default action if necessary
-            console.log(`${tabId} was clicked`);
+            // console.log(`${tabId} was clicked`);
             if (!this.classList.contains('tab-active')) {
                 // Find the currently active tab and remove 'tab-active' class
                 const activeTab = document.querySelector('.tab.tab-active');
@@ -284,14 +284,9 @@ declare global {
     }
 }
 
-window.initMap = initMap;
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Your additional initialization logic here
-});
-
 
 export default function onLoad() {
+    window.initMap = initMap;
     bindEvents();
     initCharts();
     initMap();

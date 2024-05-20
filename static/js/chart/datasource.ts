@@ -4,6 +4,7 @@ import type {
 } from 'echarts/components';
 
 import { format } from 'date-fns';
+import { Mutex } from 'async-mutex';
 
 import type { ChartOption } from './basic.ts';
 import type { NullableTime, TimelyArrayData, Aggregate, Profile } from '../api/types.ts';
@@ -102,9 +103,12 @@ export class DataSource<D, T> {
         if (!this._chart) throw new Error("`this._chart` is null!");
         if (this._index == undefined || this._index == null)
             throw new Error("`this._order` is null!");
+        
+        const mutex = new Mutex();
+        
         const updateData = () => {
             this.fetchDataFunc(this._curState)
-                .then(fetchedData => {
+                .then(async (fetchedData) => {
                     if (!this._chart) throw new Error("`this._chart` is null!");
                     if (this._index == undefined || this._index == null)
                         throw new Error("`this._order` is null!");
@@ -119,14 +123,19 @@ export class DataSource<D, T> {
                     this._prevState = this._curState;
                     this._curState = this.updateStateFunc(this._curState, this._data);
 
-                    this._chart.setOption(
-                        this.overrideOptionFunc(
-                            this._data,
-                            this._prevData,
-                            this._chart.getOption(),
-                            this._index
-                        )
-                    );
+                    const release = await mutex.acquire();
+                    try {
+                        this._chart.setOption(
+                            this.overrideOptionFunc(
+                                this._data,
+                                this._prevData,
+                                this._chart.getOption(),
+                                this._index
+                            )
+                        );
+                    } finally {
+                        release();
+                    }
 
                     if (this.shouldStopFetchingFunc(this._curState, this._prevState)) {
                         return;
@@ -212,16 +221,15 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
     function getOverrideDataSetOption(
         prevDataset: DatasetComponentOption | Array<DatasetComponentOption> | undefined,
         overrideDatasetOption: DatasetComponentOption,
-        order: number
+        index: number
     ): ChartOption {
         let newDataset = prevDataset ?? overrideDatasetOption;
-        if (prevDataset) {
-            if (newDataset instanceof Array) {
-                newDataset[order] = overrideDatasetOption;
-            } else {
-                newDataset = overrideDatasetOption;
-            }
+        if (!(newDataset instanceof Array)) {
+            newDataset = [newDataset];
         }
+        // In JavaScript, we don't need array out of bounds check, since it will
+        // automatically expand the array for us.
+        newDataset[index] = overrideDatasetOption;
             
         return {
             dataset: newDataset
@@ -230,7 +238,7 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
     
     type = type ?? DEFAULT_CHART_TYPE_OPTION;
     if (type.type == 'line' || type.type == 'bar') {
-        return (data, prevData, prevOption, order) => {
+        return (data, prevData, prevOption, index) => {
             if (prevData) data = prevData.concat(data);
             const overrideDatasetOption: DatasetComponentOption = {
                 source: data.map(
@@ -242,11 +250,11 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
             };
 
             const prevDataset = prevOption.dataset;
-            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, order);
+            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, index);
         };
     } else { // pie chart
         const usageData: StringNumberDict = {};
-        return (data, _prevData, prevOption, order) => {
+        return (data, _prevData, prevOption, index) => {
             const newUsageSumDict = calculateUsageSum(data, type);
             for (const [key, value] of Object.entries(newUsageSumDict)) {
                 if (key in usageData) {
@@ -261,7 +269,7 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
             };
 
             const prevDataset = prevOption.dataset;
-            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, order);
+            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, index);
         };
     }
 }
