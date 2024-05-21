@@ -1,6 +1,8 @@
 import * as APIKEY from '../api/apikey.ts';
 import ClipboardJS from "clipboard";
 
+let rowCounter = 0;
+
 function closeDialog(dialogElm) {
     if (dialogElm !== null && dialogElm.open) {
         dialogElm.close();
@@ -113,7 +115,7 @@ function showCreatedApiKey(apikey) {
 }
 
 export default function onLoad() {
-    window.rowCounter = 0;
+    rowCounter = 0;
     initializeApiKeysList();
     bindEvent();
 }

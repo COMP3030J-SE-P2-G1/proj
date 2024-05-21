@@ -6,6 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime
 from datetime import datetime
 from sqlalchemy import Numeric
+from typing import Union
 
 
 class Profile(db.Model, SerializerMixin):
@@ -40,3 +41,27 @@ class Profile(db.Model, SerializerMixin):
 
     loss: Mapped[float] = mapped_column(Numeric(10, 2, asdecimal=False))
     power: Mapped[float] = mapped_column(Numeric(10, 2, asdecimal=False))  # kW
+
+    def __init__(
+            self,
+            user_id: int,
+            name: str,
+            desc: Union[str, None],
+            start_time: datetime,
+            end_time: datetime,
+            lon: float,
+            lat: float,
+            tech: int,
+            loss: float,
+            power: float
+    ):
+        self.user_id = user_id
+        self.name = name
+        self.desc = desc
+        self.start_time = start_time
+        self.end_time = end_time
+        self.lon = lon
+        self.lat = lat
+        self.tech = tech
+        self.loss = loss
+        self.power = power

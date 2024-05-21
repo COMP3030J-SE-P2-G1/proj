@@ -5,18 +5,24 @@ import type { Aggregate, Profile } from '../api/types.ts';
 // TODO start from and end from selection
 
 function bindEvents(): void {
-    document.getElementById('profileForm').addEventListener('submit', async function (e) {
+    document.getElementById('profileForm')?.addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent the default form submission
 
-        const form = e.target;
+        const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
 
         try {
             const response = await fetch('/dashboard/create_profile', {
                 method: 'POST',
                 body: formData
-            });
-            if (!response.ok) {
+            })
+            
+            if (response.ok) {
+                response.json().then(newProfile => {
+                    (document.getElementById("profile_modal") as HTMLDialogElement)?.close();
+                    changeProfile(newProfile.id);
+                });
+            } else {
                 if (response.status === 400) {
                     // Assuming the server responds with JSON containing the error details
                     const errorData = await response.json();
@@ -41,11 +47,7 @@ function bindEvents(): void {
                         }
                     });
                 }
-            } else {
-                // Handle success
-                window.location.reload();
             }
-
         } catch (error) {
             // Handle error (e.g., keep the dialog open, display error messages)
             console.error('Error:', error);
@@ -57,6 +59,7 @@ function bindEvents(): void {
     bindActiveTabEvents('tab2');
     bindActiveTabEvents('tab3');
     
+    // start time and end time elements
     const startTimeElm = document.getElementById("start_date") as HTMLInputElement;
     const endTimeElm = document.getElementById("end_date") as HTMLInputElement;
     const timeElms = [startTimeElm, endTimeElm];
@@ -64,13 +67,52 @@ function bindEvents(): void {
         // Note that events can only be triggered by user. Change caused by js won't
         // trigger events.
         elem?.addEventListener("change", _ => {
-            const activeTabElm = document.querySelector('.tab.tab-active');
-            if (activeTabElm) {
-                const aggregate = activeTabElm.getAttribute("data-aggregate") ?? "day";
-                initCharts(aggregate as Aggregate);
-            }
+            initChartsAwaringAggregate();
         });
     });
+
+    // select profile element
+    const selectProfileElm = document.getElementById("selectProfile") as HTMLSelectElement;
+    if (selectProfileElm) {
+        selectProfileElm.addEventListener("change", _ => {
+            initChartsAwaringAggregate();
+        })
+    }
+}
+
+function changeProfile(profile_id: number) {
+    reinitializeSelectProfileElm(profile_id);
+    initChartsAwaringAggregate(profile_id);
+}
+
+function reinitializeSelectProfileElm(select: number | string) {
+    const selectProfileElm = document.getElementById("selectProfile") as HTMLSelectElement;
+    if (!selectProfileElm) {
+        console.error("Cannot find `selectProfile` element!");
+        return;
+    }
+    PROFILE_API.getProfiles().then(profiles => {
+        let selectInNewProfiles = false;
+        const optionElms = profiles.map(profile => {
+            const optionElm = document.createElement("option");
+            if (select && (`${select}` == `${profile.id}`)) selectInNewProfiles = true;
+            optionElm.setAttribute("value", `${profile.id}`);
+            optionElm.textContent = profile.name;
+            return optionElm;
+        });
+        selectProfileElm.replaceChildren(...optionElms);
+        if (selectInNewProfiles) {
+            selectProfileElm.value = `${select}`;
+        }
+    });
+}
+
+function initChartsAwaringAggregate(profile_id: number | null = null) {
+    const activeTabElm = document.querySelector('.tab.tab-active');
+    if (activeTabElm) {
+        const aggregate = activeTabElm.getAttribute("data-aggregate") ?? "day";
+        initCharts(aggregate as Aggregate, profile_id);
+    }
 }
 
 
@@ -96,7 +138,11 @@ function bindActiveTabEvents(tabId: string): void {
     };
 }
 
-function initCharts(aggregate: Aggregate = "year") {
+/**
+ * @param profileId. We allow pass profileId here since the way of using elem.value
+ * seems to have some delay and we possibly get the old value.
+ */
+function initCharts(aggregate: Aggregate = "year", profileId: number | null = null) {
     if (window.profile_chart0) window.profile_chart0.dispose();
     if (window.profile_chart1) window.profile_chart1.dispose();
 
@@ -117,38 +163,38 @@ function initCharts(aggregate: Aggregate = "year") {
         }
     }
 
-    let profileId: number | null = null;
-    let selectedProfileElm = document.getElementById("selectProfile") as HTMLSelectElement;
-    if (selectedProfileElm) {
-        profileId = parseInt(selectedProfileElm.value);
+    if (!profileId) {
+        let selectedProfileElm = document.getElementById("selectProfile") as HTMLSelectElement;
+        if (!selectedProfileElm || selectedProfileElm.value == "") {
+            console.log("There is no profile in this user account, so there won't be charts.");
+            return;
+        } else {
+            profileId = parseInt(selectedProfileElm.value);
+        }
     }
 
-    if (profileId) {
-        PROFILE_API.getProfile(profileId).then(profile => {
-            initChart0(profile);
-            initChart1(profile);
+    PROFILE_API.getProfile(profileId).then(profile => {
+        initChart0(profile);
+        initChart1(profile);
 
-            // update start time and end time elements if both of them are null
-            if (startTimeElm && endTimeElm && !(startTime || endTime)) {
-                const rawStartTime = new Date(profile.start_time);
-                const rawEndTime = new Date(profile.end_time);
-                const startTimeStr = rawStartTime.toISOString().split('T')[0];
-                const endTimeStr = rawEndTime.toISOString().split('T')[0];
+        // update start time and end time elements if both of them are null
+        if (startTimeElm && endTimeElm && !(startTime || endTime)) {
+            const rawStartTime = new Date(profile.start_time);
+            const rawEndTime = new Date(profile.end_time);
+            const startTimeStr = rawStartTime.toISOString().split('T')[0];
+            const endTimeStr = rawEndTime.toISOString().split('T')[0];
                 
-                startTimeElm.value = startTimeStr;
-                endTimeElm.value = endTimeStr;
+            startTimeElm.value = startTimeStr;
+            endTimeElm.value = endTimeStr;
 
-                const elems = [startTimeElm, endTimeElm];
-                elems.forEach(elem => {
-                    elem.setAttribute("min", startTimeStr);
-                    elem.setAttribute("max", endTimeStr);
-                });
-                // endTimeElm.value = profile.end_time;
-            }
-        })
-    } else {
-        console.log("There is no profile in this user account, so there won't be charts.")
-    }
+            const elems = [startTimeElm, endTimeElm];
+            elems.forEach(elem => {
+                elem.setAttribute("min", startTimeStr);
+                elem.setAttribute("max", endTimeStr);
+            });
+            // endTimeElm.value = profile.end_time;
+        }
+    })
     
     async function initChart0(profile: Profile) {
         const chart0Elm = document.getElementById("chart0");

@@ -16,9 +16,9 @@ export async function getProfile(id: number): Promise<Profile> {
     return response.json();
 }
 
-export async function getProfiles(uid: number): Promise<Profile> {
-    const response = await fetch(`${API_PREFIX}/profile/${uid}/profiles`);
-    console.log(response);
+export async function getProfiles(): Promise<Profile[]> {
+    const response = await fetch(`${API_PREFIX}/user/profiles`);
+    
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }

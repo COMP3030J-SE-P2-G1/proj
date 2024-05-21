@@ -76,7 +76,6 @@ function htmxAfterSettleHandler(event: CustomEvent<any>) {
             break;
         case 'profile':
             void loadModule("profile.ts", () => import("./dashboard/profile.ts"));
-            void loadModule("data_calculation.ts", () => import("./dashboard/data_calculation.ts"));
             break;
         case 'index':
             void loadModule("index.ts", () => import("./dashboard/index.ts"));

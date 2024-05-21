@@ -23,5 +23,15 @@ class Usage(db.Model, SerializerMixin):
     time: Mapped[datetime] = mapped_column(UtcDateTime())
     usage: Mapped[float] = mapped_column(Numeric(10, 2, asdecimal=False))  # in kWh
 
+    def __init__(
+            self,
+            profile_id: int,
+            time: datetime,
+            usage: float
+    ):
+        self.profile_id = profile_id
+        self.time = time
+        self.usage = usage
+
     def to_timeseries(self):
         return self.usage

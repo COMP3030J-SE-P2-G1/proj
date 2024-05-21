@@ -61,7 +61,6 @@ def create_profile():
                         {'status': 'error', 'message': 'Not allowed data in the file.' + str(timestamp)}), 400
             profileForm.start_time.data = datetime.strptime(str(profileForm.start_time.data) + " +01:00", "%Y-%m-%d %z")
             profileForm.end_time.data = datetime.strptime(str(profileForm.end_time.data) + " +01:00", "%Y-%m-%d %z")
-            print(profileForm.end_time.data)
             profile = Profile(user_id=current_user.id, name=profileForm.name.data, desc=profileForm.desc.data,
                               start_time=profileForm.start_time.data, end_time=profileForm.end_time.data,
                               lon=profileForm.lon.data, lat=profileForm.lat.data, tech=profileForm.tech.data,
@@ -73,10 +72,8 @@ def create_profile():
                 usage = Usage(time=timestamp, usage=value, profile_id=profile.id)
                 db.session.add(usage)
             db.session.commit()
-            flash(_ltr('Profile created successfully.'), 'success')
-            return jsonify({'status': 'success', 'message': 'Profile created successfully'}), 200
+            return jsonify(profile.to_dict()), 200
         else:
-            flash(_ltr('Unavailable Account.'), 'error')
             return jsonify({'status': 'error', 'message': 'Unavailable Account.'}), 400
     else:
         form_errors = {field: error[0] for field, error in profileForm.errors.items()}
