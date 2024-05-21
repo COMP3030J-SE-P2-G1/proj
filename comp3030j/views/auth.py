@@ -10,7 +10,7 @@ from comp3030j.db import db
 from comp3030j.db.User import User
 from comp3030j.db.Profile import Profile
 from comp3030j.extensions import bcrypt
-from comp3030j.util import allowed_img, save_file, delete_file, _ltr
+from comp3030j.util import allowed_img, save_file, delete_file, _ltr, resize_img
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -89,9 +89,12 @@ def upload_picture():
         if filename != 'default.jpg':
             delete_file('static/profile_pics', filename)
 
+        # resize the avatar image to 200x200s
+        image = resize_img(file)
+
         # generate the unique filename
-        filename = secure_filename(file.filename)
-        unique_filename = str(uuid.uuid4()) + os.path.splitext(filename)[1]
+        extension = os.path.splitext(file.filename)[1]
+        unique_filename = str(uuid.uuid4()) + extension
 
         # update the avatar in the database
         user_to_update = current_user
@@ -99,7 +102,8 @@ def upload_picture():
             user_to_update.avatar_file = unique_filename
             db.session.commit()
             # save the new avatar
-            save_file(file, 'static/profile_pics', unique_filename)
+            print(unique_filename)
+            save_file(image, 'static/profile_pics', unique_filename)
             flash(_ltr('Profile picture uploaded and saved.'), 'success')
         else:
             flash(_ltr('Unavailable Account.'), 'error')

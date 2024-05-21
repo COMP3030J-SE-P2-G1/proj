@@ -3,12 +3,20 @@ import os
 from io import StringIO
 import csv
 from datetime import datetime, timedelta
+from PIL import Image
 from flask_babel import gettext as _tr, ngettext as _ntr, lazy_gettext as _ltr
 
 from comp3030j import app
 
 
 # __all__=['_tr', '_ntr', '_ltr']
+
+
+def resize_img(image):
+    img = Image.open(image)
+    new_size = (200, 200)
+    resized_image = img.resize(new_size)
+    return resized_image
 
 
 def allowed_img(filename):
