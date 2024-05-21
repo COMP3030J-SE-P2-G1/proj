@@ -1,4 +1,5 @@
 import * as APIKEY from '../api/apikey.ts';
+import ClipboardJS from "clipboard";
 
 function closeDialog(dialogElm) {
     if (dialogElm !== null && dialogElm.open) {
@@ -98,7 +99,17 @@ function bindEvent() {
 function showCreatedApiKey(apikey) {
     const secretKeyDisplayElm = document.querySelector('#secretKeyDisplay');
     secretKeyDisplayElm.textContent = apikey.token;
-    
+
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy';
+    secretKeyDisplayElm.appendChild(copyButton);
+
+    new ClipboardJS(copyButton, {
+        text: function(trigger) {
+            return apikey.token;
+        }
+    });
+
     const dialog_show_apikey = document.querySelector('#dialog_show_apikey');
     dialog_show_apikey.showModal();
 }
