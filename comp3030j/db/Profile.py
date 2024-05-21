@@ -7,6 +7,7 @@ from sqlalchemy_utc import UtcDateTime
 from datetime import datetime
 from sqlalchemy import Float
 
+
 class Profile(db.Model, SerializerMixin):
     """
     Business usage profile
@@ -35,7 +36,7 @@ class Profile(db.Model, SerializerMixin):
 
     lon: Mapped[float] = mapped_column(Float(10, 2))
     lat: Mapped[float] = mapped_column(Float(10, 2))
-    tech: Mapped[int] = mapped_column(Float(10, 2))
+    tech: Mapped[int] = mapped_column()
 
     loss: Mapped[float] = mapped_column(Float(10, 2))
     power: Mapped[float] = mapped_column(Float(10, 2))  # kW

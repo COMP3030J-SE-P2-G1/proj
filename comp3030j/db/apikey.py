@@ -5,6 +5,8 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_serializer import SerializerMixin
 from uuid import uuid4
+from typing import Optional
+
 
 class ApiKey(db.Model, SerializerMixin):
     __tablename__ = "api_key"
@@ -23,7 +25,7 @@ class ApiKey(db.Model, SerializerMixin):
     created_time: Mapped[datetime] = mapped_column(UtcDateTime(), default=utcnow())
     last_used_time: Mapped[datetime] = mapped_column(UtcDateTime(), nullable=True)
 
-    def __init__(self, user_id, desc: str | None = None, token=None):
+    def __init__(self, user_id, desc: Optional[str] = None, token=None):
         self.user_id = user_id
         self.token = token or uuid4().hex
         self.desc = desc
@@ -52,4 +54,3 @@ class ApiKey(db.Model, SerializerMixin):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-

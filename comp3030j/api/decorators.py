@@ -7,6 +7,7 @@ from comp3030j.db.SEMSpot import SEMSpot
 from comp3030j.db.Profile import Profile
 from flask import current_app
 from flask_login import current_user
+import sys, traceback
 
 
 def get_profile(id: int):
@@ -140,10 +141,14 @@ def parse_profile_request(func: Callable):
             )
 
         except (ValueError, TypeError) as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            errMsg = "".join(
+                traceback.format_exception(exc_type, exc_value, exc_traceback)
+            )
             return None, (
                 {
                     "errorMsg": "inappropriate timestamp format or invalid duration: "
-                    + str(e),
+                    + errMsg,
                 },
                 400,
             )
