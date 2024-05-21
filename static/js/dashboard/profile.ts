@@ -94,13 +94,13 @@ function initCharts(aggregate: Aggregate = "year") {
     let startTime = null;
     let endTime = null;
     if (startTimeElm) {
-        value = startTimeElm.value;
+        const value = startTimeElm.value;
         if (value != "") {
             startTime = new Date(value);
         }
     }
     if (endTimeElm) {
-        value = endTimeElm.value;
+        const value = endTimeElm.value;
         if (value != "") {
             endTime = new Date(value);
         }
