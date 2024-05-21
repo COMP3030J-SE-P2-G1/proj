@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-20 19:14+0800\n"
+"POT-Creation-Date: 2024-05-21 15:49+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -181,19 +181,19 @@ msgstr "成功注册账号！你现在可以登录了"
 msgid "Please login first."
 msgstr "请先登录"
 
-#: comp3030j/views/auth.py:103
+#: comp3030j/views/auth.py:107
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:105 comp3030j/views/dashboard.py:79
+#: comp3030j/views/auth.py:109 comp3030j/views/dashboard.py:79
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
-#: comp3030j/views/auth.py:107
+#: comp3030j/views/auth.py:111
 msgid "Upload failed"
 msgstr "图像上传失败"
 
-#: comp3030j/views/auth.py:121
+#: comp3030j/views/auth.py:125
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
