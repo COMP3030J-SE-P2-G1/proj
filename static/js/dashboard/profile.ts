@@ -56,6 +56,21 @@ function bindEvents(): void {
     bindActiveTabEvents('tab1');
     bindActiveTabEvents('tab2');
     bindActiveTabEvents('tab3');
+    
+    const startTimeElm = document.getElementById("start_date") as HTMLInputElement;
+    const endTimeElm = document.getElementById("end_date") as HTMLInputElement;
+    const timeElms = [startTimeElm, endTimeElm];
+    timeElms.forEach(elem => {
+        // Note that events can only be triggered by user. Change caused by js won't
+        // trigger events.
+        elem?.addEventListener("change", _ => {
+            const activeTabElm = document.querySelector('.tab.tab-active');
+            if (activeTabElm) {
+                const aggregate = activeTabElm.getAttribute("data-aggregate") ?? "day";
+                initCharts(aggregate as Aggregate);
+            }
+        });
+    });
 }
 
 
@@ -76,7 +91,7 @@ function bindActiveTabEvents(tabId: string): void {
             }
             const aggregate = this.getAttribute("data-aggregate") ?? "day";
             // Add your code here to do what you want when the tab is clicked
-            initCharts(aggregate);
+            initCharts(aggregate as Aggregate);
         });
     };
 }
@@ -103,9 +118,9 @@ function initCharts(aggregate: Aggregate = "year") {
     }
 
     let profileId: number | null = null;
-    let selectedProfileElm = document.getElementById("selectProfile");
+    let selectedProfileElm = document.getElementById("selectProfile") as HTMLSelectElement;
     if (selectedProfileElm) {
-        profileId = parseInt((selectedProfileElm as HTMLSelectElement).value);
+        profileId = parseInt(selectedProfileElm.value);
     }
 
     if (profileId) {
