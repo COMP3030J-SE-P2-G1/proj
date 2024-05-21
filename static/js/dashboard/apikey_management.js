@@ -100,9 +100,7 @@ function showCreatedApiKey(apikey) {
     const secretKeyDisplayElm = document.querySelector('#secretKeyDisplay');
     secretKeyDisplayElm.textContent = apikey.token;
 
-    const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copy';
-    secretKeyDisplayElm.appendChild(copyButton);
+    const copyButton = document.querySelector('#copyButton');
 
     new ClipboardJS(copyButton, {
         text: function(trigger) {
