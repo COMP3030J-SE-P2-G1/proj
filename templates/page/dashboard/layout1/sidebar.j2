@@ -1,6 +1,35 @@
 {% from '/component/logo.j2' import logo, imageLogo %}
 {% from '/component/theme-controller.j2' import theme_controller %}
 
+{% macro api() -%}
+    <li>
+        <a hx-get="/dashboard/api_doc/restful" hx-target="#main">
+            <svg class="h-5 w-5">
+                <use href="#solar-document-text-linear"/>
+            </svg>
+            <span class="hidden xl:inline">Restful API</span>
+        </a>
+    </li>
+    <li>
+        <a hx-get="/dashboard/api_doc/graphql_playground" hx-target="#main">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48">
+                <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+                    <path d="m10.777 30l7.242-14.961V4h12.01v11.039L37.245 30"/>
+                    <path
+                        d="M7.794 43.673a3.273 3.273 0 0 1-1.52-4.372L10.777 30S18 35 24 30c6-5 13.246 0 13.246 0l4.49 9.305A3.273 3.273 0 0 1 38.787 44H9.22c-.494 0-.981-.112-1.426-.327Z"/>
+                </g>
+            </svg>
+            <span class="hidden xl:inline">Graghql Playground</span>
+        </a>
+    </li>
+    <li>
+        <a hx-get="/dashboard/api_doc/apikey_management" hx-target="#main">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M6.5 21q-1.45 0-2.475-1.025T3 17.5t1.025-2.475T6.5 14H8v-4H6.5q-1.45 0-2.475-1.025T3 6.5t1.025-2.475T6.5 3t2.475 1.025T10 6.5V8h4V6.5q0-1.45 1.025-2.475T17.5 3t2.475 1.025T21 6.5t-1.025 2.475T17.5 10H16v4h1.5q1.45 0 2.475 1.025T21 17.5t-1.025 2.475T17.5 21t-2.475-1.025T14 17.5V16h-4v1.5q0 1.45-1.025 2.475T6.5 21m0-2q.625 0 1.063-.437T8 17.5V16H6.5q-.625 0-1.062.438T5 17.5t.438 1.063T6.5 19m11 0q.625 0 1.063-.437T19 17.5t-.437-1.062T17.5 16H16v1.5q0 .625.438 1.063T17.5 19M10 14h4v-4h-4zM6.5 8H8V6.5q0-.625-.437-1.062T6.5 5t-1.062.438T5 6.5t.438 1.063T6.5 8M16 8h1.5q.625 0 1.063-.437T19 6.5t-.437-1.062T17.5 5t-1.062.438T16 6.5z"/></svg>
+            <span class="hidden xl:inline">Management</span>
+        </a>
+    </li>
+{%- endmacro %}
+
 <svg style="display: none" version="2.0">
     <defs>
         <symbol viewBox="0 0 24 24" id="material-symbols-location-automation-outline">
@@ -114,12 +143,7 @@
                     <span class="hidden xl:inline">Policy Search</span>
                 </a>
             </li>
-            <li class="mt-1">
-                <a class="block xl:hidden">
-                    <svg class="h-5 w-5">
-                        <use href="#carbon-tool-kit"/>
-                    </svg>
-                </a>
+            <li class="mt-1 hidden xl:block">
                 <details class="hidden xl:block">
                     <summary>
                         <svg class="h-5 w-5">
@@ -128,35 +152,13 @@
                         <span class="inline">API Tools</span>
                     </summary>
                     <ul>
-                        <li>
-                            <a hx-get="/dashboard/api_doc/restful" hx-target="#main">
-                                <svg class="h-5 w-5">
-                                    <use href="#solar-document-text-linear"/>
-                                </svg>
-                                <span class="hidden xl:inline">Restful API</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a hx-get="/dashboard/api_doc/graphql_playground" hx-target="#main">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48">
-                                    <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
-                                        <path d="m10.777 30l7.242-14.961V4h12.01v11.039L37.245 30"/>
-                                        <path
-                                            d="M7.794 43.673a3.273 3.273 0 0 1-1.52-4.372L10.777 30S18 35 24 30c6-5 13.246 0 13.246 0l4.49 9.305A3.273 3.273 0 0 1 38.787 44H9.22c-.494 0-.981-.112-1.426-.327Z"/>
-                                    </g>
-                                </svg>
-                                <span class="hidden xl:inline">Graghql Playground</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a hx-get="/dashboard/api_doc/apikey_management" hx-target="#main">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M6.5 21q-1.45 0-2.475-1.025T3 17.5t1.025-2.475T6.5 14H8v-4H6.5q-1.45 0-2.475-1.025T3 6.5t1.025-2.475T6.5 3t2.475 1.025T10 6.5V8h4V6.5q0-1.45 1.025-2.475T17.5 3t2.475 1.025T21 6.5t-1.025 2.475T17.5 10H16v4h1.5q1.45 0 2.475 1.025T21 17.5t-1.025 2.475T17.5 21t-2.475-1.025T14 17.5V16h-4v1.5q0 1.45-1.025 2.475T6.5 21m0-2q.625 0 1.063-.437T8 17.5V16H6.5q-.625 0-1.062.438T5 17.5t.438 1.063T6.5 19m11 0q.625 0 1.063-.437T19 17.5t-.437-1.062T17.5 16H16v1.5q0 .625.438 1.063T17.5 19M10 14h4v-4h-4zM6.5 8H8V6.5q0-.625-.437-1.062T6.5 5t-1.062.438T5 6.5t.438 1.063T6.5 8M16 8h1.5q.625 0 1.063-.437T19 6.5t-.437-1.062T17.5 5t-1.062.438T16 6.5z"/></svg>
-                                <span class="hidden xl:inline">Management</span>
-                            </a>
-                        </li>
+                        {{ api() }}
                     </ul>
                 </details>
             </li>
+            <ul class="block xl:hidden">
+                {{ api() }}
+            </ul>
         </ul>
     </div>
 
@@ -206,7 +208,7 @@
                             My Account
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 512 512">
                                 <path fill="currentColor"
-                                      d="M406.5 399.6c-19.1-46.7-65-79.6-118.5-79.6h-64c-53.5 0-99.4 32.9-118.5 79.6C69.9 362.2 48 311.7 48 256c0-114.9 93.1-208 208-208s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6m-40.1 32.7c-32 20.1-69.8 31.7-110.4 31.7s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3h64c38.8 0 71.2 27.6 78.5 64.3zM256 512a256 256 0 1 0 0-512a256 256 0 1 0 0 512m0-272a40 40 0 1 1 0-80a40 40 0 1 1 0 80m-88-40a88 88 0 1 0 176 0a88 88 0 1 0-176 0"/>
+                                    d="M406.5 399.6c-19.1-46.7-65-79.6-118.5-79.6h-64c-53.5 0-99.4 32.9-118.5 79.6C69.9 362.2 48 311.7 48 256c0-114.9 93.1-208 208-208s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6m-40.1 32.7c-32 20.1-69.8 31.7-110.4 31.7s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3h64c38.8 0 71.2 27.6 78.5 64.3zM256 512a256 256 0 1 0 0-512a256 256 0 1 0 0 512m0-272a40 40 0 1 1 0-80a40 40 0 1 1 0 80m-88-40a88 88 0 1 0 176 0a88 88 0 1 0-176 0"/>
                             </svg>
                         </a></li>
                     </ul>
@@ -215,3 +217,5 @@
         </div>
     </div>
 </aside>
+
+
