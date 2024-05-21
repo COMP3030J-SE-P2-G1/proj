@@ -1,6 +1,3 @@
-import { BarChart } from 'echarts/charts';
-import { initElectricityPriceChart, initElectricityUsageChart } from '../chart/chart.ts';
-import * as echarts from 'echarts/core';
 import * as PROFILE_API from '../api/profile.ts';
 import * as Chart from '../chart/chart.ts';
 import type { Aggregate } from '../api/types.ts';
