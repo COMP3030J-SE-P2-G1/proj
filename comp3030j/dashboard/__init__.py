@@ -15,7 +15,6 @@ class ProfileForm(FlaskForm):
     tech = SelectField(_ltr('Technology'), choices=[('1', 'crystSi'), ('2', 'CIS'), ('3', 'CdTe')])
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
     power = FloatField(_ltr('Power'), validators=[DataRequired()])
-    generation = FloatField(_ltr('Generation'), validators=[DataRequired()])
     usage_file = MultipleFileField(_ltr('Usage - UTC+1(No DST)'),
                                    validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
 
@@ -44,7 +43,3 @@ class ProfileForm(FlaskForm):
     def validate_power(self, power):
         if power.data < 0:
             raise ValidationError(_ltr('Power should be a positive float.'))
-
-    def validate_generation(self, generation):
-        if generation.data < 0:
-            raise ValidationError(_ltr('Generation should be a positive float.'))
