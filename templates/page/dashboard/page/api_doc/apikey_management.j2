@@ -5,9 +5,9 @@
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-xs text-info">
                     <svg tabindex="0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        class="w-4 h-4 stroke-current">
+                         class="w-4 h-4 stroke-current">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <div tabindex="0" class="card compact dropdown-content z-[1] shadow bg-base-100 rounded-box w-96">
@@ -33,14 +33,14 @@
             <div class="overflow-x-auto mt-4">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th></th>
-                            <th>Desc</th>
-                            <th>Key</th>
-                            <th>Created time</th>
-                            <th>Last used time</th>
-                            <th>Enabled</th>
-                        </tr>
+                    <tr>
+                        <th></th>
+                        <th>Desc</th>
+                        <th>Key</th>
+                        <th>Created time</th>
+                        <th>Last used time</th>
+                        <th>Enabled</th>
+                    </tr>
                     </thead>
                     <tbody id="keyTableBody">
                     </tbody>
@@ -55,7 +55,8 @@
         <h2 class="font-bold text-center text-lg">Create new secret key</h2>
 
         <div class="modal-action justify-center">
-            <input type="text" placeholder="Enter the Desc of Key" id="keyDesc" class="input input-bordered w-full max-w-xs"/>
+            <input type="text" placeholder="Enter the Desc of Key" id="keyDesc"
+                   class="input input-bordered w-full max-w-xs"/>
         </div>
         <div class="modal-action justify-center">
             <button class="btn" onclick="dialog_create_apikey.close()">Close</button>
@@ -65,11 +66,12 @@
 </dialog>
 
 <dialog id="dialog_show_apikey" class="modal">
-    <div class="modal-box w-2/5 max-w-5xl">
+    <div class="modal-box flex flex-col items-center">
         <h2 class="font-bold text-lg justify-center">Generated Secret Key</h2>
         <p class="py-4 justify-center" id="secretKeyDisplay"></p>
-        <button id="copyButton" class="btn">Copy</button>
-        <br>
-        <button class="btn" onclick="dialog_show_apikey.close()">Close</button>
+        <div class="flex">
+            <button id="copyButton" class="btn">Copy</button>
+            <button class="btn ml-5" onclick="dialog_show_apikey.close()">Close</button>
+        </div>
     </div>
 </dialog>
