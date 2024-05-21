@@ -280,66 +280,7 @@ function initCharts(aggregate: Aggregate = "year") {
 }
 
 
-let map: google.maps.Map;
-let marker: google.maps.Marker;
-let geocoder: google.maps.Geocoder;
-
-function initMap(): void {
-    const lat: number = parseFloat((<HTMLInputElement>document.getElementById('lat')).value) || 53.3067;
-    const lon: number = parseFloat((<HTMLInputElement>document.getElementById('lon')).value) || -6.2269;
-
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: lat, lng: lon },
-        zoom: 8
-    });
-
-    marker = new google.maps.Marker({
-        map: map,
-        position: map.getCenter()
-    });
-
-    geocoder = new google.maps.Geocoder();
-
-    map.addListener('click', function (event: google.maps.MouseEvent) {
-        updateMarker(event.latLng.lat(), event.latLng.lng());
-    });
-}
-
-function updateMarker(lat: number, lng: number): void {
-    const location = { lat: lat, lng: lng };
-    map.setCenter(location);
-    marker.setPosition(location);
-
-    // Fill lon and lat input fields with the latitude and longitude values
-    (<HTMLInputElement>document.getElementById('lon')).value = lng.toString();
-    (<HTMLInputElement>document.getElementById('lat')).value = lat.toString();
-}
-
-function geocodeAddress(event: Event): void {
-    event.preventDefault(); // Prevent default form submission behavior
-
-    const address: string = (<HTMLInputElement>document.getElementById('address')).value;
-
-    geocoder.geocode({ 'address': address }, function (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) {
-        if (status === 'OK') {
-            const location = results[0].geometry.location;
-            updateMarker(location.lat(), location.lng());
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
-}
-
-declare global {
-    interface Window {
-        initMap: () => void;
-    }
-}
-
-
 export default function onLoad() {
-    window.initMap = initMap;
     bindEvents();
     initCharts();
-    initMap();
 }
