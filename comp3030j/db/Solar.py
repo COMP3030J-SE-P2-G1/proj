@@ -1,7 +1,5 @@
 from . import db
-from .Profile import Profile
 from datetime import datetime
-from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy_utc import UtcDateTime

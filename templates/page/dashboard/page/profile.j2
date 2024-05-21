@@ -6,10 +6,9 @@
     <section class="flex flex-col h-full">
         <div class="flex justify-between m-2">
             <div class="flex items-center justify-center h-full">
-                <select class="select select-bordered" id="consumptionSelect" onchange="updateConsumptionChart()">
-                    <option disabled selected>Electricity Consumption</option>
+                <select class="select select-bordered" id="selectProfile">
                     {% for key, value in profiles.items() %}
-                        <option value="key">{{ value }}</option>
+                        <option value="{{key}}">{{value}}</option>
                     {% endfor %}
                 </select>
                 <div class="flex items-center justify-center m-2">
