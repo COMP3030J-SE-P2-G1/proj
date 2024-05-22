@@ -4,6 +4,8 @@
 
 import { ready, isDarkTheme } from "./lib/utils";
 import * as Constants from "./constants.ts";
+import { setLangugage, getSessionLangugage} from './api/misc.ts';
+import type { AcceptLangs } from './api/types.ts';
 
 /**
  * Restore state at the beginning
@@ -26,12 +28,26 @@ function rememberThemeState(e: Event) {
     localStorage.setItem(Constants.LOCAL_STAGE_IS_DARK, JSON.stringify(isDark));
 }
 
+function changeLang(e: Event) {
+    const langControllerElm = e.target as HTMLInputElement;
+    if (!langControllerElm) {
+        console.error("Cannot find language controller element");
+        return;
+    }
+    const lang = langControllerElm.checked ? "zh" : "en";
+    setLangugage(lang as AcceptLangs).then(result => {
+        window.location.reload();
+    })
+}
+
 /**
  * Bind events to elements
  */
 function bindEvents(): void {
-    const themeSelector = document.getElementById("theme-selector");
-    themeSelector?.addEventListener("change", rememberThemeState);
+    const themeSelectorElm = document.getElementById("theme-selector");
+    const languageControllerElm = document.getElementById("language-selector");
+    themeSelectorElm?.addEventListener("change", rememberThemeState);
+    languageControllerElm?.addEventListener("change", changeLang)
 }
 
 /**
@@ -49,11 +65,20 @@ function hideFlashMessage(messageSelector: string, duration: number) {
     });
 }
 
+function initLanguageController() {
+    const langControllerElm = document.getElementById("language-selector") as HTMLInputElement;
+    getSessionLangugage().then(lang => {
+        if (!lang) return;
+        langControllerElm.checked = lang == "zh" ? true : false;
+    })
+}
+
 (function () {
     ready(() => {
         restoreState();
         bindEvents();
         hideFlashMessage(".flash-message", 3000);
+        initLanguageController();
     });
 })();
 

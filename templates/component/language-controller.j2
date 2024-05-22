@@ -1,7 +1,7 @@
 {% macro language_controller(additional_classes, id = "language-selector") -%}
-    <label class="swap swap-rotate{{- additional_classes -}}">
+    <label class="swap swap-rotate {{- additional_classes -}}">
         <!-- this hidden checkbox controls the state -->
-        <input id="{{- id -}}" type="checkbox" class="language-controller" value="dim" />
+        <input id="{{- id -}}" type="checkbox"/>
         <label for="{{- id -}}"></label>
 
         <!-- Chinese icon -->

@@ -18,7 +18,7 @@ export async function getProfile(id: number): Promise<Profile> {
 
 export async function getProfiles(): Promise<Profile[]> {
     const response = await fetch(`${API_PREFIX}/user/profiles`);
-    
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
@@ -27,7 +27,7 @@ export async function getProfiles(): Promise<Profile[]> {
 }
 
 async function _get<D>(
-    endPoint: string, 
+    endPoint: string,
     profileId: number,
     startTime: Date | null,
     endTime: Date | null,
@@ -46,12 +46,12 @@ async function _get<D>(
             aggregate: aggregate
         })
     });
-    
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
     }
 
-    return response.json();    
+    return response.json();
 }
 
 export async function getSolar(

@@ -16,7 +16,7 @@ function bindEvents(): void {
 }
 
 /**
- * Without disabling scrollRestoration, the scroll position of Chrome will change
+ * Without disabscrollRestorationling , the scroll position of Chrome will change
  * every time we refresh page
  */
 if ('scrollRestoration' in history) {
