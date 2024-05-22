@@ -138,6 +138,27 @@ function bindActiveTabEvents(tabId: string): void {
     };
 }
 
+async function setTotalElectricityUsageLabel(profile: Profile) {
+    const labelElm = document.getElementById("yearly-usage-sum");
+    if (!labelElm) {
+        console.error("Cannot find element with id 'yearly-usage-sum'!");
+        return;
+    }
+    PROFILE_API.getUsage(
+        profile.id,
+        new Date(profile.start_time),
+        new Date(profile.end_time),
+        null,
+        "year"
+    ).then(usages => {
+        const sum = usages.reduce(
+            (acc, cur) => acc + (cur[1] as number),
+            0
+        );
+        labelElm.textContent = `${sum.toExponential(5)} kWh`;
+    });
+}
+
 /**
  * @param profileId. We allow pass profileId here since the way of using elem.value
  * seems to have some delay and we possibly get the old value.
@@ -194,6 +215,9 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
             });
             // endTimeElm.value = profile.end_time;
         }
+
+        // update labels
+        setTotalElectricityUsageLabel(profile);
     })
     
     async function initChart0(profile: Profile) {
