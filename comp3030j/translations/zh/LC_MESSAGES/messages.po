@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-21 22:58+0800\n"
+"POT-Creation-Date: 2024-05-22 14:59+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -130,48 +130,40 @@ msgid "Power"
 msgstr "功率"
 
 #: comp3030j/dashboard/__init__.py:18
-msgid "Generation"
-msgstr "发电量"
-
-#: comp3030j/dashboard/__init__.py:19
 msgid "Usage - UTC+1(No DST)"
 msgstr "用量 - UTC+1(无夏令时)"
 
-#: comp3030j/dashboard/__init__.py:20
+#: comp3030j/dashboard/__init__.py:19
 msgid "csv only!"
 msgstr "只能上传csv文件"
 
-#: comp3030j/dashboard/__init__.py:24
+#: comp3030j/dashboard/__init__.py:23
 msgid "End time should be later than start time."
 msgstr "结束时间应晚于开始时间"
 
-#: comp3030j/dashboard/__init__.py:28
+#: comp3030j/dashboard/__init__.py:27
 msgid "Longitude should be between -180 and 180."
 msgstr "经度应在-180到180之间"
 
-#: comp3030j/dashboard/__init__.py:32
+#: comp3030j/dashboard/__init__.py:31
 msgid "Latitude should be between -90 and 90."
 msgstr "纬度应在-90到90之间"
 
-#: comp3030j/dashboard/__init__.py:36
+#: comp3030j/dashboard/__init__.py:35
 msgid "Please choose a technology of solar panel."
 msgstr "请选择一种太阳能板的制造工艺"
 
-#: comp3030j/dashboard/__init__.py:38
+#: comp3030j/dashboard/__init__.py:37
 msgid "Technology should be a positive integer."
 msgstr "技术应为正整数"
 
-#: comp3030j/dashboard/__init__.py:42
+#: comp3030j/dashboard/__init__.py:41
 msgid "Loss should be a positive float which is less than 1."
 msgstr "损耗应为小于1的正浮点数"
 
-#: comp3030j/dashboard/__init__.py:46
+#: comp3030j/dashboard/__init__.py:45
 msgid "Power should be a positive float."
 msgstr "功率应为正浮点数"
-
-#: comp3030j/dashboard/__init__.py:50
-msgid "Generation should be a positive float."
-msgstr "发电量应为正浮点数"
 
 #: comp3030j/views/auth.py:37
 msgid "Your account has been created! You are now able to log in."
@@ -232,16 +224,16 @@ msgid "Change Your Password"
 msgstr "修改密码"
 
 #: templates/page/auth/profile/profile.j2:131
-#: templates/page/dashboard/page/profile.j2:272
+#: templates/page/dashboard/page/profile.j2:215
 msgid "Confirm"
 msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
-#: templates/page/dashboard/page/profile.j2:274
+#: templates/page/dashboard/page/profile.j2:217
 msgid "Close"
 msgstr "取消"
 
-#: templates/page/dashboard/page/profile.j2:143
+#: templates/page/dashboard/page/profile.j2:87
 msgid "Create a Profile"
 msgstr "个人中心"
 
@@ -255,4 +247,10 @@ msgstr "个人中心"
 
 #~ msgid "Profile created successfully."
 #~ msgstr "密码修改成功"
+
+#~ msgid "Generation"
+#~ msgstr "发电量"
+
+#~ msgid "Generation should be a positive float."
+#~ msgstr "发电量应为正浮点数"
 
