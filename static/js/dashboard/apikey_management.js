@@ -114,16 +114,27 @@ function showCreatedApiKey(apikey) {
 function copySecretKey() {
     var secretKey = document.getElementById("secretKeyDisplay").innerText;
 
-    // Copy to Clipboard using Clipboard API
-    navigator.clipboard.writeText(secretKey)
-        .then(function() {
-            console.log('Secret key copied to clipboard');
-            alert('Secret key copied to clipboard');
-        })
-        .catch(function(err) {
-            console.error('Failed to copy secret key: ', err);
-            alert('Failed to copy secret key');
-        });
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(secretKey)
+            .then(function() {
+                console.log('Secret key copied to clipboard');
+                alert('Secret key copied to clipboard');
+            })
+            .catch(function(err) {
+                console.error('Failed to copy secret key: ', err);
+                alert('Failed to copy secret key');
+            });
+    } else {
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = secretKey;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextArea);
+
+        console.log('Secret key copied to clipboard');
+        alert('Secret key copied to clipboard');
+    }
 }
 
 export default function onLoad() {
