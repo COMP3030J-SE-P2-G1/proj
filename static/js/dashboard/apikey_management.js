@@ -112,7 +112,6 @@ function showCreatedApiKey(apikey) {
 }
 
 function copySecretKey() {
-    // Get the secret key value
     var secretKey = document.getElementById("secretKeyDisplay").innerText;
 
     // Copy to Clipboard using Clipboard API
