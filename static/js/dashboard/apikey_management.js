@@ -1,5 +1,4 @@
 import * as APIKEY from '../api/apikey.ts';
-import ClipboardJS from "clipboard";
 
 let rowCounter = 0;
 
@@ -10,26 +9,25 @@ function closeDialog(dialogElm) {
 }
 
 function initializeApiKeysList() {
-    window.rowCounter = 0;
     const keyTableBodyElm = document.querySelector('#keyTableBody');
-    while (keyTableBodyElm.hasChildNodes()) {
-        keyTableBodyElm.removeChild(keyTableBodyElm.lastChild);
-    }
 
+    showLoadingOverlay();
     APIKEY.getApiKeyList().then(apikeys => {
-        apikeys.forEach(apikey => {
-            appendList(apikey);
-        });
+        const rowElms = [];
+        for (const [index, apikey] of apikeys.entries()) {
+            rowElms.push(genNewRow(apikey, index + 1));
+        }
+        keyTableBodyElm.replaceChildren(...rowElms);
+        tbody.removeChild(overlay); // though `replaceChildren` already removes the loading indicator...
     });
 }
 
-function appendList(apikey) {
-    const keyTableBody = document.querySelector('#keyTableBody');
+function genNewRow(apikey, index = 1) {
     const newRow = document.createElement('tr');
 
-    const serialCell = document.createElement('td');
-    serialCell.textContent = rowCounter++;
-    newRow.appendChild(serialCell);
+    const indexCell = document.createElement('td');
+    indexCell.textContent = `${index}`;
+    newRow.appendChild(indexCell);
 
     const nameCell = document.createElement('td');
     nameCell.textContent = apikey.desc;
@@ -77,8 +75,8 @@ function appendList(apikey) {
 
     deleteButtonCell.appendChild(deleteButton);
     newRow.appendChild(deleteButtonCell);
-
-    keyTableBody.appendChild(newRow);
+    
+    return newRow;
 }
 
 function bindEvent() {
@@ -98,8 +96,12 @@ function bindEvent() {
     });
 
     // Add click event listeners to copyButton
-    copyButton.addEventListener('click', function() {
-        copySecretKey();
+    copyButton.addEventListener('click', _event => {
+        copySecretKey().then(result => {
+            if (!result) return;
+            const showApikeyDialogElm = document.getElementById("dialog_show_apikey");
+            closeDialog(showApikeyDialogElm);
+        });
     });
 }
 
@@ -111,22 +113,44 @@ function showCreatedApiKey(apikey) {
     dialog_show_apikey.showModal();
 }
 
-function copySecretKey() {
-    var secretKey = document.getElementById("secretKeyDisplay").innerText;
+async function copySecretKey() {
+    const secretKey = document.getElementById("secretKeyDisplay").innerText;
 
-    navigator.clipboard.writeText(secretKey)
-        .then(function() {
-            console.log('Secret key copied to clipboard');
-            alert('Secret key copied to clipboard');
-        })
-        .catch(function(err) {
-            console.error('Failed to copy secret key: ', err);
-            alert('Failed to copy secret key');
+    if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(secretKey).then(() => {
+            alert("Secret key is copied to clipboard");
         });
+        return true;
+    } else {
+        alert("Clipboard is not available due to insecure environments(like http) or something else. Please manually select and opy the text.");
+        return false;
+    }
+}
+
+function showLoadingOverlay() {
+    const tbody = document.getElementById('keyTableBody');
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'absolute inset-0 bg-black bg-opacity-20 flex justify-center items-center';
+    
+    const loadingIndicator = document.createElement('span');
+    loadingIndicator.className = 'loading loading-ring loading-lg';
+    
+    overlay.appendChild(loadingIndicator);
+    
+    tbody.appendChild(overlay);
+}
+
+function hideLoadingOverlay() {
+    const tbody = document.getElementById('keyTableBody');
+    
+    const overlay = tbody.querySelector('.absolute.inset-0.bg-black.bg-opacity-50');
+    if (overlay) {
+        tbody.removeChild(overlay);
+    }
 }
 
 export default function onLoad() {
-    rowCounter = 0;
     initializeApiKeysList();
     bindEvent();
 }

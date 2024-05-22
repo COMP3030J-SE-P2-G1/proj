@@ -26,7 +26,11 @@ module.exports = {
         'scale-125', 'shadow',
         // electricity usage calculator
         'font-bold', 'font-normal', 'p-1.5', 'text-right', 'ml-2',
-        "flex", "justify-between", "text-sm", "items-center"
+        "flex", "justify-between", "text-sm", "items-center",
+
+        // api management
+        "absolute", "inset-0", "bg-black", "bg-opacity-50", "flex", "justify-center", "items-center",
+        "loading", "loading-ring", "loading-lg"
     ]
 }
 

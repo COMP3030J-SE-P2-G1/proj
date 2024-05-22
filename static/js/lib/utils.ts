@@ -112,4 +112,3 @@ export function hoursBetweenNull(start: Date | null, end: Date | null): number |
     if (!(start && end)) return null;
     return hoursBetween(start, end);
 }
-
