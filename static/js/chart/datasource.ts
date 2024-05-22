@@ -230,6 +230,19 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
         // In JavaScript, we don't need array out of bounds check, since it will
         // automatically expand the array for us.
         newDataset[index] = overrideDatasetOption;
+        
+        // echart will change [{...}, <empty slot>, {...}] or [{...}, {source: []}, {...}} into [{...}, {...}], so we need to fill these gaps
+        for (let i = 0; i < newDataset.length; i ++) {
+            if (newDataset[i] === undefined) {
+                newDataset[i] = {
+                    // for timely array data type.
+                    // It is recommended to set the dataset in optionTemplate to make sure
+                    // no issue exists in updating process
+                    source: [["placeholder", 0]],
+                    sourceHeader: false
+                };
+            }
+        }
             
         return {
             dataset: newDataset

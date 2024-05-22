@@ -242,7 +242,7 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
             chart0Elm,
             chart0dataSources,
             {
-                dateset: {
+                dataset: {
                     source: [],
                     sourceHeader: false
                 },
@@ -292,10 +292,19 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
                 startTime: startTime,
                 endTime: endTime,
                 aggregate: aggregate,
+            }),
+            new Chart.ProfileSavingDataSource(profile, {
+                startTime: startTime,
+                endTime: endTime,
+                aggregate: aggregate,
             })
         ];
         const optionTemplate = {
-            dateset: [
+            dataset: [
+                {
+                    source: [],
+                    sourceHeader: false
+                },
                 {
                     source: [],
                     sourceHeader: false
@@ -318,16 +327,20 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
                     formatter: Chart.getAdaptiveFormatter(aggregate)
                 }
             },
-            yAxis: {
-                type: 'value',
-                boundaryGap: [0, '100%'],
-                axisLabel: {
-                    inside: true
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        inside: true
+                    }
                 },
-                max: function (value) {
-                    return value.max * 1.5;
+                {
+                    type: 'value',
+                    axisLabel: {
+                        inside: true
+                    }
                 }
-            },
+            ],
             grid: {},
             series: [
                 {
@@ -341,6 +354,7 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
                     tooltip: {
                         valueFormatter: value => `${parseFloat(value).toFixed(2)} kWh`
                     },
+                    yAxisIndex: 0,
                     datasetIndex: 0
                 },
                 {
@@ -357,7 +371,21 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
                     tooltip: {
                         valueFormatter: value => `${parseFloat(value).toFixed(2)} kWh`
                     },
+                    yAxisIndex: 0,
                     datasetIndex: 1,
+                },
+                {
+                    name: "Saving",
+                    encode: { x: 0, y: 1},
+                    type: "line",
+                    emphasis: {
+                        focus: "focus"
+                    },
+                    tooltip: {
+                        valueFormatter: value => `${parseFloat(value).toFixed(2)} €`
+                    },
+                    yAxisIndex: 1,
+                    datasetIndex: 2
                 }
             ],
             animation: false,
