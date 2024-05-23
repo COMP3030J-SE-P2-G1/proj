@@ -1,7 +1,7 @@
 <div class="size-full flex flex-col p-3">
     <header class="flex flex-col items-center mt-4">
-        <h1 class="text-3xl font-bold text-base-content">Profiles</h1>
-        <span class="text-base-content-shadow m-2">Create, Edit and View your on-premise solar panel installations: and see your savings & contributions to the environment!</span>
+        <h1 class="text-3xl font-bold text-base-content">{{ _("Profiles")}}</h1>
+        <span class="text-base-content-shadow m-2">{{ _("Create, Edit and View your on-premise solar panel installations: and see your savings & contributions to the environment!")}}</span>
     </header>
     <section class="flex flex-col h-full">
         <div class="flex justify-between m-2">
@@ -20,15 +20,15 @@
                     </button>
                 </div>
                 <div role="tablist" class="tabs tabs-boxed content-center">
-                    <a role="tab" id="tab1" class="tab tab-active" data-aggregate="year">Yearly</a>
-                    <a role="tab" id="tab2" class="tab" data-aggregate="month">Monthly</a>
-                    <a role="tab" id="tab3" class="tab" data-aggregate="day">Everyday</a>
+                    <a role="tab" id="tab1" class="tab tab-active" data-aggregate="year">{{ _("Yearly")}}</a>
+                    <a role="tab" id="tab2" class="tab" data-aggregate="month">{{ _("Monthly")}}</a>
+                    <a role="tab" id="tab3" class="tab" data-aggregate="day">{{ _("Everyday")}}</a>
                 </div>
             </div>
             <div class="join">
-                <button class="btn select-bordered join-item">Start From:</button>
+                <button class="btn select-bordered join-item">{{ _("Start From:")}}</button>
                 <input id="start_date" type="date" class="grow input flex items-center gap-2 select-bordered join-item"/>
-                <button class="btn select-bordered join-item">End at:</button>
+                <button class="btn select-bordered join-item">{{ _("End at:")}}</button>
                 <input id="end_date" type="date" class="grow input flex items-center gap-2 select-bordered join-item"/>
             </div>
         </div>
@@ -42,7 +42,7 @@
                               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <div class="stat-title text-sm md:text-base">Total Electricity Usage</div>
+                <div class="stat-title text-sm md:text-base">{{ _("Total Electricity Usage")}}</div>
                 <div id="yearly-usage-sum" class="stat-value text-primary text-2xl md:text-4xl"></div>
             </div>
 
@@ -54,7 +54,7 @@
                               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <div class="stat-title text-sm md:text-base">Save Money</div>
+                <div class="stat-title text-sm md:text-base">{{ _("Save Money")}}</div>
                 <div id="saving" class="stat-value text-secondary text-2xl md:text-4xl"></div>
             </div>
 
@@ -66,7 +66,7 @@
                               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <div class="stat-title text-sm md:text-base">Reduced CO2</div>
+                <div class="stat-title text-sm md:text-base">{{ _("Reduced CO2")}}</div>
                 <div id="reduce_co2" class="stat-value text-2xl md:text-4xl"></div>
             </div>
         </div>
@@ -123,12 +123,12 @@
                                         </div>
                                         <div tabindex="0"
                                              class="dropdown-content z-[1] menu shadow rounded-box bg-base-100 place-items-end">
-                                            <h5>Click to download the templates</h5>
+                                            <h5>{{ _("Click to download the templates")}}</h5>
                                             <ul>
                                                 <li><a
                                                     href="{{ url_for('dashboard.download_templates') }}"
                                                     class="btn bg-base-100 border-0 w-44">
-                                                    Download
+                                                    {{ _("Download")}}
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em"
                                                          height="1em" viewBox="0 0 24 24">
                                                         <path fill="currentColor"
@@ -183,10 +183,10 @@
                     <div class="basis-1/2 h-full">
                         <div class="flex flex-row items-center mt-4">
                             <!-- 更新搜索地址输入框和按钮 -->
-                            <label for="address" class="mr-2">Search Address:</label>
+                            <label for="address" class="mr-2">{{ _("Search Address:")}}</label>
                             <input type="text" id="address" placeholder="Enter an address"
                                    class="input input-bordered w-full text-sm mr-2">
-                            <button onclick="geocodeAddress(event)" class="btn">Search</button>
+                            <button onclick="geocodeAddress(event)" class="btn">{{ _("Search")}}</button>
 
 
                         </div>

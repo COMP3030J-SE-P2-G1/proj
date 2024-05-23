@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-23 14:52+0800\n"
+"POT-Creation-Date: 2024-05-23 21:25+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -126,7 +126,6 @@ msgid "Loss"
 msgstr "损耗"
 
 #: comp3030j/dashboard/__init__.py:17
-#, fuzzy
 msgid "Power - kW"
 msgstr "功率"
 
@@ -251,6 +250,8 @@ msgid "Overview"
 msgstr "概览"
 
 #: templates/page/dashboard/layout1/sidebar.j2:121
+#: templates/page/dashboard/page/index.j2:16
+#: templates/page/dashboard/page/profile.j2:3
 msgid "Profiles"
 msgstr "配置中心"
 
@@ -273,11 +274,77 @@ msgstr "登出"
 
 #: templates/page/dashboard/layout1/sidebar.j2:208
 msgid "My Account"
-msgstr "我的账户"
+msgstr ""
+
+#: templates/page/dashboard/page/index.j2:3
+msgid "Electricity Prices"
+msgstr "电价"
+
+#: templates/page/dashboard/page/index.j2:4
+msgid "Visualize Electricity Prices in Ireland over different years"
+msgstr "可视化爱尔兰不同年份的电价"
+
+#: templates/page/dashboard/page/index.j2:21
+msgid "Average Price(per MWh)"
+msgstr "平均价格(每兆瓦时)"
+
+#: templates/page/dashboard/page/profile.j2:4
+msgid ""
+"Create, Edit and View your on-premise solar panel installations: and see "
+"your savings & contributions to the environment!"
+msgstr "创建，编辑和查看您的本地太阳能电池板安装:并看到您的节约和对环境的贡献!"
+
+#: templates/page/dashboard/page/profile.j2:23
+msgid "Yearly"
+msgstr "每年"
+
+#: templates/page/dashboard/page/profile.j2:24
+msgid "Monthly"
+msgstr "每月"
+
+#: templates/page/dashboard/page/profile.j2:25
+msgid "Everyday"
+msgstr "每天"
+
+#: templates/page/dashboard/page/profile.j2:29
+msgid "Start From:"
+msgstr "开始时间"
+
+#: templates/page/dashboard/page/profile.j2:31
+msgid "End at:"
+msgstr "结束时间"
+
+#: templates/page/dashboard/page/profile.j2:45
+msgid "Total Electricity Usage"
+msgstr "总用电量"
+
+#: templates/page/dashboard/page/profile.j2:57
+msgid "Save Money"
+msgstr "节约的钱"
+
+#: templates/page/dashboard/page/profile.j2:69
+msgid "Reduced CO2"
+msgstr "减少的二氧化碳"
 
 #: templates/page/dashboard/page/profile.j2:87
 msgid "Create a Profile"
 msgstr "个人中心"
+
+#: templates/page/dashboard/page/profile.j2:126
+msgid "Click to download the templates"
+msgstr "点击, 下载模板    "
+
+#: templates/page/dashboard/page/profile.j2:131
+msgid "Download"
+msgstr "下载"
+
+#: templates/page/dashboard/page/profile.j2:186
+msgid "Search Address:"
+msgstr "搜索地址："
+
+#: templates/page/dashboard/page/profile.j2:189
+msgid "Search"
+msgstr "搜索"
 
 #: templates/page/landing/body.j2:9
 msgid "Welcome to SolarScape website"
