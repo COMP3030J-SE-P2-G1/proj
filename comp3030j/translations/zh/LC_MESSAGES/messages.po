@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-22 20:56+0800\n"
+"POT-Creation-Date: 2024-05-23 11:22+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -126,7 +126,8 @@ msgid "Loss"
 msgstr "损耗"
 
 #: comp3030j/dashboard/__init__.py:17
-msgid "Power"
+#, fuzzy
+msgid "Power - kW"
 msgstr "功率"
 
 #: comp3030j/dashboard/__init__.py:18
@@ -233,13 +234,22 @@ msgstr "确认"
 msgid "Close"
 msgstr "取消"
 
-#: templates/page/dashboard/page/profile.j2:87
-msgid "Create a Profile"
-msgstr "个人中心"
+#: templates/page/dashboard/layout1/sidebar.j2:152
+msgid "API Tools"
+msgstr ""
 
+#: templates/page/dashboard/layout1/sidebar.j2:199
 #: templates/page/landing/header.j2:19
 msgid "Logout"
 msgstr "登出"
+
+#: templates/page/dashboard/layout1/sidebar.j2:208
+msgid "My Account"
+msgstr ""
+
+#: templates/page/dashboard/page/profile.j2:87
+msgid "Create a Profile"
+msgstr "个人中心"
 
 #: templates/page/landing/header.j2:20
 msgid "Profile"
