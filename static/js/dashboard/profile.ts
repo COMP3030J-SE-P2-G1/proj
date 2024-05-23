@@ -1,6 +1,7 @@
 import * as PROFILE_API from '../api/profile.ts';
 import * as Chart from '../chart/chart.ts';
 import type { Aggregate, Profile } from '../api/types.ts';
+import {getSolar} from "../api/profile.ts";
 
 // TODO start from and end from selection
 
@@ -182,7 +183,6 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
 
 async function setTotalSavingLabel(profile: Profile) {
     const labelElm = document.getElementById("saving");
-    const labelElm2 = document.getElementById("reduce_co2");
     if (!labelElm) {
         console.error("Cannot find element with id 'saving'!");
         return;
@@ -199,9 +199,29 @@ async function setTotalSavingLabel(profile: Profile) {
             0
         );
         const formattedAmount = sum.toFixed(3)
-        const formattedCO2 = (sum * 0.7).toFixed(3)
         labelElm.textContent = `${formattedAmount.toLocaleString()} €`;
-        labelElm2.textContent = `${formattedCO2} kg`;
+    });
+}
+
+async function setReduceCO2Label(profile: Profile) {
+    const labelElm = document.getElementById("reduce_co2");
+    if (!labelElm) {
+        console.error("Cannot find element with id 'saving'!");
+        return;
+    }
+    PROFILE_API.getSolar(
+        profile.id,
+        new Date(profile.start_time),
+        new Date(profile.end_time),
+        null,
+        "year"
+    ).then(solar => {
+        const sum = solar.reduce(
+            (acc, cur) => acc + (cur[1] as number),
+            0
+        );
+        const formattedCO2 = (sum * 0.7).toFixed(3)
+        labelElm.textContent = `${formattedCO2} kg`;
     });
 }
 
@@ -265,6 +285,7 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
         // update labels
         setTotalElectricityUsageLabel(profile);
         setTotalSavingLabel(profile);
+        setReduceCO2Label(profile);
     })
     
     async function initChart0(profile: Profile) {
