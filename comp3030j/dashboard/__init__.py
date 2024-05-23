@@ -14,7 +14,7 @@ class ProfileForm(FlaskForm):
     lat = FloatField(_ltr('Latitude'), validators=[DataRequired()])
     tech = SelectField(_ltr('Technology'), choices=[('1', 'crystSi'), ('2', 'CIS'), ('3', 'CdTe')])
     loss = FloatField(_ltr('Loss'), validators=[DataRequired()])
-    power = FloatField(_ltr('Power'), validators=[DataRequired()])
+    power = FloatField(_ltr('Power - kW'), validators=[DataRequired()])
     usage_file = MultipleFileField(_ltr('Usage - UTC+1(No DST)'),
                                    validators=[FileRequired(), FileAllowed(['csv'], _ltr('csv only!'))])
 

@@ -138,6 +138,14 @@ function bindActiveTabEvents(tabId: string): void {
     };
 }
 
+
+function countDigits(n) {
+    if (n === 0) return 1;
+    if (n < 0) n = -n;
+    return Math.floor(Math.log10(n) + 1);
+}
+
+
 async function setTotalElectricityUsageLabel(profile: Profile) {
     const labelElm = document.getElementById("yearly-usage-sum");
     if (!labelElm) {
@@ -155,7 +163,45 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
             (acc, cur) => acc + (cur[1] as number),
             0
         );
-        labelElm.textContent = `${sum.toExponential(5)} kWh`;
+        console.log(countDigits(sum));
+        if (countDigits(sum)>6){
+            const temp = sum * Math.pow(10, -6)
+            labelElm.textContent = `${temp.toFixed(3)} GWh`;
+        }
+        else if(countDigits(sum)>3){
+            const temp = sum * Math.pow(10, -3)
+            labelElm.textContent = `${temp.toFixed(3)} MWh`;
+        }
+        else{
+            labelElm.textContent = `${sum.toFixed(3)} kWh`;
+        }
+        // labelElm.textContent = `${sum.toExponential(5)} kWh`;
+    });
+}
+
+
+async function setTotalSavingLabel(profile: Profile) {
+    const labelElm = document.getElementById("saving");
+    const labelElm2 = document.getElementById("reduce_co2");
+    if (!labelElm) {
+        console.error("Cannot find element with id 'saving'!");
+        return;
+    }
+    PROFILE_API.getSaving(
+        profile.id,
+        new Date(profile.start_time),
+        new Date(profile.end_time),
+        null,
+        "year"
+    ).then(saving => {
+        const sum = saving.reduce(
+            (acc, cur) => acc + (cur[1] as number),
+            0
+        );
+        const formattedAmount = sum.toFixed(3)
+        const formattedCO2 = (sum * 0.7).toFixed(3)
+        labelElm.textContent = `${formattedAmount.toLocaleString()} €`;
+        labelElm2.textContent = `${formattedCO2} kg`;
     });
 }
 
@@ -218,6 +264,7 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
 
         // update labels
         setTotalElectricityUsageLabel(profile);
+        setTotalSavingLabel(profile);
     })
     
     async function initChart0(profile: Profile) {
