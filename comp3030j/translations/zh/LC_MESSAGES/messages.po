@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-23 14:33+0800\n"
+"POT-Creation-Date: 2024-05-23 14:52+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -279,6 +279,10 @@ msgstr "我的账户"
 msgid "Create a Profile"
 msgstr "个人中心"
 
+#: templates/page/landing/body.j2:9
+msgid "Welcome to SolarScape website"
+msgstr "欢迎来到SolarScape!"
+
 #: templates/page/landing/body.j2:11
 msgid ""
 "\n"
@@ -307,6 +311,10 @@ msgstr ""
 "项目是我们的最新倡议，是针对领先的太阳能电池板制造商和营销商的需求而构思的，他们希望提升产品销售，<br>\n"
 "以满足那些致力于改善可持续性并降低电费的公司。\n"
 "                        "
+
+#: templates/page/landing/body.j2:26
+msgid "Go to Dashboard"
+msgstr "前往主页"
 
 #: templates/page/landing/header.j2:20
 msgid "Profile"
