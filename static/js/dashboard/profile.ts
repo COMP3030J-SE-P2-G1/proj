@@ -1,7 +1,6 @@
 import * as PROFILE_API from '../api/profile.ts';
 import * as Chart from '../chart/chart.ts';
 import type { Aggregate, Profile } from '../api/types.ts';
-import {getSolar} from "../api/profile.ts";
 
 // TODO start from and end from selection
 
@@ -176,7 +175,6 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
         else{
             labelElm.textContent = `${sum.toFixed(3)} kWh`;
         }
-        // labelElm.textContent = `${sum.toExponential(5)} kWh`;
     });
 }
 
