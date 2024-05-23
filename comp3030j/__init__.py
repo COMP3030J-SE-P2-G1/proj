@@ -12,9 +12,7 @@ from redis import Redis
 def get_locale():
     if request.args.get('language'):
         session['language'] = request.args.get('language')
-    print("jwj")
     res = session.get('language', request.accept_languages.best_match(app.config['LANGUAGES']))
-    print("zyf",res)
     return res
 
 
@@ -36,9 +34,7 @@ babel = Babel(app, locale_selector=get_locale)
 def get_locale():
     if request.args.get('language'):
         session['language'] = request.args.get('language')
-    print("jwj")
     res = session.get('language', request.accept_languages.best_match(app.config['LANGUAGES']))
-    print("zyf",res)
     return res
 
 

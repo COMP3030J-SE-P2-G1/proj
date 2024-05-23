@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-23 11:22+0800\n"
+"POT-Creation-Date: 2024-05-23 11:51+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -234,9 +234,38 @@ msgstr "确认"
 msgid "Close"
 msgstr "取消"
 
+#: templates/page/dashboard/layout1/sidebar.j2:10
+msgid "Restful API"
+msgstr "Restful API"
+
+#: templates/page/dashboard/layout1/sidebar.j2:22
+msgid "Graghql Playground"
+msgstr "Graphql 操作台"
+
+#: templates/page/dashboard/layout1/sidebar.j2:28
+msgid "Management"
+msgstr "API管理"
+
+#: templates/page/dashboard/layout1/sidebar.j2:113
+msgid "Overview"
+msgstr "概览"
+
+#: templates/page/dashboard/layout1/sidebar.j2:121
+#, fuzzy
+msgid "Profiles"
+msgstr "配置中心"
+
+#: templates/page/dashboard/layout1/sidebar.j2:134
+msgid "Electricity usage calculator"
+msgstr "用电量计算器"
+
+#: templates/page/dashboard/layout1/sidebar.j2:143
+msgid "Policy Search"
+msgstr "相关政策搜索"
+
 #: templates/page/dashboard/layout1/sidebar.j2:152
 msgid "API Tools"
-msgstr ""
+msgstr "API 工具"
 
 #: templates/page/dashboard/layout1/sidebar.j2:199
 #: templates/page/landing/header.j2:19
@@ -245,7 +274,7 @@ msgstr "登出"
 
 #: templates/page/dashboard/layout1/sidebar.j2:208
 msgid "My Account"
-msgstr ""
+msgstr "我的账户"
 
 #: templates/page/dashboard/page/profile.j2:87
 msgid "Create a Profile"
