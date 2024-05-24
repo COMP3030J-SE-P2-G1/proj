@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from . import db
 from .Profile import Profile
 from .apikey import ApiKey
@@ -28,6 +30,14 @@ class User(db.Model, UserMixin, SerializerMixin):
     avatar_file: Mapped[str] = mapped_column(default="default.jpg")
     profiles: Mapped[List[Profile]] = relationship(back_populates="user")
     apikeys: Mapped[List[ApiKey]] = relationship(back_populates="user")
+    last_login = db.Column(db.DateTime, nullable=True)
+    registration_date = db.Column(db.DateTime, nullable=False, default=lambda: datetime.utcnow().replace(microsecond=0))
+
+    def update_last_login(self):
+        current_time = datetime.utcnow().replace(microsecond=0)
+        self.last_login = current_time
+        db.session.commit()
+
 
     @classmethod
     def find_by_id(cls, id: str):

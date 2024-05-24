@@ -137,6 +137,29 @@
                     </dialog>
                 </div>
             </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-xl font-bold mb-4">{{ _("User Details") }}</div>
+                <div class="text-sm mb-4">{{ _("Registration Date") }}: {{ current_user.registration_date }}</div>
+                <div class="text-sm">{{ _("Last Login") }}: {{ current_user.last_login }}</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-xl font-bold mb-4">{{ _("Help & Support") }}</div>
+                <div class="text-sm mb-4">{{ _("If you need assistance, please feel free to contact our support team. We are here to help!") }}</div>
+                <div class="flex flex-row gap-4">
+                    <!-- FAQ Button -->
+                    <a href="https://drive.google.com/file/d/1FYFFeq8tMqebRn1HPdkwY-TWq49fi9QX/view?usp=share_link" target="_blank">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                            {{ _("User Manual") }}
+                        </button>
+                    </a>
+                    <!-- Contact Support Button -->
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onclick="document.getElementById('contact_modal').showModal()">
+                        {{ _("Contact Support") }}
+                    </button>
+                </div>
+            </div>
+
+
 {#            <!-- TODO -->#}
 {#            <div class="flex flex-col gap-4 w-full">#}
 {#                <div class="skeleton h-32 w-full"></div>#}
@@ -144,6 +167,20 @@
 {#                <div class="skeleton h-4 w-full"></div>#}
 {#                <div class="skeleton h-4 w-full"></div>#}
 {#            </div>#}
+
+
+            <!-- Contact Us Modal -->
+            <dialog id="contact_modal" class="modal">
+                <div class="modal-box">
+                    <h2 lass="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">{{ _("Contact Us") }}</h2>
+                    <p class="text-sm mb-4">{{ _("For any inquiries or support, you can reach out to us at:") }}</p>
+                    <p class="text-sm mb-4"><strong>Email:</strong> catherine.mooney@ucd.ie</p>
+                    <p class="text-sm mb-4">{{ _("We have a dedicated team to assist you with any issues or questions you may have.") }}</p>
+                    <div class="modal-action justify-center">
+                        <button class="btn" onclick="document.getElementById('contact_modal').close()">{{ _("Close") }}</button>
+                    </div>
+                </div>
+            </dialog>
         </div>
         <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open drawer</label>
 

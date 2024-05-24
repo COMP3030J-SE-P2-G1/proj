@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-24 16:33+0800\n"
+"POT-Creation-Date: 2024-05-24 20:05+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -38,6 +38,7 @@ msgstr "确认密码"
 #: comp3030j/auth/__init__.py:18 templates/page/auth/history/index.j2:42
 #: templates/page/auth/profile/index.j2:43 templates/page/auth/register.j2:21
 #: templates/page/auth/register.j2:46 templates/page/landing/header.j2:23
+#: templates/page/landing/index.j2:42
 msgid "Sign Up"
 msgstr "注册"
 
@@ -68,6 +69,7 @@ msgstr "记住我"
 #: comp3030j/auth/__init__.py:43 templates/page/auth/history/index.j2:41
 #: templates/page/auth/login.j2:63 templates/page/auth/login.j2:92
 #: templates/page/auth/profile/index.j2:42 templates/page/landing/header.j2:22
+#: templates/page/landing/index.j2:41
 msgid "Sign In"
 msgstr "登录"
 
@@ -167,23 +169,23 @@ msgstr "功率应为正浮点数"
 msgid "Your account has been created! You are now able to log in."
 msgstr "成功注册账号！你现在可以登录了"
 
-#: comp3030j/views/auth.py:60
+#: comp3030j/views/auth.py:61
 msgid "Please login first."
 msgstr "请先登录"
 
-#: comp3030j/views/auth.py:107
+#: comp3030j/views/auth.py:108
 msgid "Profile picture uploaded and saved."
 msgstr "头像文件已上传并修改"
 
-#: comp3030j/views/auth.py:109
+#: comp3030j/views/auth.py:110
 msgid "Unavailable Account."
 msgstr "未登录用户"
 
-#: comp3030j/views/auth.py:111
+#: comp3030j/views/auth.py:112
 msgid "Upload failed"
 msgstr "图像上传失败"
 
-#: comp3030j/views/auth.py:125
+#: comp3030j/views/auth.py:126
 msgid "Password updated successfully."
 msgstr "密码修改成功"
 
@@ -200,12 +202,12 @@ msgid "Already Have An Account? Login"
 msgstr "已有账户？立即登录"
 
 #: templates/page/auth/history/history.j2:23
-#: templates/page/auth/profile/profile.j2:157
+#: templates/page/auth/profile/profile.j2:179
 msgid "Your info"
 msgstr "个人信息"
 
 #: templates/page/auth/history/history.j2:27
-#: templates/page/auth/profile/profile.j2:161
+#: templates/page/auth/profile/profile.j2:183
 msgid "History"
 msgstr "历史记录"
 
@@ -230,6 +232,39 @@ msgstr "确认"
 #: templates/page/dashboard/page/profile.j2:217
 msgid "Close"
 msgstr "取消"
+
+#: templates/page/auth/profile/profile.j2:141
+#, fuzzy
+msgid "User Details"
+msgstr "用户名"
+
+#: templates/page/auth/profile/profile.j2:142
+msgid "Registration Date"
+msgstr ""
+
+#: templates/page/auth/profile/profile.j2:143
+#, fuzzy
+msgid "Last Login"
+msgstr "请先登录"
+
+#: templates/page/auth/profile/profile.j2:146
+msgid "Help & Support"
+msgstr ""
+
+#: templates/page/auth/profile/profile.j2:147
+msgid ""
+"If you need assistance, please feel free to contact our support team. We "
+"are here to help!"
+msgstr ""
+
+#: templates/page/auth/profile/profile.j2:152
+#, fuzzy
+msgid "User Manual"
+msgstr "用户名"
+
+#: templates/page/auth/profile/profile.j2:156
+msgid "Contact Support"
+msgstr ""
 
 #: templates/page/dashboard/layout1/sidebar.j2:8
 msgid "Management"

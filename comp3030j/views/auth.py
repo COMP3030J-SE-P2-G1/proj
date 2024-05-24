@@ -50,6 +50,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         # conditional that simultaneously checks that the user exist and that their password verifies
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            user.update_last_login()  # 更新最后登录时间
             login_user(user, remember=form.remember.data)
             # Back the user to the page they visited before login
             next_page = request.args.get('next')
