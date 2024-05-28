@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-28 16:03+0800\n"
+"POT-Creation-Date: 2024-05-28 16:08+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -323,9 +323,9 @@ msgstr "API 工具"
 msgid "Logout"
 msgstr "登出"
 
-#: templates/page/dashboard/layout1/sidebar.j2:208
+#: templates/page/dashboard/layout1/sidebar.j2:207
 msgid "My Account"
-msgstr ""
+msgstr "我的账户"
 
 #: templates/page/dashboard/page/index.j2:3
 msgid "Electricity Prices"
