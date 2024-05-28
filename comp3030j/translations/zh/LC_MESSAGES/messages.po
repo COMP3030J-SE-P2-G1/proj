@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-28 14:37+0800\n"
+"POT-Creation-Date: 2024-05-28 14:46+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -440,6 +440,14 @@ msgstr "小时/天，总共"
 #: templates/page/dashboard/page/tool/electricity_usage_calculator.j2:39
 msgid "weeks"
 msgstr "周"
+
+#: templates/page/dashboard/page/tool/policy.j2:4
+msgid "Search Policy"
+msgstr "搜索"
+
+#: templates/page/dashboard/page/tool/policy.j2:5
+msgid "You can explore the relevant policy here!"
+msgstr "你可以在这里了解相关政策!"
 
 #: templates/page/landing/body.j2:9
 msgid "Welcome to SolarScape website"
