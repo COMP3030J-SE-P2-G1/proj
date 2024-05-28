@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-28 14:46+0800\n"
+"POT-Creation-Date: 2024-05-28 16:03+0800\n"
 "PO-Revision-Date: 2024-03-15 11:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -234,6 +234,8 @@ msgstr "确认"
 
 #: templates/page/auth/profile/profile.j2:133
 #: templates/page/auth/profile/profile.j2:180
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:62
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:74
 #: templates/page/dashboard/page/profile.j2:217
 msgid "Close"
 msgstr "取消"
@@ -394,6 +396,67 @@ msgstr "搜索地址："
 #: templates/page/dashboard/page/profile.j2:189
 msgid "Search"
 msgstr "搜索"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:16
+msgid ""
+"As an owner of this project, you can view and manage all SolarScape API "
+"keys associated with\n"
+"                            it. Please do not share your API key with "
+"others or expose it in the browser or other\n"
+"                            client-side code. To protect the security of "
+"your account, SolarScape may also automatically\n"
+"                            disable any API key that has been publicly "
+"leaked."
+msgstr ""
+"作为该项目的所有者，您可以查看和管理与之关联的所有SolarScape "
+"API密钥。请不要与他人共享您的API密钥，或将其暴露在浏览器或其他客户端代码中。为了保护您帐户的安全，SolarScape还可以自动禁用任何已公开泄露的API密钥。"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:25
+msgid "Project API keys have replaced user API keys."
+msgstr "项目API密钥已经取代了用户API密钥。"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:26
+msgid ""
+"We recommend using project-based API keys for more granular control over "
+"your resources."
+msgstr "我们建议使用基于项目的API key来更细粒度地控制资源。"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:31
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:55
+msgid "Create new secret key"
+msgstr "创建新的密钥"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:38
+msgid "Desc"
+msgstr "描述"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:39
+msgid "Key"
+msgstr "密钥"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:40
+msgid "Created time"
+msgstr "创建时间"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:41
+msgid "Last used time"
+msgstr "最新的一次使用"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:42
+msgid "Enabled"
+msgstr "可用"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:63
+msgid "Create secret key"
+msgstr "创建密钥"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:70
+msgid "Generated Secret Key"
+msgstr "生成的密钥"
+
+#: templates/page/dashboard/page/api_doc/apikey_management.j2:73
+msgid "Copy"
+msgstr "复制"
 
 #: templates/page/dashboard/page/tool/electricity_usage_calculator.j2:3
 msgid "Electricity Usage Calculator"

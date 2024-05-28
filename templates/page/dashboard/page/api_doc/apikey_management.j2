@@ -1,7 +1,7 @@
 <div class="size-full flex flex-col p-3">
     <header class="flex flex-col items-center mt-4">
         <div class="flex">
-            <h1 class="text-3xl font-bold text-base-content">{{ _("API Keys")}}</h1>
+            <h1 class="text-3xl font-bold text-base-content">"API Keys"</h1>
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-xs text-info">
                     <svg tabindex="0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -13,33 +13,33 @@
                 <div tabindex="0" class="card compact dropdown-content z-[1] shadow bg-base-100 rounded-box w-96">
                     <div tabindex="0" class="card-body">
                         <p>
-                            As an owner of this project, you can view and manage all SolarScape API keys associated with
+                            {{ _("As an owner of this project, you can view and manage all SolarScape API keys associated with
                             it. Please do not share your API key with others or expose it in the browser or other
                             client-side code. To protect the security of your account, SolarScape may also automatically
-                            disable any API key that has been publicly leaked.
+                            disable any API key that has been publicly leaked.")}}
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-        <span class="text-base-content-shadow mt-2">Project API keys have replaced user API keys.</span>
-        <span class="text-base-content-shadow">We recommend using project-based API keys for more granular control over your resources.</span>
+        <span class="text-base-content-shadow mt-2">{{ _("Project API keys have replaced user API keys.")}}</span>
+        <span class="text-base-content-shadow">{{ _("We recommend using project-based API keys for more granular control over your resources.")}}</span>
     </header>
     <section class="m-2">
         <div class="max-w-screen-lg mx-auto p-5">
             <div class="flex flex-col items-center">
-                <button class="btn" onclick="dialog_create_apikey.showModal()">Create new secret key</button>
+                <button class="btn" onclick="dialog_create_apikey.showModal()">{{ _("Create new secret key")}}</button>
             </div>
             <div class="overflow-x-auto mt-4">
                 <table class="table">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Desc</th>
-                        <th>Key</th>
-                        <th>Created time</th>
-                        <th>Last used time</th>
-                        <th>Enabled</th>
+                        <th>{{ _("Desc")}}</th>
+                        <th>{{ _("Key")}}</th>
+                        <th>{{ _("Created time")}}</th>
+                        <th>{{ _("Last used time")}}</th>
+                        <th>{{ _("Enabled")}}</th>
                     </tr>
                     </thead>
                     <tbody id="keyTableBody">
@@ -52,26 +52,26 @@
 
 <dialog id="dialog_create_apikey" class="modal">
     <div class="modal-box justify-center">
-        <h2 class="font-bold text-center text-lg">Create new secret key</h2>
+        <h2 class="font-bold text-center text-lg">{{ _("Create new secret key")}}</h2>
 
         <div class="modal-action justify-center">
-            <input type="text" placeholder="Enter the Desc of Key" id="keyDesc"
+            <input type="text" id="keyDesc"
                    class="input input-bordered w-full max-w-xs"/>
         </div>
         <div class="modal-action justify-center">
-            <button class="btn" onclick="dialog_create_apikey.close()">Close</button>
-            <button id="createKeyButton" class="btn bg-emerald-400">Create secret key</button>
+            <button class="btn" onclick="dialog_create_apikey.close()">{{ _("Close")}}</button>
+            <button id="createKeyButton" class="btn bg-emerald-400">{{ _("Create secret key")}}</button>
         </div>
     </div>
 </dialog>
 
 <dialog id="dialog_show_apikey" class="modal">
     <div class="modal-box flex flex-col items-center">
-        <h2 class="font-bold text-lg justify-center">Generated Secret Key</h2>
+        <h2 class="font-bold text-lg justify-center">{{ _("Generated Secret Key")}}</h2>
         <p class="py-4 justify-center" id="secretKeyDisplay"></p>
         <div class="flex">
-            <button id="copyButton" class="btn">Copy</button>
-            <button class="btn ml-5" onclick="dialog_show_apikey.close()">Close</button>
+            <button id="copyButton" class="btn">{{ _("Copy")}}</button>
+            <button class="btn ml-5" onclick="dialog_show_apikey.close()">{{ _("Close")}}</button>
         </div>
     </div>
 </dialog>
