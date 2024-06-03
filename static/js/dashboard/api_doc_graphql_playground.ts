@@ -11,6 +11,7 @@ export default function onLoad() {
     root.render(React.createElement(GraphiQL, {
         fetcher: fetcher,
         defaultQuery: `# Graphql functionality is completed. Try out this example!
+# note the API endpoint for graphql is at /api/graphql
 {
   me {
     profiles {
