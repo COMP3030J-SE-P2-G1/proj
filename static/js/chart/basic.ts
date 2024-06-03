@@ -85,17 +85,28 @@ export function initDynamicChart<D, T>(
     chart.setOption(optionTemplate);
     
     if (dataSources.length > 0) {
-        chart.showLoading();
+        chart.showLoading('default', {
+            text: 'Fetching data...\nFirst time fetching needs time.',
+            maskColor: 'rgba(255, 255, 255, 0.6)'
+        });
 
-        let index = 0
+        let index = 0;
+        const fetchPromises: Promise<void>[] = [];
+        
         dataSources.forEach(dataSource => {
-            
             dataSource.bindChart(chart);
             dataSource.index = index;
             
-            dataSource.startFetching();
+            fetchPromises.push(dataSource.startFetching());
             
             index += 1;
+        });
+
+        Promise.all(fetchPromises).then(() => {
+            chart.hideLoading();
+        }).catch(error => {
+            console.error("An error occurred while fetching data: ", error);
+            chart.hideLoading();
         });
     }
 

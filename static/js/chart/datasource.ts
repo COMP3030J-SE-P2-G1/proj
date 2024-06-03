@@ -99,59 +99,62 @@ export class DataSource<D, T> {
         this._chart = chart;
     }
 
-    public startFetching() {
+    public startFetching(): Promise<void> {
         if (!this._chart) throw new Error("`this._chart` is null!");
         if (this._index == undefined || this._index == null)
             throw new Error("`this._order` is null!");
-        
+
         const mutex = new Mutex();
         
-        const updateData = () => {
-            this.fetchDataFunc(this._curState)
-                .then(async (fetchedData) => {
-                    if (!this._chart) throw new Error("`this._chart` is null!");
-                    if (this._index == undefined || this._index == null)
-                        throw new Error("`this._order` is null!");
-                    this._chart.hideLoading();
+        return new Promise((resolve, reject) => {
+            const updateData = () => {
+                this.fetchDataFunc(this._curState)
+                    .then(async (fetchedData) => {
+                        if (!this._chart) throw new Error("`this._chart` is null!");
+                        if (this._index == undefined || this._index == null)
+                            throw new Error("`this._order` is null!");
 
-                    if (!this._prevData) {
-                        this._prevData = this._data;  
-                    } else {
-                        this._prevData = this._prevData.concat(this._data!);
-                    }
-                    this._data = fetchedData;
-                    this._prevState = this._curState;
-                    this._curState = this.updateStateFunc(this._curState, this._data);
+                        if (!this._prevData) {
+                            this._prevData = this._data;  
+                        } else {
+                            this._prevData = this._prevData.concat(this._data!);
+                        }
+                        this._data = fetchedData;
+                        this._prevState = this._curState;
+                        this._curState = this.updateStateFunc(this._curState, this._data);
 
-                    const release = await mutex.acquire();
-                    try {
-                        this._chart.setOption(
-                            this.overrideOptionFunc(
-                                this._data,
-                                this._prevData,
-                                this._chart.getOption(),
-                                this._index
-                            )
-                        );
-                    } finally {
-                        release();
-                    }
+                        const release = await mutex.acquire();
+                        try {
+                            this._chart.setOption(
+                                this.overrideOptionFunc(
+                                    this._data,
+                                    this._prevData,
+                                    this._chart.getOption(),
+                                    this._index
+                                )
+                            );
+                        } finally {
+                            release();
+                        }
 
-                    if (this.shouldStopFetchingFunc(this._curState, this._prevState)) {
-                        return;
-                    }
-                
-                    setTimeout(updateData, this.interval);
-                })
-                .catch(error => {
-                    console.error("Failed to fetch data: ", error);
+                        if (this.shouldStopFetchingFunc(this._curState, this._prevState)) {
+                            resolve();
+                            return;
+                        }
                     
-                    if (!this._chart) throw new Error("`this._chart` is null!");
-                    this._chart.hideLoading();
-                });
-        };
-        
-        updateData();
+                        setTimeout(updateData, this.interval);
+                    })
+                    .catch(error => {
+                        console.error("Failed to fetch data: ", error);
+                        
+                        if (!this._chart) throw new Error("`this._chart` is null!");
+                        this._chart.hideLoading();
+                        reject(error);
+                    });
+            };
+            
+            updateData();
+        });
     }
 }
 

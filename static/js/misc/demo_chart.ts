@@ -134,51 +134,6 @@ function demoProfileSavingChart() {
     )
 }
 
-// function demoInitElectricityPriceHypridChart() {
-//     const elm = document.getElementById("initElectricityUsageChart-hybrid");
-//     if (elm) Chart.initElectricityUsageChart(elm, 1, gStartTime, gEndTime, "day", {
-//         optionTemplate: {
-//             dataset: [
-//                 {
-//                     // fake data so that `dimension: 1` below don't produce an
-//                     // error at chart initialization
-//                     source: [[1, 2]]
-//                 },
-//                 {
-//                     transform: {
-//                         type: 'filter',
-//                         config: {
-//                             dimension: 1,
-//                             '<': 40000
-//                         }
-//                     }
-//                 },
-//             ],
-//             title: {
-//                 text: "Usage hybrid chart (bar & line whose value is lower than 40000)"
-//             },
-//             xAxis: {
-//                 type: 'time'
-//             },
-//             yAxis: {},
-//             series: [
-//                 {
-//                     encode: { x: 0, y: 1 },
-//                     type: "bar",
-//                     // use 0st dataset
-//                 },
-//                 {
-//                     encode: { x: 0, y: 1 },
-//                     type: "line",
-//                     datasetIndex: 1, // use the 1st (begins with 0) dataset
-//                 }
-//             ],
-//             animation: false
-//         }
-//     });
-// }
-
-
 ready(() => {
     demoProfileUsageLineChart();
     demoProfileSolarBarChart();
