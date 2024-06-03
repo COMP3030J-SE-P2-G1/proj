@@ -253,23 +253,7 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
     }
     
     type = type ?? DEFAULT_CHART_TYPE_OPTION;
-    if (type.type == 'line' || type.type == 'bar') {
-        return (data, prevData, prevOption, index) => {
-            if (prevData) data = prevData.concat(data);
-            const overrideDatasetOption: DatasetComponentOption = {
-                source: data.map(
-                    item => [
-                        item[type.xField],
-                        item[type.yField]
-                    ]
-                ),
-                sourceHeader: false
-            };
-
-            const prevDataset = prevOption.dataset;
-            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, index);
-        };
-    } else { // pie chart
+    if (type.type == 'pie') {
         const usageData: StringNumberDict = {};
         return (data, _prevData, prevOption, index) => {
             const newUsageSumDict = calculateUsageSum(data, type);
@@ -283,6 +267,22 @@ function getDefaultOverrideOption<D extends { [key: string ]: any }>(type: Chart
 
             const overrideDatasetOption: DatasetComponentOption = {
                 source: Object.entries(usageData),
+                sourceHeader: false
+            };
+
+            const prevDataset = prevOption.dataset;
+            return getOverrideDataSetOption(prevDataset, overrideDatasetOption, index);
+        };
+    } else { // line, bar, heatmap
+        return (data, prevData, prevOption, index) => {
+            if (prevData) data = prevData.concat(data);
+            const overrideDatasetOption: DatasetComponentOption = {
+                source: data.map(
+                    item => [
+                        item[type.xField],
+                        item[type.yField]
+                    ]
+                ),
                 sourceHeader: false
             };
 

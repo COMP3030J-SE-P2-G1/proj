@@ -30,7 +30,10 @@ module.exports = {
 
         // api management
         "absolute", "inset-0", "bg-black", "bg-opacity-50", "flex", "justify-center", "items-center",
-        "loading", "loading-ring", "loading-lg"
+        "loading", "loading-ring", "loading-lg",
+
+        // dashboard/profile
+        "hidden", "loading", "loading-dots", "loading-md", "loading-overlay", "inset-0", "flex", "justify-center", "items-center"
     ]
 }
 

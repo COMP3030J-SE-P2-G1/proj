@@ -20,10 +20,6 @@ function initCharts() {
             tooltip: {
                 trigger: 'axis'
             },
-            title: {
-                left: 'center',
-                text: 'Electricity Price'
-            },
             xAxis: {
                 type: 'time',
             },

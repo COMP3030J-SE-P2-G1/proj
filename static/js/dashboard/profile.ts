@@ -138,11 +138,30 @@ function bindActiveTabEvents(tabId: string): void {
     };
 }
 
+function showLoadingOverlay(parentElm: HTMLElement) {
+    const overlay = document.createElement('div');
+    // loading-overlay class doesn't do anything, it's just an identifier
+    overlay.className = 'loading-overlay inset-0 flex justify-center items-center';
+    
+    const loadingIndicator = document.createElement('span');
+    loadingIndicator.className = 'loading loading-dots loading-md';
+    
+    overlay.appendChild(loadingIndicator);
+    
+    parentElm.appendChild(overlay);
+    console.log(parentElm);
+}
 
-function countDigits(n) {
-    if (n === 0) return 1;
-    if (n < 0) n = -n;
-    return Math.floor(Math.log10(n) + 1);
+function removeLoadingOverlay(parentElm: HTMLElement) {
+    const overlay = parentElm.querySelector('.loading-overlay');
+    if (overlay) {
+        parentElm.removeChild(overlay);
+    }
+}
+
+
+function countDigits(n: number) {
+    return n.toString().length; // including `-` prefix if number < 0; also includes `.` if float
 }
 
 
@@ -152,6 +171,7 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
         console.error("Cannot find element with id 'yearly-usage-sum'!");
         return;
     }
+    showLoadingOverlay(labelElm);
     PROFILE_API.getUsage(
         profile.id,
         new Date(profile.start_time),
@@ -159,11 +179,12 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
         null,
         "year"
     ).then(usages => {
+        removeLoadingOverlay(labelElm);
+
         const sum = usages.reduce(
             (acc, cur) => acc + (cur[1] as number),
             0
         );
-        console.log(countDigits(sum));
         if (countDigits(sum)>6){
             const temp = sum * Math.pow(10, -6)
             labelElm.textContent = `${temp.toFixed(3)} GWh`;
@@ -185,6 +206,7 @@ async function setTotalSavingLabel(profile: Profile) {
         console.error("Cannot find element with id 'saving'!");
         return;
     }
+    showLoadingOverlay(labelElm);
     PROFILE_API.getSaving(
         profile.id,
         new Date(profile.start_time),
@@ -192,6 +214,7 @@ async function setTotalSavingLabel(profile: Profile) {
         null,
         "year"
     ).then(saving => {
+        removeLoadingOverlay(labelElm);
         const sum = saving.reduce(
             (acc, cur) => acc + (cur[1] as number),
             0
@@ -207,6 +230,7 @@ async function setReduceCO2Label(profile: Profile) {
         console.error("Cannot find element with id 'saving'!");
         return;
     }
+    showLoadingOverlay(labelElm);
     PROFILE_API.getSolar(
         profile.id,
         new Date(profile.start_time),
@@ -214,6 +238,8 @@ async function setReduceCO2Label(profile: Profile) {
         null,
         "year"
     ).then(solar => {
+        removeLoadingOverlay(labelElm);
+
         const sum = solar.reduce(
             (acc, cur) => acc + (cur[1] as number),
             0
@@ -289,6 +315,12 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
     async function initChart0(profile: Profile) {
         const chart0Elm = document.getElementById("chart0");
         if (!chart0Elm) { console.error("Cannot find HTML element #chart0"); return;}
+        if (aggregate == "day") {
+            chart0Elm.classList.add("hidden");
+            return;
+        } else {
+            chart0Elm.classList.remove("hidden");
+        }
         const chart0dataSources = [
             new Chart.ProfileUsageDataSource(profile, {
                 startTime: startTime,
@@ -382,7 +414,7 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
             ],
             title: {
                 left: 'center',
-                text: 'Generated Solar Energy vs Electricity Usage'
+                text: 'Generated Solar Energy vs Electricity Usage vs Saving'
             },
             tooltip: {
                 trigger: 'axis'
@@ -444,6 +476,9 @@ function initCharts(aggregate: Aggregate = "year", profileId: number | null = nu
                     name: "Saving",
                     encode: { x: 0, y: 1},
                     type: "line",
+                    lineStyle: {
+                        width: 3
+                    },
                     emphasis: {
                         focus: "focus"
                     },

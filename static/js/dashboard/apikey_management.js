@@ -18,7 +18,6 @@ function initializeApiKeysList() {
             rowElms.push(genNewRow(apikey, index + 1));
         }
         keyTableBodyElm.replaceChildren(...rowElms);
-        tbody.removeChild(overlay); // though `replaceChildren` already removes the loading indicator...
     });
 }
 
