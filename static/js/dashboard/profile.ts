@@ -171,6 +171,7 @@ async function setTotalElectricityUsageLabel(profile: Profile) {
         console.error("Cannot find element with id 'yearly-usage-sum'!");
         return;
     }
+    labelElm.textContent = "";
     showLoadingOverlay(labelElm);
     PROFILE_API.getUsage(
         profile.id,
@@ -206,6 +207,7 @@ async function setTotalSavingLabel(profile: Profile) {
         console.error("Cannot find element with id 'saving'!");
         return;
     }
+    labelElm.textContent = "";
     showLoadingOverlay(labelElm);
     PROFILE_API.getSaving(
         profile.id,
@@ -230,6 +232,7 @@ async function setReduceCO2Label(profile: Profile) {
         console.error("Cannot find element with id 'saving'!");
         return;
     }
+    labelElm.textContent = "";
     showLoadingOverlay(labelElm);
     PROFILE_API.getSolar(
         profile.id,
